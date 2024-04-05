@@ -25,4 +25,13 @@ public static class Text
 			public ScopedTextColor(ImColor color) : base(ImGuiCol.Text, color) { }
 		}
 	}
+
+	public static void PrintWithTheme(string text)
+	{
+		var backgroundColor = ImGuiStyler.Color.FromVector(ImGui.GetStyle().Colors[(int)ImGuiCol.WindowBg]);
+		var textColor = backgroundColor.CalculateOptimalTextColorForContrast();
+		ImGui.PushStyleColor(ImGuiCol.Text, ImGui.GetColorU32(textColor.Value));
+		ImGui.TextUnformatted(text);
+		ImGui.PopStyleColor();
+	}
 }

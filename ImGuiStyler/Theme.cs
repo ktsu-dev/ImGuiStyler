@@ -10,7 +10,15 @@ public static class Theme
 	public static float HoverLuminance { get; set; } = 1f;
 	public static float ActiveLuminance { get; set; } = .8f;
 	public static float FrameLuminance { get; set; } = .6f;
-	public static float DisabledSaturation { get; set; } = 0.2f;
+	public static float BackgroundLuminance { get; set; } = .15f;
+	public static float DisabledSaturation { get; set; } = .2f;
+
+	public static ImColor GetStateColor(ImColor baseColor, bool enabled) => enabled ? baseColor : baseColor.WithSaturation(DisabledSaturation);
+	public static ImColor GetNormalColor(ImColor stateColor) => stateColor.WithLuminance(NormalLuminance);
+	public static ImColor GetHoveredColor(ImColor stateColor) => stateColor.WithLuminance(HoverLuminance);
+	public static ImColor GetActiveColor(ImColor stateColor) => stateColor.WithLuminance(ActiveLuminance);
+	public static ImColor GetBackgroundColor(ImColor stateColor) => stateColor.WithLuminance(BackgroundLuminance);
+	public static ImColor GetTextColor(ImColor backgroundColor) => backgroundColor.CalculateOptimalTextColorForContrast();
 
 	public static class Palette
 	{
@@ -46,10 +54,11 @@ public static class Theme
 	{
 		public ScopedThemeColor(ImColor baseColor, bool enabled)
 		{
-			var stateColor = enabled ? baseColor : baseColor.WithSaturation(DisabledSaturation);
-			var normalColor = stateColor.WithLuminance(NormalLuminance);
-			var hoveredColor = stateColor.WithLuminance(HoverLuminance);
-			var activeColor = stateColor.WithLuminance(ActiveLuminance);
+			var stateColor = GetStateColor(baseColor, enabled);
+			var normalColor = GetNormalColor(stateColor);
+			var hoveredColor = GetHoveredColor(stateColor);
+			var activeColor = GetActiveColor(stateColor);
+			var backgroundColor = GetBackgroundColor(stateColor);
 			var textColor = normalColor.CalculateOptimalTextColorForContrast();
 
 			int numStyles = 0;
@@ -86,6 +95,7 @@ public static class Theme
 			PushStyleAndCount(ImGuiCol.ScrollbarGrab, normalColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ScrollbarGrabActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ScrollbarGrabHovered, hoveredColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.WindowBg, backgroundColor, ref numStyles);
 
 			OnClose = () => ImGui.PopStyleColor(numStyles);
 		}
