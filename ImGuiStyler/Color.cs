@@ -30,7 +30,7 @@ public static class Color
 			throw new ArgumentException("Hex color must be in the format #RRGGBB or #RRGGBBAA", nameof(hex));
 		}
 
-		byte r = byte.Parse(hex.AsSpan(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+		byte r = byte.Parse(hex.AsSpan(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 		byte g = byte.Parse(hex.AsSpan(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 		byte b = byte.Parse(hex.AsSpan(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 		byte a = byte.Parse(hex.AsSpan(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
@@ -68,12 +68,13 @@ public static class Color
 		Value = vector
 	};
 
-	public static ImColor FromHLS(Vector3 vector) => FromHLSA(vector.X, vector.Y, vector.Z, 1);
-	public static ImColor FromHLSA(Vector4 vector) => FromHLSA(vector.X, vector.Y, vector.Z, vector.W);
-	public static ImColor FromHLSA(float h, float l, float s) => FromHLSA(h, l, s, 1);
-	public static ImColor FromHLSA(float h, float l, float s, float a)
+	public static ImColor FromHSL(Vector3 vector) => FromHSLA(vector.X, vector.Y, vector.Z, 1);
+	public static ImColor FromHSLA(Vector4 vector) => FromHSLA(vector.X, vector.Y, vector.Z, vector.W);
+	public static ImColor FromHSL(float h, float s, float l) => FromHSLA(h, s, l, 1);
+	public static ImColor FromHSLA(float h, float s, float l, float a)
 	{
 		float r, g, b;
+
 		if (s == 0)
 		{
 			r = g = b = l;
@@ -86,36 +87,32 @@ public static class Color
 			g = HueToRGB(p, q, h);
 			b = HueToRGB(p, q, h - (1f / 3f));
 		}
+
 		return FromRGBA(r, g, b, a);
 	}
 
 	private static float HueToRGB(float p, float q, float t)
 	{
-		if (t < 0f)
+		if (t < 0)
 		{
-			t += 1f;
+			t += 1;
 		}
-
-		if (t > 1f)
+		if (t > 1)
 		{
-			t -= 1f;
+			t -= 1;
 		}
-
 		if (t < 1f / 6f)
 		{
 			return p + ((q - p) * 6f * t);
 		}
-
 		if (t < 1f / 2f)
 		{
 			return q;
 		}
-
 		if (t < 2f / 3f)
 		{
 			return p + ((q - p) * ((2f / 3f) - t) * 6f);
 		}
-
 		return p;
 	}
 
@@ -217,106 +214,134 @@ public static class Color
 
 	public static ImColor DesaturateBy(this ImColor color, float amount)
 	{
-		var hlsa = color.ToHLSA();
-		hlsa.Z = Math.Clamp(hlsa.Z - amount, 0, 1);
-		return FromHLSA(hlsa);
+		var hsla = color.ToHSLA();
+		hsla.Y = Math.Clamp(hsla.Y - amount, 0, 1);
+		return FromHSLA(hsla);
 	}
 
 	public static ImColor SaturateBy(this ImColor color, float amount)
 	{
-		var hlsa = color.ToHLSA();
-		hlsa.Z = Math.Clamp(hlsa.Z + amount, 0, 1);
-		return FromHLSA(hlsa);
+		var hsla = color.ToHSLA();
+		hsla.Y = Math.Clamp(hsla.Y + amount, 0, 1);
+		return FromHSLA(hsla);
 	}
 
 	public static ImColor WithSaturation(this ImColor color, float amount)
 	{
-		var hlsa = color.ToHLSA();
-		hlsa.Z = Math.Clamp(amount, 0, 1);
-		return FromHLSA(hlsa);
+		var hsla = color.ToHSLA();
+		hsla.Y = Math.Clamp(amount, 0, 1);
+		return FromHSLA(hsla);
+	}
+
+	public static ImColor MultiplySaturation(this ImColor color, float amount)
+	{
+		var hsla = color.ToHSLA();
+		hsla.Y = Math.Clamp(hsla.Y * amount, 0, 1);
+		return FromHSLA(hsla);
 	}
 
 	public static ImColor LightenBy(this ImColor color, float amount)
 	{
-		var hlsa = color.ToHLSA();
-		hlsa.Y = Math.Clamp(hlsa.Y + amount, 0, 1);
-		return FromHLSA(hlsa);
+		var hsla = color.ToHSLA();
+		hsla.Z = Math.Clamp(hsla.Z + amount, 0, 1);
+		return FromHSLA(hsla);
 	}
 
 	public static ImColor DarkenBy(this ImColor color, float amount)
 	{
-		var hlsa = color.ToHLSA();
-		hlsa.Y = Math.Clamp(hlsa.Y - amount, 0, 1);
-		return FromHLSA(hlsa);
+		var hsla = color.ToHSLA();
+		hsla.Z = Math.Clamp(hsla.Z - amount, 0, 1);
+		return FromHSLA(hsla);
 	}
 
 	public static ImColor WithLuminance(this ImColor color, float amount)
 	{
-		var hlsa = color.ToHLSA();
-		hlsa.Y = Math.Clamp(amount, 0, 1);
-		return FromHLSA(hlsa);
+		var hsla = color.ToHSLA();
+		hsla.Z = Math.Clamp(amount, 0, 1);
+		return FromHSLA(hsla);
+	}
+
+	public static ImColor MultiplyLuminance(this ImColor color, float amount)
+	{
+		var hsla = color.ToHSLA();
+		hsla.Z = Math.Clamp(hsla.Z * amount, 0, 1);
+		return FromHSLA(hsla);
 	}
 
 	public static ImColor WithAlpha(this ImColor color, float amount)
 	{
-		var hlsa = color.ToHLSA();
-		hlsa.W = Math.Clamp(amount, 0, 1);
-		return FromHLSA(hlsa);
+		var hsla = color.ToHSLA();
+		hsla.W = Math.Clamp(amount, 0, 1);
+		return FromHSLA(hsla);
 	}
 
 	public static ImColor ToGrayscale(this ImColor color) => color.WithSaturation(0);
 
-	public static Vector4 ToHLSA(this ImColor color)
+	public static Vector4 ToHSLA(this ImColor color)
 	{
 		float r = color.Value.X;
 		float g = color.Value.Y;
 		float b = color.Value.Z;
 		float a = color.Value.W;
+
 		float max = Math.Max(r, Math.Max(g, b));
 		float min = Math.Min(r, Math.Min(g, b));
-		float h = 0;
-		float s;
-		float l = (max + min) / 2f;
-		float d = max - min;
+		float h, s, l = (max + min) / 2f;
 
 		if (max == min)
 		{
-			h = s = 0f;
+			h = s = 0;
 		}
 		else
 		{
+			float d = max - min;
 			s = l > 0.5f ? d / (2f - max - min) : d / (max + min);
 			if (max == r)
 			{
-				h = ((g - b) / d) + (g < b ? 6f : 0f);
+				h = (g - b) / d;
 			}
 			else if (max == g)
 			{
-				h = ((b - r) / d) + 2f;
+				h = ((b - r) / d) + 2;
 			}
-			else if (max == b)
+			else
 			{
-				h = ((r - g) / d) + 4f;
+				h = ((r - g) / d) + 4;
 			}
-			h /= 6f;
+			h /= 6;
+			if (h < 0)
+			{
+				h += 1;
+			}
 		}
 
-		return new Vector4(h, l, s, a);
+		return new Vector4(h, s, l, a);
 	}
 
 	public static float GetContrastRatioWith(this ImColor color, ImColor other)
 	{
-		float l1 = color.ToHLSA().Y;
-		float l2 = other.ToHLSA().Y;
+		float l1 = color.ToHSLA().Z;
+		float l2 = other.ToHSLA().Z;
 		return (Math.Max(l1, l2) + 0.05f) / (Math.Min(l1, l2) + 0.05f);
 	}
 
-	public static ImColor CalculateOptimalTextColorForContrast(this ImColor color)
+	public static ImColor CalculateOptimalContrastingColor(this ImColor color)
 	{
-		float l = color.ToHLSA().Y;
-		float l1 = ((l + 0.05f) / OptimalTextContrastRatio) - 0.05f;
-		float l2 = ((l - 0.05f) * OptimalTextContrastRatio) + 0.05f;
-		var hlsa = color.ToHLSA();
-		return Math.Abs(l1 - l) < Math.Abs(l2 - l) ? FromHLSA(hlsa.X, l1, hlsa.Z, hlsa.W) : FromHLSA(hlsa.X, l2, hlsa.Z, hlsa.W);
+		float bestLuminance = 0;
+		float bestContrast = 0;
+		int steps = 10;
+		for (int i = 0; i < steps; i++)
+		{
+			float l = i / (steps - 1);
+			float contrast = color.WithLuminance(1).GetContrastRatioWith(color);
+			// compare the distance to the target luminance to determine the best contrast
+			if (contrast > bestContrast)
+			{
+				bestContrast = contrast;
+				bestLuminance = l;
+			}
+		}
+
+		return color.WithLuminance(bestLuminance);
 	}
 }

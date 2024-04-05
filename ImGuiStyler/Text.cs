@@ -26,12 +26,10 @@ public static class Text
 		}
 	}
 
-	public static void PrintWithTheme(string text)
+	public static void Themed(string text)
 	{
 		var backgroundColor = ImGuiStyler.Color.FromVector(ImGui.GetStyle().Colors[(int)ImGuiCol.WindowBg]);
-		var textColor = backgroundColor.CalculateOptimalTextColorForContrast();
-		ImGui.PushStyleColor(ImGuiCol.Text, ImGui.GetColorU32(textColor.Value));
-		ImGui.TextUnformatted(text);
-		ImGui.PopStyleColor();
+		var textColor = backgroundColor.CalculateOptimalContrastingColor();
+		ImGui.TextColored(textColor.Value, text);
 	}
 }

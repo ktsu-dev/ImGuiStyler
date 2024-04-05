@@ -6,19 +6,24 @@ using ktsu.io.ScopedAction;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class Theme
 {
-	public static float NormalLuminance { get; set; } = 0.7f;
-	public static float HoverLuminance { get; set; } = 1f;
-	public static float ActiveLuminance { get; set; } = .8f;
-	public static float FrameLuminance { get; set; } = .6f;
-	public static float BackgroundLuminance { get; set; } = .15f;
-	public static float DisabledSaturation { get; set; } = .2f;
+	private static float NormalLuminanceMult { get; set; } = 0.4f;
+	private static float NormalSaturationMult { get; set; } = 0.5f;
+	private static float ActiveLuminanceMult { get; set; } = .6f;
+	private static float ActiveSaturationMult { get; set; } = .7f;
+	private static float HoverLuminanceMult { get; set; } = .7f;
+	private static float HoverSaturationMult { get; set; } = .8f;
+	private static float DragLuminanceMult { get; set; } = 1.1f;
+	private static float BackgroundLuminanceMult { get; set; } = .13f;
+	private static float BackgroundSaturationMult { get; set; } = .05f;
+	private static float DisabledSaturationMult { get; set; } = .1f;
 
-	public static ImColor GetStateColor(ImColor baseColor, bool enabled) => enabled ? baseColor : baseColor.WithSaturation(DisabledSaturation);
-	public static ImColor GetNormalColor(ImColor stateColor) => stateColor.WithLuminance(NormalLuminance);
-	public static ImColor GetHoveredColor(ImColor stateColor) => stateColor.WithLuminance(HoverLuminance);
-	public static ImColor GetActiveColor(ImColor stateColor) => stateColor.WithLuminance(ActiveLuminance);
-	public static ImColor GetBackgroundColor(ImColor stateColor) => stateColor.WithLuminance(BackgroundLuminance);
-	public static ImColor GetTextColor(ImColor backgroundColor) => backgroundColor.CalculateOptimalTextColorForContrast();
+	public static ImColor GetStateColor(ImColor baseColor, bool enabled) => enabled ? baseColor : baseColor.MultiplySaturation(DisabledSaturationMult);
+	public static ImColor GetNormalColor(ImColor stateColor) => stateColor.MultiplyLuminance(NormalLuminanceMult).MultiplySaturation(NormalSaturationMult);
+	public static ImColor GetActiveColor(ImColor stateColor) => stateColor.MultiplyLuminance(ActiveLuminanceMult).MultiplySaturation(ActiveSaturationMult);
+	public static ImColor GetHoveredColor(ImColor stateColor) => stateColor.MultiplyLuminance(HoverLuminanceMult).MultiplySaturation(HoverSaturationMult);
+	public static ImColor GetDragColor(ImColor stateColor) => stateColor.MultiplyLuminance(DragLuminanceMult);
+	public static ImColor GetBackgroundColor(ImColor stateColor) => stateColor.MultiplyLuminance(BackgroundLuminanceMult).MultiplySaturation(BackgroundSaturationMult);
+	public static ImColor GetTextColor(ImColor backgroundColor) => backgroundColor.CalculateOptimalContrastingColor();
 
 	public static class Palette
 	{
@@ -50,6 +55,55 @@ public static class Theme
 		public static ImColor Success { get; set; } = Green;
 	}
 
+	public static void Apply(ImColor baseColor)
+	{
+		var normalColor = GetNormalColor(baseColor);
+		var hoveredColor = GetHoveredColor(baseColor);
+		var activeColor = GetActiveColor(baseColor);
+		var backgroundColor = GetBackgroundColor(baseColor);
+		var dragColor = GetDragColor(baseColor);
+		var textColor = normalColor.CalculateOptimalContrastingColor();
+		var borderColor = backgroundColor.CalculateOptimalContrastingColor();
+
+		var colors = ImGui.GetStyle().Colors;
+		colors[(int)ImGuiCol.Text] = textColor.Value;
+		colors[(int)ImGuiCol.TextSelectedBg] = baseColor.Value;
+		colors[(int)ImGuiCol.TextDisabled] = textColor.Value;
+		colors[(int)ImGuiCol.Button] = normalColor.Value;
+		colors[(int)ImGuiCol.ButtonActive] = activeColor.Value;
+		colors[(int)ImGuiCol.ButtonHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.CheckMark] = textColor.Value;
+		colors[(int)ImGuiCol.Header] = normalColor.Value;
+		colors[(int)ImGuiCol.HeaderActive] = activeColor.Value;
+		colors[(int)ImGuiCol.HeaderHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.SliderGrab] = dragColor.Value;
+		colors[(int)ImGuiCol.SliderGrabActive] = baseColor.Value;
+		colors[(int)ImGuiCol.Tab] = normalColor.Value;
+		colors[(int)ImGuiCol.TabActive] = activeColor.Value;
+		colors[(int)ImGuiCol.TabHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.TitleBg] = normalColor.Value;
+		colors[(int)ImGuiCol.TitleBgActive] = activeColor.Value;
+		colors[(int)ImGuiCol.TitleBgCollapsed] = normalColor.Value;
+		colors[(int)ImGuiCol.Border] = borderColor.Value;
+		colors[(int)ImGuiCol.FrameBg] = normalColor.Value;
+		colors[(int)ImGuiCol.FrameBgActive] = activeColor.Value;
+		colors[(int)ImGuiCol.FrameBgHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.NavHighlight] = normalColor.Value;
+		colors[(int)ImGuiCol.ResizeGrip] = normalColor.Value;
+		colors[(int)ImGuiCol.ResizeGripActive] = activeColor.Value;
+		colors[(int)ImGuiCol.ResizeGripHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.PlotLines] = normalColor.Value;
+		colors[(int)ImGuiCol.PlotLinesHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.PlotHistogram] = normalColor.Value;
+		colors[(int)ImGuiCol.PlotHistogramHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.ScrollbarGrab] = normalColor.Value;
+		colors[(int)ImGuiCol.ScrollbarGrabActive] = activeColor.Value;
+		colors[(int)ImGuiCol.ScrollbarGrabHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.WindowBg] = backgroundColor.Value;
+		colors[(int)ImGuiCol.ChildBg] = backgroundColor.Value;
+		colors[(int)ImGuiCol.PopupBg] = backgroundColor.Value;
+	}
+
 	public class ScopedThemeColor : ScopedAction
 	{
 		public ScopedThemeColor(ImColor baseColor, bool enabled)
@@ -59,7 +113,7 @@ public static class Theme
 			var hoveredColor = GetHoveredColor(stateColor);
 			var activeColor = GetActiveColor(stateColor);
 			var backgroundColor = GetBackgroundColor(stateColor);
-			var textColor = normalColor.CalculateOptimalTextColorForContrast();
+			var textColor = normalColor.CalculateOptimalContrastingColor();
 
 			int numStyles = 0;
 			PushStyleAndCount(ImGuiCol.Text, textColor, ref numStyles);
@@ -96,6 +150,8 @@ public static class Theme
 			PushStyleAndCount(ImGuiCol.ScrollbarGrabActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ScrollbarGrabHovered, hoveredColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.WindowBg, backgroundColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.ChildBg, backgroundColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.PopupBg, backgroundColor, ref numStyles);
 
 			OnClose = () => ImGui.PopStyleColor(numStyles);
 		}
