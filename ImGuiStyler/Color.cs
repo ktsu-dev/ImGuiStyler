@@ -9,7 +9,7 @@ using ktsu.io.ScopedAction;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class Color
 {
-	public const float OptimalTextContrastRatio = 6f;
+	public const float OptimalTextContrastRatio = 4.5f;
 
 	public static ImColor FromHex(string hex)
 	{

@@ -16,6 +16,7 @@ public static class Theme
 	private static float BackgroundLuminanceMult { get; set; } = .13f;
 	private static float BackgroundSaturationMult { get; set; } = .05f;
 	private static float DisabledSaturationMult { get; set; } = .1f;
+	private static float BorderLuminanceMult { get; set; } = .7f;
 
 	public static ImColor GetStateColor(ImColor baseColor, bool enabled) => enabled ? baseColor : baseColor.MultiplySaturation(DisabledSaturationMult);
 	public static ImColor GetNormalColor(ImColor stateColor) => stateColor.MultiplyLuminance(NormalLuminanceMult).MultiplySaturation(NormalSaturationMult);
@@ -62,8 +63,12 @@ public static class Theme
 		var activeColor = GetActiveColor(baseColor);
 		var backgroundColor = GetBackgroundColor(baseColor);
 		var dragColor = GetDragColor(baseColor);
-		var textColor = normalColor.CalculateOptimalContrastingColor();
-		var borderColor = backgroundColor.CalculateOptimalContrastingColor();
+		var controlTextColor = normalColor.CalculateOptimalContrastingColor();
+		var nakedTextColor = backgroundColor.CalculateOptimalContrastingColor();
+		float controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
+		float nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
+		var textColor = controlTextConrast > nakedTextConrast ? controlTextColor : nakedTextColor;
+		var borderColor = nakedTextColor.MultiplyLuminance(BorderLuminanceMult);
 
 		var colors = ImGui.GetStyle().Colors;
 		colors[(int)ImGuiCol.Text] = textColor.Value;
@@ -113,7 +118,13 @@ public static class Theme
 			var hoveredColor = GetHoveredColor(stateColor);
 			var activeColor = GetActiveColor(stateColor);
 			var backgroundColor = GetBackgroundColor(stateColor);
-			var textColor = normalColor.CalculateOptimalContrastingColor();
+			var dragColor = GetDragColor(stateColor);
+			var controlTextColor = normalColor.CalculateOptimalContrastingColor();
+			var nakedTextColor = backgroundColor.CalculateOptimalContrastingColor();
+			float controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
+			float nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
+			var textColor = controlTextConrast > nakedTextConrast ? controlTextColor : nakedTextColor;
+			var borderColor = nakedTextColor.MultiplyLuminance(BorderLuminanceMult);
 
 			int numStyles = 0;
 			PushStyleAndCount(ImGuiCol.Text, textColor, ref numStyles);
@@ -134,7 +145,7 @@ public static class Theme
 			PushStyleAndCount(ImGuiCol.TitleBg, normalColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.TitleBgActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.TitleBgCollapsed, normalColor, ref numStyles);
-			PushStyleAndCount(ImGuiCol.Border, textColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.Border, borderColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.FrameBg, normalColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.FrameBgActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.FrameBgHovered, hoveredColor, ref numStyles);

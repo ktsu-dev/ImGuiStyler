@@ -25,11 +25,4 @@ public static class Text
 			public ScopedTextColor(ImColor color) : base(ImGuiCol.Text, color) { }
 		}
 	}
-
-	public static void Themed(string text)
-	{
-		var backgroundColor = ImGuiStyler.Color.FromVector(ImGui.GetStyle().Colors[(int)ImGuiCol.WindowBg]);
-		var textColor = backgroundColor.CalculateOptimalContrastingColor();
-		ImGui.TextColored(textColor.Value, text);
-	}
 }

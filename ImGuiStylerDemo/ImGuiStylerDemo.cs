@@ -18,7 +18,7 @@ internal class ImGuiStylerDemo
 
 	private void OnTick(float dt)
 	{
-		Text.Themed("Hello, ImGuiStyler!");
+		ImGui.TextUnformatted("Hello, ImGuiStyler!");
 		ImGui.Button("Button");
 		bool valueBool = true;
 		ImGui.Checkbox("Checkbox", ref valueBool);
