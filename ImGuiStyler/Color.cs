@@ -9,7 +9,7 @@ using ktsu.io.ScopedAction;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class Color
 {
-	public const float OptimalTextContrastRatio = 4.5f;
+	public const float OptimalTextContrastRatio = 6f;
 
 	public static ImColor FromHex(string hex)
 	{
@@ -318,26 +318,31 @@ public static class Color
 		return new Vector4(h, s, l, a);
 	}
 
-	public static float GetContrastRatioWith(this ImColor color, ImColor other)
+	public static float GetRelativeLuminance(this ImColor color) =>
+		(color.Value.X * 0.2126f) + (color.Value.Y * 0.7152f) + (color.Value.Z * 0.0722f);
+
+	public static float GetContrastRatioOver(this ImColor color, ImColor background)
 	{
-		float l1 = color.ToHSLA().Z;
-		float l2 = other.ToHSLA().Z;
-		return (Math.Max(l1, l2) + 0.05f) / (Math.Min(l1, l2) + 0.05f);
+		float relativeLuminance = color.GetRelativeLuminance();
+		float backgroundRelativeLuminance = background.GetRelativeLuminance();
+		return (backgroundRelativeLuminance + 0.05f) / (relativeLuminance + 0.05f);
 	}
 
 	public static ImColor CalculateOptimalContrastingColor(this ImColor color)
 	{
 		float bestLuminance = 0;
-		float bestContrast = 0;
-		int steps = 10;
+		float bestDistance = float.MaxValue;
+		int steps = 256;
 		for (int i = 0; i < steps; i++)
 		{
-			float l = i / (steps - 1);
-			float contrast = color.WithLuminance(1).GetContrastRatioWith(color);
+			float l = i / (steps - 1f);
+			var candidateColor = color.WithLuminance(l);
+			float contrast = 1f / candidateColor.GetContrastRatioOver(color);
 			// compare the distance to the target luminance to determine the best contrast
-			if (contrast > bestContrast)
+			float distance = Math.Abs(OptimalTextContrastRatio - contrast);
+			if (distance < bestDistance)
 			{
-				bestContrast = contrast;
+				bestDistance = distance;
 				bestLuminance = l;
 			}
 		}
