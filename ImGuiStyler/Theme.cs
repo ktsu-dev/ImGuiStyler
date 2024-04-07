@@ -101,9 +101,9 @@ public static class Theme
 		colors[(int)ImGuiCol.PlotLinesHovered] = hoveredColor.Value;
 		colors[(int)ImGuiCol.PlotHistogram] = normalColor.Value;
 		colors[(int)ImGuiCol.PlotHistogramHovered] = hoveredColor.Value;
-		colors[(int)ImGuiCol.ScrollbarGrab] = normalColor.Value;
-		colors[(int)ImGuiCol.ScrollbarGrabActive] = activeColor.Value;
-		colors[(int)ImGuiCol.ScrollbarGrabHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.ScrollbarGrab] = normalColor.WithSaturation(0).Value;
+		colors[(int)ImGuiCol.ScrollbarGrabActive] = activeColor.WithSaturation(0).Value;
+		colors[(int)ImGuiCol.ScrollbarGrabHovered] = hoveredColor.WithSaturation(0).Value;
 		colors[(int)ImGuiCol.WindowBg] = backgroundColor.Value;
 		colors[(int)ImGuiCol.ChildBg] = backgroundColor.Value;
 		colors[(int)ImGuiCol.PopupBg] = backgroundColor.Value;
