@@ -93,7 +93,7 @@ public static class Theme
 		colors[(int)ImGuiCol.FrameBg] = normalColor.Value;
 		colors[(int)ImGuiCol.FrameBgActive] = activeColor.Value;
 		colors[(int)ImGuiCol.FrameBgHovered] = hoveredColor.Value;
-		colors[(int)ImGuiCol.NavHighlight] = normalColor.Value;
+		colors[(int)ImGuiCol.NavHighlight] = activeColor.Value;
 		colors[(int)ImGuiCol.ResizeGrip] = normalColor.Value;
 		colors[(int)ImGuiCol.ResizeGripActive] = activeColor.Value;
 		colors[(int)ImGuiCol.ResizeGripHovered] = hoveredColor.Value;
