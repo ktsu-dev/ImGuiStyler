@@ -8,6 +8,8 @@ public static class Theme
 {
 	private static float NormalLuminanceMult { get; set; } = 0.4f;
 	private static float NormalSaturationMult { get; set; } = 0.5f;
+	private static float HeaderLuminanceMult { get; set; } = 0.5f;
+	private static float HeaderSaturationMult { get; set; } = 0.6f;
 	private static float ActiveLuminanceMult { get; set; } = .6f;
 	private static float ActiveSaturationMult { get; set; } = .7f;
 	private static float HoverLuminanceMult { get; set; } = .7f;
@@ -20,6 +22,7 @@ public static class Theme
 
 	public static ImColor GetStateColor(ImColor baseColor, bool enabled) => enabled ? baseColor : baseColor.MultiplySaturation(DisabledSaturationMult);
 	public static ImColor GetNormalColor(ImColor stateColor) => stateColor.MultiplyLuminance(NormalLuminanceMult).MultiplySaturation(NormalSaturationMult);
+	public static ImColor GetHeaderColor(ImColor stateColor) => stateColor.MultiplyLuminance(HeaderLuminanceMult).MultiplySaturation(HeaderSaturationMult);
 	public static ImColor GetActiveColor(ImColor stateColor) => stateColor.MultiplyLuminance(ActiveLuminanceMult).MultiplySaturation(ActiveSaturationMult);
 	public static ImColor GetHoveredColor(ImColor stateColor) => stateColor.MultiplyLuminance(HoverLuminanceMult).MultiplySaturation(HoverSaturationMult);
 	public static ImColor GetDragColor(ImColor stateColor) => stateColor.MultiplyLuminance(DragLuminanceMult);
@@ -59,6 +62,7 @@ public static class Theme
 	public static void Apply(ImColor baseColor)
 	{
 		var normalColor = GetNormalColor(baseColor);
+		var headerColor = GetHeaderColor(baseColor);
 		var hoveredColor = GetHoveredColor(baseColor);
 		var activeColor = GetActiveColor(baseColor);
 		var backgroundColor = GetBackgroundColor(baseColor);
@@ -78,7 +82,7 @@ public static class Theme
 		colors[(int)ImGuiCol.ButtonActive] = activeColor.Value;
 		colors[(int)ImGuiCol.ButtonHovered] = hoveredColor.Value;
 		colors[(int)ImGuiCol.CheckMark] = textColor.Value;
-		colors[(int)ImGuiCol.Header] = normalColor.Value;
+		colors[(int)ImGuiCol.Header] = headerColor.Value;
 		colors[(int)ImGuiCol.HeaderActive] = activeColor.Value;
 		colors[(int)ImGuiCol.HeaderHovered] = hoveredColor.Value;
 		colors[(int)ImGuiCol.SliderGrab] = dragColor.Value;
@@ -115,6 +119,7 @@ public static class Theme
 		{
 			var stateColor = GetStateColor(baseColor, enabled);
 			var normalColor = GetNormalColor(stateColor);
+			var headerColor = GetHeaderColor(stateColor);
 			var hoveredColor = GetHoveredColor(stateColor);
 			var activeColor = GetActiveColor(stateColor);
 			var backgroundColor = GetBackgroundColor(stateColor);
@@ -134,7 +139,7 @@ public static class Theme
 			PushStyleAndCount(ImGuiCol.ButtonActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ButtonHovered, hoveredColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.CheckMark, textColor, ref numStyles);
-			PushStyleAndCount(ImGuiCol.Header, normalColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.Header, headerColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.HeaderActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.HeaderHovered, hoveredColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.SliderGrab, stateColor, ref numStyles);
