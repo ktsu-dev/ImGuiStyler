@@ -20,9 +20,8 @@ public static class Text
 		public static ScopedTextColor Warning() => new(Definitions.Warning);
 		public static ScopedTextColor Info() => new(Definitions.Info);
 		public static ScopedTextColor Success() => new(Definitions.Success);
-		public class ScopedTextColor : ImGuiStyler.Color.ScopedColor
+		public class ScopedTextColor(ImColor color) : ImGuiStyler.Color.ScopedColor(ImGuiCol.Text, color)
 		{
-			public ScopedTextColor(ImColor color) : base(ImGuiCol.Text, color) { }
 		}
 	}
 }

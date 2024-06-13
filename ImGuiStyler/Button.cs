@@ -10,9 +10,8 @@ public static class Button
 	{
 		public static ScopedButtonAlignment Left() => new(new(0f, 0.5f));
 		public static ScopedButtonAlignment Center() => new(new(0.5f, 0.5f));
-		public class ScopedButtonAlignment : ScopedStyleVar
+		public class ScopedButtonAlignment(Vector2 vector) : ScopedStyleVar(ImGuiStyleVar.ButtonTextAlign, vector)
 		{
-			public ScopedButtonAlignment(Vector2 vector) : base(ImGuiStyleVar.ButtonTextAlign, vector) { }
 		}
 	}
 }
