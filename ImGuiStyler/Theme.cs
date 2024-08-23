@@ -8,6 +8,11 @@ public static class Theme
 {
 	private static float NormalLuminanceMult { get; set; } = 0.4f;
 	private static float NormalSaturationMult { get; set; } = 0.5f;
+	private static float AccentLuminanceMult { get; set; } = 0.7f;
+	private static float AccentSaturationMult { get; set; } = 0.8f;
+	private static float AccentHoveredLuminanceMult { get; set; } = 1.0f;
+	private static float AccentHoveredSaturationMult { get; set; } = 0.9f;
+	private static float AccentHueOffset { get; set; } = 0.5f;
 	private static float HeaderLuminanceMult { get; set; } = 0.5f;
 	private static float HeaderSaturationMult { get; set; } = 0.6f;
 	private static float ActiveLuminanceMult { get; set; } = .6f;
@@ -22,6 +27,8 @@ public static class Theme
 
 	public static ImColor GetStateColor(ImColor baseColor, bool enabled) => enabled ? baseColor : baseColor.MultiplySaturation(DisabledSaturationMult);
 	public static ImColor GetNormalColor(ImColor stateColor) => stateColor.MultiplyLuminance(NormalLuminanceMult).MultiplySaturation(NormalSaturationMult);
+	public static ImColor GetAccentColor(ImColor stateColor) => stateColor.MultiplyLuminance(AccentLuminanceMult).MultiplySaturation(AccentSaturationMult).OffsetHue(AccentHueOffset).WithAlpha(1);
+	public static ImColor GetAccentHoveredColor(ImColor stateColor) => stateColor.MultiplyLuminance(AccentHoveredLuminanceMult).MultiplySaturation(AccentHoveredSaturationMult).OffsetHue(AccentHueOffset).WithAlpha(1);
 	public static ImColor GetHeaderColor(ImColor stateColor) => stateColor.MultiplyLuminance(HeaderLuminanceMult).MultiplySaturation(HeaderSaturationMult);
 	public static ImColor GetActiveColor(ImColor stateColor) => stateColor.MultiplyLuminance(ActiveLuminanceMult).MultiplySaturation(ActiveSaturationMult);
 	public static ImColor GetHoveredColor(ImColor stateColor) => stateColor.MultiplyLuminance(HoverLuminanceMult).MultiplySaturation(HoverSaturationMult);
@@ -62,6 +69,8 @@ public static class Theme
 	public static void Apply(ImColor baseColor)
 	{
 		var normalColor = GetNormalColor(baseColor);
+		var accentColor = GetAccentColor(baseColor);
+		var accentHoveredColor = GetAccentHoveredColor(baseColor);
 		var headerColor = GetHeaderColor(baseColor);
 		var hoveredColor = GetHoveredColor(baseColor);
 		var activeColor = GetActiveColor(baseColor);
@@ -101,10 +110,10 @@ public static class Theme
 		colors[(int)ImGuiCol.ResizeGrip] = normalColor.Value;
 		colors[(int)ImGuiCol.ResizeGripActive] = activeColor.Value;
 		colors[(int)ImGuiCol.ResizeGripHovered] = hoveredColor.Value;
-		colors[(int)ImGuiCol.PlotLines] = normalColor.Value;
-		colors[(int)ImGuiCol.PlotLinesHovered] = hoveredColor.Value;
-		colors[(int)ImGuiCol.PlotHistogram] = normalColor.Value;
-		colors[(int)ImGuiCol.PlotHistogramHovered] = hoveredColor.Value;
+		colors[(int)ImGuiCol.PlotLines] = accentColor.Value;
+		colors[(int)ImGuiCol.PlotLinesHovered] = accentHoveredColor.Value;
+		colors[(int)ImGuiCol.PlotHistogram] = accentColor.Value;
+		colors[(int)ImGuiCol.PlotHistogramHovered] = accentHoveredColor.Value;
 		colors[(int)ImGuiCol.ScrollbarGrab] = normalColor.WithSaturation(0).Value;
 		colors[(int)ImGuiCol.ScrollbarGrabActive] = activeColor.WithSaturation(0).Value;
 		colors[(int)ImGuiCol.ScrollbarGrabHovered] = hoveredColor.WithSaturation(0).Value;
