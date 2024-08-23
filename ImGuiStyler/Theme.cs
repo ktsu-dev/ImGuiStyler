@@ -128,6 +128,8 @@ public static class Theme
 		{
 			var stateColor = GetStateColor(baseColor, enabled);
 			var normalColor = GetNormalColor(stateColor);
+			var accentColor = GetAccentColor(baseColor);
+			var accentHoveredColor = GetAccentHoveredColor(baseColor);
 			var headerColor = GetHeaderColor(stateColor);
 			var hoveredColor = GetHoveredColor(stateColor);
 			var activeColor = GetActiveColor(stateColor);
@@ -167,10 +169,10 @@ public static class Theme
 			PushStyleAndCount(ImGuiCol.ResizeGrip, normalColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ResizeGripActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ResizeGripHovered, hoveredColor, ref numStyles);
-			PushStyleAndCount(ImGuiCol.PlotLines, normalColor, ref numStyles);
-			PushStyleAndCount(ImGuiCol.PlotLinesHovered, hoveredColor, ref numStyles);
-			PushStyleAndCount(ImGuiCol.PlotHistogram, normalColor, ref numStyles);
-			PushStyleAndCount(ImGuiCol.PlotHistogramHovered, hoveredColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.PlotLines, accentColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.PlotLinesHovered, accentHoveredColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.PlotHistogram, accentColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.PlotHistogramHovered, accentHoveredColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ScrollbarGrab, normalColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ScrollbarGrabActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ScrollbarGrabHovered, hoveredColor, ref numStyles);
