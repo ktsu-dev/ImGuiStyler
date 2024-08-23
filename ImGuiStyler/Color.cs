@@ -240,6 +240,13 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	public static ImColor OffsetHue(this ImColor color, float amount)
+	{
+		var hsla = color.ToHSLA();
+		hsla.X = (1f + (hsla.X + amount)) % 1f;
+		return FromHSLA(hsla);
+	}
+
 	public static ImColor LightenBy(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();

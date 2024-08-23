@@ -28,6 +28,7 @@ internal class ImGuiStylerDemo
 		ImGui.InputText("InputText", ref valueString, 128);
 		float valueFloat = 0.0f;
 		ImGui.SliderFloat("SliderFloat", ref valueFloat, 0.0f, 1.0f);
+		ImGui.ProgressBar(0.95f, new(300, 0));
 		ImGui.Text("Text");
 		ImGui.TextColored(new System.Numerics.Vector4(1.0f, 0.0f, 0.0f, 1.0f), "TextColored");
 		ImGui.TextDisabled("TextDisabled");
