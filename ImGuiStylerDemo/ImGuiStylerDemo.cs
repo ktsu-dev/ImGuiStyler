@@ -36,9 +36,16 @@ internal class ImGuiStylerDemo
 		ImGui.LabelText("LabelText", "value");
 		ImGui.BulletText("BulletText");
 		ImGui.Bullet();
-		Text.Centered("Centered Text");
+		string textToCenter = "Centered Text";
+		float textWidth = ImGui.CalcTextSize(textToCenter).X;
+		Alignment.Center(textWidth);
+		ImGui.TextUnformatted(textToCenter);
+
 		ImGui.BeginChild("Child", new(100, 100), true);
-		Text.Centered("Loooooooooong Centered Text");
+		string textToCenterLong = "Loooooooooong Centered Text";
+		float textWidthLong = ImGui.CalcTextSize(textToCenterLong).X;
+		Alignment.Center(textWidthLong);
+		ImGui.TextUnformatted(textToCenterLong);
 		ImGui.EndChild();
 	}
 
