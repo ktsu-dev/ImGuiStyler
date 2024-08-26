@@ -23,11 +23,4 @@ public static class Text
 		{
 		}
 	}
-
-	public static void Centered(string text)
-	{
-		float textWidth = ImGui.CalcTextSize(text).X;
-		Alignment.Center(textWidth);
-		ImGui.TextUnformatted(text);
-	}
 }
