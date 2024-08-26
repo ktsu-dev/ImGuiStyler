@@ -24,12 +24,14 @@ public static class Text
 		}
 	}
 
-	public static void Centered(string text)
+	public static void Centered(string text) =>
+		CenteredWithin(text, ImGui.GetContentRegionAvail().X);
+
+	public static void CenteredWithin(string text, float width)
 	{
-		float availableWidth = ImGui.GetContentRegionAvail().X;
-		float textWidth = Math.Min(ImGui.CalcTextSize(text).X, availableWidth);
+		float textWidth = Math.Min(ImGui.CalcTextSize(text).X, width);
 		float cursorPosX = ImGui.GetCursorPosX();
-		ImGui.SetCursorPosX(cursorPosX + ((availableWidth - textWidth) / 2));
+		ImGui.SetCursorPosX(cursorPosX + ((width - textWidth) / 2));
 		ImGui.TextUnformatted(text);
 	}
 }
