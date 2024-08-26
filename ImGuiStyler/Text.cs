@@ -1,5 +1,4 @@
 namespace ktsu.io.ImGuiStyler;
-
 using ImGuiNET;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -23,5 +22,14 @@ public static class Text
 		public class ScopedTextColor(ImColor color) : ImGuiStyler.Color.ScopedColor(ImGuiCol.Text, color)
 		{
 		}
+	}
+
+	public static void Centered(string text)
+	{
+		float availableWidth = ImGui.GetContentRegionAvail().X;
+		float textWidth = Math.Min(ImGui.CalcTextSize(text).X, availableWidth);
+		float cursorPosX = ImGui.GetCursorPosX();
+		ImGui.SetCursorPosX(cursorPosX + ((availableWidth - textWidth) / 2));
+		ImGui.TextUnformatted(text);
 	}
 }

@@ -36,6 +36,10 @@ internal class ImGuiStylerDemo
 		ImGui.LabelText("LabelText", "value");
 		ImGui.BulletText("BulletText");
 		ImGui.Bullet();
+		Text.Centered("Centered Text");
+		ImGui.BeginChild("Child", new(100, 100), true);
+		Text.Centered("Loooooooooong Centered Text");
+		ImGui.EndChild();
 	}
 
 	private void OnMenu()
