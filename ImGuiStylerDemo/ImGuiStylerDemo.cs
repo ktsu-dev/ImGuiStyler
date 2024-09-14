@@ -1,8 +1,8 @@
-namespace ktsu.io.ImGuiWidgetsDemo;
+namespace ktsu.ImGuiWidgetsDemo;
 
 using ImGuiNET;
-using ktsu.io.ImGuiApp;
-using ktsu.io.ImGuiStyler;
+using ktsu.ImGuiApp;
+using ktsu.ImGuiStyler;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
