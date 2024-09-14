@@ -1,10 +1,10 @@
-namespace ktsu.io.ImGuiStyler;
+namespace ktsu.ImGuiStyler;
 
 using System.Globalization;
 using System.Numerics;
 using ImGuiNET;
-using ktsu.io.Extensions;
-using ktsu.io.ScopedAction;
+using ktsu.Extensions;
+using ktsu.ScopedAction;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class Color

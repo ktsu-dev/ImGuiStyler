@@ -1,8 +1,8 @@
-namespace ktsu.io.ImGuiStyler;
+namespace ktsu.ImGuiStyler;
 
 using System.Numerics;
 using ImGuiNET;
-using ktsu.io.ScopedAction;
+using ktsu.ScopedAction;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public class ScopedStyleVar : ScopedAction

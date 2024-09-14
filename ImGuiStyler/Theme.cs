@@ -1,7 +1,7 @@
-namespace ktsu.io.ImGuiStyler;
+namespace ktsu.ImGuiStyler;
 
 using ImGuiNET;
-using ktsu.io.ScopedAction;
+using ktsu.ScopedAction;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class Theme

@@ -1,4 +1,4 @@
-namespace ktsu.io.ImGuiStyler;
+namespace ktsu.ImGuiStyler;
 
 using System.Numerics;
 using ImGuiNET;
