@@ -1,10 +1,10 @@
-namespace ktsu.io.ImGuiStyler;
+namespace ktsu.ImGuiStyler;
 
 using System.Globalization;
 using System.Numerics;
 using ImGuiNET;
-using ktsu.io.Extensions;
-using ktsu.io.ScopedAction;
+using ktsu.Extensions;
+using ktsu.ScopedAction;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class Color
@@ -237,6 +237,13 @@ public static class Color
 	{
 		var hsla = color.ToHSLA();
 		hsla.Y = Math.Clamp(hsla.Y * amount, 0, 1);
+		return FromHSLA(hsla);
+	}
+
+	public static ImColor OffsetHue(this ImColor color, float amount)
+	{
+		var hsla = color.ToHSLA();
+		hsla.X = (1f + (hsla.X + amount)) % 1f;
 		return FromHSLA(hsla);
 	}
 

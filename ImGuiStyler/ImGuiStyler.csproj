@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="ImGui.NET" Version="1.91.0.1" />
-    <PackageReference Include="ktsu.io.Extensions" Version="1.0.7" />
-    <PackageReference Include="ktsu.io.ScopedAction" Version="1.0.0-alpha.4" />
+    <PackageReference Include="ktsu.Extensions" Version="1.0.9" />
+    <PackageReference Include="ktsu.ScopedAction" Version="1.0.0-alpha.6" />
   </ItemGroup>
 </Project>

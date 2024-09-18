@@ -1,8 +1,8 @@
-namespace ktsu.io.ImGuiWidgetsDemo;
+namespace ktsu.ImGuiWidgetsDemo;
 
 using ImGuiNET;
-using ktsu.io.ImGuiApp;
-using ktsu.io.ImGuiStyler;
+using ktsu.ImGuiApp;
+using ktsu.ImGuiStyler;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
@@ -28,6 +28,7 @@ internal class ImGuiStylerDemo
 		ImGui.InputText("InputText", ref valueString, 128);
 		float valueFloat = 0.0f;
 		ImGui.SliderFloat("SliderFloat", ref valueFloat, 0.0f, 1.0f);
+		ImGui.ProgressBar(0.95f, new(300, 0));
 		ImGui.Text("Text");
 		ImGui.TextColored(new System.Numerics.Vector4(1.0f, 0.0f, 0.0f, 1.0f), "TextColored");
 		ImGui.TextDisabled("TextDisabled");
@@ -35,6 +36,17 @@ internal class ImGuiStylerDemo
 		ImGui.LabelText("LabelText", "value");
 		ImGui.BulletText("BulletText");
 		ImGui.Bullet();
+		string textToCenter = "Centered Text";
+		float textWidth = ImGui.CalcTextSize(textToCenter).X;
+		Alignment.Center(textWidth);
+		ImGui.TextUnformatted(textToCenter);
+
+		ImGui.BeginChild("Child", new(100, 100), true);
+		string textToCenterLong = "Loooooooooong Centered Text";
+		float textWidthLong = ImGui.CalcTextSize(textToCenterLong).X;
+		Alignment.Center(textWidthLong);
+		ImGui.TextUnformatted(textToCenterLong);
+		ImGui.EndChild();
 	}
 
 	private void OnMenu()

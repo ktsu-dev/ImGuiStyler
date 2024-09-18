@@ -5,5 +5,5 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "<Pending>", Scope = "member", Target = "~M:ktsu.io.ImGuiStyler.Color.HueToRGB(System.Single,System.Single,System.Single)~System.Single")]
-[assembly: SuppressMessage("Style", "IDE0045:Convert to conditional expression", Justification = "<Pending>", Scope = "member", Target = "~M:ktsu.io.ImGuiStyler.Color.ToHSLA(ImGuiNET.ImColor)~System.Numerics.Vector4")]
+[assembly: SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "<Pending>", Scope = "member", Target = "~M:ktsu.ImGuiStyler.Color.HueToRGB(System.Single,System.Single,System.Single)~System.Single")]
+[assembly: SuppressMessage("Style", "IDE0045:Convert to conditional expression", Justification = "<Pending>", Scope = "member", Target = "~M:ktsu.ImGuiStyler.Color.ToHSLA(ImGuiNET.ImColor)~System.Numerics.Vector4")]
