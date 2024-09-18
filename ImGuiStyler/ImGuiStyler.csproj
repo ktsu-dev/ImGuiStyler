@@ -2,6 +2,6 @@
   <ItemGroup>
     <PackageReference Include="ImGui.NET" Version="1.89.9.3" />
     <PackageReference Include="ktsu.Extensions" Version="1.0.9" />
-    <PackageReference Include="ktsu.ScopedAction" Version="1.0.0-alpha.5" />
+    <PackageReference Include="ktsu.ScopedAction" Version="1.0.0-alpha.6" />
   </ItemGroup>
 </Project>
