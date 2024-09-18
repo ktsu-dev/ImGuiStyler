@@ -41,7 +41,7 @@ internal class ImGuiStylerDemo
 		Alignment.Center(textWidth);
 		ImGui.TextUnformatted(textToCenter);
 
-		ImGui.BeginChild("Child", new(100, 100), true);
+		ImGui.BeginChild("Child", new(100, 100), ImGuiChildFlags.Border);
 		string textToCenterLong = "Loooooooooong Centered Text";
 		float textWidthLong = ImGui.CalcTextSize(textToCenterLong).X;
 		Alignment.Center(textWidthLong);

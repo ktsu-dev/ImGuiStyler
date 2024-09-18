@@ -97,7 +97,7 @@ public static class Theme
 		colors[(int)ImGuiCol.SliderGrab] = dragColor.Value;
 		colors[(int)ImGuiCol.SliderGrabActive] = baseColor.Value;
 		colors[(int)ImGuiCol.Tab] = normalColor.Value;
-		colors[(int)ImGuiCol.TabActive] = activeColor.Value;
+		colors[(int)ImGuiCol.TabSelected] = activeColor.Value;
 		colors[(int)ImGuiCol.TabHovered] = hoveredColor.Value;
 		colors[(int)ImGuiCol.TitleBg] = normalColor.Value;
 		colors[(int)ImGuiCol.TitleBgActive] = activeColor.Value;
@@ -156,7 +156,7 @@ public static class Theme
 			PushStyleAndCount(ImGuiCol.SliderGrab, stateColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.SliderGrabActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.Tab, normalColor, ref numStyles);
-			PushStyleAndCount(ImGuiCol.TabActive, activeColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.TabSelected, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.TabHovered, hoveredColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.TitleBg, normalColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.TitleBgActive, activeColor, ref numStyles);
