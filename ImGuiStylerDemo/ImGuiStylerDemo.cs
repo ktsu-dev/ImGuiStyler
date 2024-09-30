@@ -1,5 +1,6 @@
 namespace ktsu.ImGuiWidgetsDemo;
 
+using System.Numerics;
 using ImGuiNET;
 using ktsu.ImGuiApp;
 using ktsu.ImGuiStyler;
@@ -47,6 +48,16 @@ internal class ImGuiStylerDemo
 		Alignment.Center(textWidthLong);
 		ImGui.TextUnformatted(textToCenterLong);
 		ImGui.EndChild();
+
+		var cursorPos = ImGui.GetCursorScreenPos();
+		var boxSize = new Vector2(300, 300);
+		ImGui.GetWindowDrawList().AddRectFilled(cursorPos, cursorPos + boxSize, 0xFF666666);
+
+		string centeredLabel = "Centered";
+		var labelSize = ImGui.CalcTextSize(centeredLabel);
+
+		Alignment.CenterWithin(labelSize, boxSize);
+		ImGui.TextUnformatted(centeredLabel);
 	}
 
 	private void OnMenu()
