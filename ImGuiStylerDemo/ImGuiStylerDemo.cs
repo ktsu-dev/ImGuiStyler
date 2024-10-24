@@ -9,6 +9,11 @@ using ktsu.ImGuiStyler;
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
 internal class ImGuiStylerDemo
 {
+	private static bool valueBool = true;
+	private static int valueInt;
+	private static string valueString = "test";
+	private static float valueFloat;
+
 	private static void Main(string[] args)
 	{
 		ImGuiStylerDemo imGuiWidgetsDemo = new();
@@ -21,13 +26,9 @@ internal class ImGuiStylerDemo
 	{
 		ImGui.TextUnformatted("Hello, ImGuiStyler!");
 		ImGui.Button("Button");
-		bool valueBool = true;
 		ImGui.Checkbox("Checkbox", ref valueBool);
-		int valueInt = 0;
 		ImGui.DragInt("DragInt", ref valueInt);
-		string valueString = "test";
 		ImGui.InputText("InputText", ref valueString, 128);
-		float valueFloat = 0.0f;
 		ImGui.SliderFloat("SliderFloat", ref valueFloat, 0.0f, 1.0f);
 		ImGui.ProgressBar(0.95f, new(300, 0));
 		ImGui.Text("Text");
