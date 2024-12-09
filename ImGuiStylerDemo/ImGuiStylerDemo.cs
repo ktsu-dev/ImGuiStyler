@@ -53,11 +53,16 @@ internal class ImGuiStylerDemo
 		var labelSize = ImGui.CalcTextSize(centeredLabel);
 
 		var box1CursorPos = ImGui.GetCursorScreenPos();
-		ImGui.GetWindowDrawList().AddRectFilled(box1CursorPos, box1CursorPos + boxSize, 0xFF666666);
+		ImGui.GetWindowDrawList().AddRectFilled(box1CursorPos, box1CursorPos + boxSize, 0xFF444444);
 		Alignment.CenterWithin(labelSize, boxSize, () => { ImGui.TextUnformatted(centeredLabel); });
 
 		var box2CursorPos = ImGui.GetCursorScreenPos();
-		ImGui.GetWindowDrawList().AddRectFilled(box2CursorPos, box2CursorPos + boxSize, 0xFFAAAAAA);
+		ImGui.GetWindowDrawList().AddRectFilled(box2CursorPos, box2CursorPos + boxSize, 0xFF666666);
+		Alignment.CenterWithin(labelSize, boxSize, () => { ImGui.TextUnformatted(centeredLabel); });
+
+		ImGui.SameLine();
+		var box3CursorPos = ImGui.GetCursorScreenPos();
+		ImGui.GetWindowDrawList().AddRectFilled(box3CursorPos, box3CursorPos + boxSize, 0xFF888888);
 		Alignment.CenterWithin(labelSize, boxSize, () => { ImGui.TextUnformatted(centeredLabel); });
 	}
 

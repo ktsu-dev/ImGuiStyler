@@ -10,13 +10,11 @@ public static class Alignment
 	public static void CenterWithin(Vector2 contentSize, Vector2 containerSize, Action contentDrawDelegate)
 	{
 		var cursorStartPos = ImGui.GetCursorScreenPos();
-		ImGui.Dummy(containerSize);
-		var cursorEndPos = ImGui.GetCursorScreenPos();
-
 		var clippedsize = new Vector2(Math.Min(contentSize.X, containerSize.X), Math.Min(contentSize.Y, containerSize.Y));
 		var ofset = (containerSize - clippedsize) / 2;
 		ImGui.SetCursorScreenPos(cursorStartPos + ofset);
 		contentDrawDelegate();
-		ImGui.SetCursorScreenPos(cursorEndPos);
+		ImGui.SetCursorScreenPos(cursorStartPos);
+		ImGui.Dummy(containerSize);
 	}
 }
