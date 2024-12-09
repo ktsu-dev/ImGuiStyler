@@ -40,12 +40,18 @@ internal class ImGuiStylerDemo
 		ImGui.Bullet();
 		string textToCenter = "Centered Text";
 		var textSize = ImGui.CalcTextSize(textToCenter);
-		Alignment.Center(textSize, () => { ImGui.TextUnformatted(textToCenter); });
+		using (new Alignment.Center(textSize))
+		{
+			ImGui.TextUnformatted(textToCenter);
+		}
 
 		ImGui.BeginChild("Child", new(100, 100), ImGuiChildFlags.Border);
 		string textToCenterLong = "Loooooooooong Centered Text";
 		var longTextSize = ImGui.CalcTextSize(textToCenterLong);
-		Alignment.Center(longTextSize, () => { ImGui.TextUnformatted(textToCenterLong); });
+		using (new Alignment.Center(longTextSize))
+		{
+			ImGui.TextUnformatted(textToCenterLong);
+		}
 		ImGui.EndChild();
 
 		var boxSize = new Vector2(300, 300);
@@ -54,20 +60,29 @@ internal class ImGuiStylerDemo
 
 		var box1CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box1CursorPos, box1CursorPos + boxSize, 0xFF444444);
-		Alignment.CenterWithin(labelSize, boxSize, () => { ImGui.TextUnformatted(centeredLabel); });
-
+		using (new Alignment.CenterWithin(labelSize, boxSize))
+		{
+			ImGui.TextUnformatted(centeredLabel);
+		}
 		var box2CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box2CursorPos, box2CursorPos + boxSize, 0xFF666666);
-		Alignment.CenterWithin(labelSize, boxSize, () => { ImGui.TextUnformatted(centeredLabel); });
-
+		using (new Alignment.CenterWithin(labelSize, boxSize))
+		{
+			ImGui.TextUnformatted(centeredLabel);
+		}
 		ImGui.SameLine();
 		var box3CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box3CursorPos, box3CursorPos + boxSize, 0xFF888888);
-		Alignment.CenterWithin(labelSize, boxSize, () => { ImGui.TextUnformatted(centeredLabel); });
-
+		using (new Alignment.CenterWithin(labelSize, boxSize))
+		{
+			ImGui.TextUnformatted(centeredLabel);
+		}
 		var box4CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box4CursorPos, box4CursorPos + boxSize, 0xFFAAAAAA);
-		Alignment.CenterWithin(labelSize, boxSize, () => { ImGui.TextUnformatted(centeredLabel); });
+		using (new Alignment.CenterWithin(labelSize, boxSize))
+		{
+			ImGui.TextUnformatted(centeredLabel);
+		}
 	}
 
 	private void OnMenu()
