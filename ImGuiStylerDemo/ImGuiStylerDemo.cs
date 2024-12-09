@@ -32,33 +32,33 @@ internal class ImGuiStylerDemo
 		ImGui.SliderFloat("SliderFloat", ref valueFloat, 0.0f, 1.0f);
 		ImGui.ProgressBar(0.95f, new(300, 0));
 		ImGui.Text("Text");
-		ImGui.TextColored(new System.Numerics.Vector4(1.0f, 0.0f, 0.0f, 1.0f), "TextColored");
+		ImGui.TextColored(new Vector4(1.0f, 0.0f, 0.0f, 1.0f), "TextColored");
 		ImGui.TextDisabled("TextDisabled");
 		ImGui.TextWrapped("TextWrapped");
 		ImGui.LabelText("LabelText", "value");
 		ImGui.BulletText("BulletText");
 		ImGui.Bullet();
 		string textToCenter = "Centered Text";
-		float textWidth = ImGui.CalcTextSize(textToCenter).X;
-		Alignment.Center(textWidth);
-		ImGui.TextUnformatted(textToCenter);
+		var textSize = ImGui.CalcTextSize(textToCenter);
+		Alignment.Center(textSize, () => { ImGui.TextUnformatted(textToCenter); });
 
 		ImGui.BeginChild("Child", new(100, 100), ImGuiChildFlags.Border);
 		string textToCenterLong = "Loooooooooong Centered Text";
-		float textWidthLong = ImGui.CalcTextSize(textToCenterLong).X;
-		Alignment.Center(textWidthLong);
-		ImGui.TextUnformatted(textToCenterLong);
+		var longTextSize = ImGui.CalcTextSize(textToCenterLong);
+		Alignment.Center(longTextSize, () => { ImGui.TextUnformatted(textToCenterLong); });
 		ImGui.EndChild();
 
-		var cursorPos = ImGui.GetCursorScreenPos();
 		var boxSize = new Vector2(300, 300);
-		ImGui.GetWindowDrawList().AddRectFilled(cursorPos, cursorPos + boxSize, 0xFF666666);
-
 		string centeredLabel = "Centered";
 		var labelSize = ImGui.CalcTextSize(centeredLabel);
 
-		Alignment.CenterWithin(labelSize, boxSize);
-		ImGui.TextUnformatted(centeredLabel);
+		var box1CursorPos = ImGui.GetCursorScreenPos();
+		ImGui.GetWindowDrawList().AddRectFilled(box1CursorPos, box1CursorPos + boxSize, 0xFF666666);
+		Alignment.CenterWithin(labelSize, boxSize, () => { ImGui.TextUnformatted(centeredLabel); });
+
+		var box2CursorPos = ImGui.GetCursorScreenPos();
+		ImGui.GetWindowDrawList().AddRectFilled(box2CursorPos, box2CursorPos + boxSize, 0xFFAAAAAA);
+		Alignment.CenterWithin(labelSize, boxSize, () => { ImGui.TextUnformatted(centeredLabel); });
 	}
 
 	private void OnMenu()
