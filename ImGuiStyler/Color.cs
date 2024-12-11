@@ -6,11 +6,23 @@ using ImGuiNET;
 using ktsu.Extensions;
 using ktsu.ScopedAction;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+/// <summary>
+/// Provides methods for creating and manipulating colors in ImGui.
+/// </summary>
 public static class Color
 {
+	/// <summary>
+	/// Represents the optimal text contrast ratio.
+	/// </summary>
 	public const float OptimalTextContrastRatio = 4.5f;
 
+	/// <summary>
+	/// Converts a hexadecimal color string to an <see cref="ImColor"/> object.
+	/// </summary>
+	/// <param name="hex">The hexadecimal color string in the format #RRGGBB or #RRGGBBAA.</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
+	/// <exception cref="ArgumentNullException">Thrown when the <paramref name="hex"/> is null.</exception>
+	/// <exception cref="ArgumentException">Thrown when the <paramref name="hex"/> is not in the correct format.</exception>
 	public static ImColor FromHex(string hex)
 	{
 		ArgumentNullException.ThrowIfNull(hex, nameof(hex));
@@ -38,39 +50,107 @@ public static class Color
 		return FromRGBA(r, g, b, a);
 	}
 
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from RGB byte values.
+	/// </summary>
+	/// <param name="r">The red component value (0-255).</param>
+	/// <param name="g">The green component value (0-255).</param>
+	/// <param name="b">The blue component value (0-255).</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromRGB(byte r, byte g, byte b) => new()
 	{
 		Value = new Vector4(r / 255f, g / 255f, b / 255f, 1f)
 	};
 
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from RGBA byte values.
+	/// </summary>
+	/// <param name="r">The red component value (0-255).</param>
+	/// <param name="g">The green component value (0-255).</param>
+	/// <param name="b">The blue component value (0-255).</param>
+	/// <param name="a">The alpha component value (0-255).</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromRGBA(byte r, byte g, byte b, byte a) => new()
 	{
 		Value = new Vector4(r / 255f, g / 255f, b / 255f, a / 255f)
 	};
 
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from RGB float values.
+	/// </summary>
+	/// <param name="r">The red component value (0-1).</param>
+	/// <param name="g">The green component value (0-1).</param>
+	/// <param name="b">The blue component value (0-1).</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromRGB(float r, float g, float b) => new()
 	{
 		Value = new Vector4(r, g, b, 1f)
 	};
 
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from RGBA float values.
+	/// </summary>
+	/// <param name="r">The red component value (0-1).</param>
+	/// <param name="g">The green component value (0-1).</param>
+	/// <param name="b">The blue component value (0-1).</param>
+	/// <param name="a">The alpha component value (0-1).</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromRGBA(float r, float g, float b, float a) => new()
 	{
 		Value = new Vector4(r, g, b, a)
 	};
 
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from a <see cref="Vector3"/>.
+	/// </summary>
+	/// <param name="vector">The vector containing RGB values.</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromVector(Vector3 vector) => new()
 	{
 		Value = new Vector4(vector.X, vector.Y, vector.Z, 1f)
 	};
 
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from a <see cref="Vector4"/>.
+	/// </summary>
+	/// <param name="vector">The vector containing RGBA values.</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromVector(Vector4 vector) => new()
 	{
 		Value = vector
 	};
 
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from HSL values.
+	/// </summary>
+	/// <param name="vector">The vector containing HSL values.</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromHSL(Vector3 vector) => FromHSLA(vector.X, vector.Y, vector.Z, 1);
+
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from HSLA values.
+	/// </summary>
+	/// <param name="vector">The vector containing HSLA values.</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromHSLA(Vector4 vector) => FromHSLA(vector.X, vector.Y, vector.Z, vector.W);
+
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from HSL values.
+	/// </summary>
+	/// <param name="h">The hue component value (0-1).</param>
+	/// <param name="s">The saturation component value (0-1).</param>
+	/// <param name="l">The lightness component value (0-1).</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromHSL(float h, float s, float l) => FromHSLA(h, s, l, 1);
+
+	/// <summary>
+	/// Creates an <see cref="ImColor"/> object from HSLA values.
+	/// </summary>
+	/// <param name="h">The hue component value (0-1).</param>
+	/// <param name="s">The saturation component value (0-1).</param>
+	/// <param name="l">The lightness component value (0-1).</param>
+	/// <param name="a">The alpha component value (0-1).</param>
+	/// <returns>An <see cref="ImColor"/> object representing the color.</returns>
 	public static ImColor FromHSLA(float h, float s, float l, float a)
 	{
 		float r, g, b;
@@ -91,6 +171,14 @@ public static class Color
 		return FromRGBA(r, g, b, a);
 	}
 
+	/// <summary>
+	/// Converts a hue to an RGB component.
+	/// </summary>
+	/// <param name="p">The first parameter for the conversion.</param>
+	/// <param name="q">The second parameter for the conversion.</param>
+	/// <param name="t">The hue value.</param>
+	/// <returns>The RGB component value.</returns>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "<Pending>")]
 	private static float HueToRGB(float p, float q, float t)
 	{
 		if (t < 0)
@@ -116,6 +204,7 @@ public static class Color
 		return p;
 	}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static ImColor Red => FromRGB(255, 0, 0);
 	public static ImColor Green => FromRGB(0, 255, 0);
 	public static ImColor Blue => FromRGB(0, 0, 255);
@@ -180,9 +269,15 @@ public static class Color
 	public static ImColor GreeneryGreen => FromRGB(136, 176, 75);
 	public static ImColor UltraVioletPurple => FromRGB(95, 75, 139);
 	public static ImColor LivingCoral => FromRGB(255, 111, 97);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+
+	/// <summary>
+	/// Provides a palette of predefined colors.
+	/// </summary>
 	public static class Palette
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public static ImColor Red => FromHex("#ff4a49");
 		public static ImColor Green => FromHex("#49ff4a");
 		public static ImColor Blue => FromHex("#49a3ff");
@@ -195,16 +290,32 @@ public static class Color
 		public static ImColor Pink => FromHex("#ff49a3");
 		public static ImColor Lime => FromHex("#a3ff49");
 		public static ImColor Purple => FromHex("#c949ff");
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
+	/// <summary>
+	/// Represents a scoped color change in ImGui.
+	/// </summary>
+	/// <remarks>
+	/// This class ensures that the color change is reverted when the scope ends.
+	/// </remarks>
 	public class ScopedColor : ScopedAction
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ScopedColor"/> class with a specified target and color.
+		/// </summary>
+		/// <param name="target">The ImGui color target to change.</param>
+		/// <param name="color">The color to apply to the target.</param>
 		public ScopedColor(ImGuiCol target, ImColor color) : base(
-			onOpen: () => ImGui.PushStyleColor(target, color.Value),
-			onClose: ImGui.PopStyleColor)
+		onOpen: () => ImGui.PushStyleColor(target, color.Value),
+		onClose: ImGui.PopStyleColor)
 		{
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ScopedColor"/> class with a specified color for the button.
+		/// </summary>
+		/// <param name="color">The color to apply to the button.</param>
 		public ScopedColor(ImColor color)
 		{
 			ImGui.PushStyleColor(ImGuiCol.Button, color.Value);
@@ -212,6 +323,12 @@ public static class Color
 		}
 	}
 
+	/// <summary>
+	/// Desaturates the color by a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The amount to desaturate (0-1).</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
 	public static ImColor DesaturateBy(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -219,6 +336,12 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Saturates the color by a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The amount to saturate (0-1).</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
 	public static ImColor SaturateBy(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -226,6 +349,12 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Sets the saturation of the color to a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The new saturation value (0-1).</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
 	public static ImColor WithSaturation(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -233,6 +362,12 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Multiplies the saturation of the color by a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The factor to multiply the saturation by.</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
 	public static ImColor MultiplySaturation(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -240,6 +375,12 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Offsets the hue of the color by a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The amount to offset the hue by (0-1).</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted hue.</returns>
 	public static ImColor OffsetHue(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -247,6 +388,12 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Lightens the color by a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The amount to lighten the color by (0-1).</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted lightness.</returns>
 	public static ImColor LightenBy(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -254,6 +401,12 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Darkens the color by a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The amount to darken the color by (0-1).</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted lightness.</returns>
 	public static ImColor DarkenBy(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -261,6 +414,12 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Sets the luminance of the color to a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The new luminance value (0-1).</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted luminance.</returns>
 	public static ImColor WithLuminance(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -268,6 +427,12 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Multiplies the luminance of the color by a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The factor to multiply the luminance by.</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted luminance.</returns>
 	public static ImColor MultiplyLuminance(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -275,6 +440,12 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Sets the alpha of the color to a specified amount.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="amount">The new alpha value (0-1).</param>
+	/// <returns>A new <see cref="ImColor"/> object with the adjusted alpha.</returns>
 	public static ImColor WithAlpha(this ImColor color, float amount)
 	{
 		var hsla = color.ToHSLA();
@@ -282,8 +453,19 @@ public static class Color
 		return FromHSLA(hsla);
 	}
 
+	/// <summary>
+	/// Converts the color to grayscale.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <returns>A new <see cref="ImColor"/> object in grayscale.</returns>
 	public static ImColor ToGrayscale(this ImColor color) => color.WithSaturation(0);
 
+	/// <summary>
+	/// Converts the color to HSLA (Hue, Saturation, Lightness, Alpha) format.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <returns>A <see cref="Vector4"/> representing the color in HSLA format.</returns>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0045:Convert to conditional expression", Justification = "<Pending>")]
 	public static Vector4 ToHSLA(this ImColor color)
 	{
 		float r = color.Value.X;
@@ -325,9 +507,20 @@ public static class Color
 		return new Vector4(h, s, l, a);
 	}
 
+	/// <summary>
+	/// Gets the relative luminance of the color.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <returns>The relative luminance of the color.</returns>
 	public static float GetRelativeLuminance(this ImColor color) =>
 		(color.Value.X * 0.2126f) + (color.Value.Y * 0.7152f) + (color.Value.Z * 0.0722f);
 
+	/// <summary>
+	/// Calculates the contrast ratio of the color over a background color.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <param name="background">The background color.</param>
+	/// <returns>The contrast ratio of the color over the background color.</returns>
 	public static float GetContrastRatioOver(this ImColor color, ImColor background)
 	{
 		float relativeLuminance = color.GetRelativeLuminance();
@@ -335,6 +528,11 @@ public static class Color
 		return (backgroundRelativeLuminance + 0.05f) / (relativeLuminance + 0.05f);
 	}
 
+	/// <summary>
+	/// Calculates the optimal contrasting color for the given color.
+	/// </summary>
+	/// <param name="color">The original color.</param>
+	/// <returns>A new <see cref="ImColor"/> object representing the optimal contrasting color.</returns>
 	public static ImColor CalculateOptimalContrastingColor(this ImColor color)
 	{
 		float bestLuminance = 0;

@@ -3,13 +3,32 @@ namespace ktsu.ImGuiStyler;
 using System.Numerics;
 using ImGuiNET;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+/// <summary>
+/// Provides functionality for creating and aligning buttons in ImGui.
+/// </summary>
 public static class Button
 {
+	/// <summary>
+	/// Contains methods for aligning buttons.
+	/// </summary>
 	public static class Alignment
 	{
+		/// <summary>
+		/// Aligns the button text to the left.
+		/// </summary>
+		/// <returns>A scoped button alignment with left alignment.</returns>
 		public static ScopedButtonAlignment Left() => new(new(0f, 0.5f));
+
+		/// <summary>
+		/// Aligns the button text to the center.
+		/// </summary>
+		/// <returns>A scoped button alignment with center alignment.</returns>
 		public static ScopedButtonAlignment Center() => new(new(0.5f, 0.5f));
+
+		/// <summary>
+		/// Represents a scoped button alignment.
+		/// </summary>
+		/// <param name="vector">The alignment vector.</param>
 		public class ScopedButtonAlignment(Vector2 vector) : ScopedStyleVar(ImGuiStyleVar.ButtonTextAlign, vector)
 		{
 		}
