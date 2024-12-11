@@ -4,14 +4,29 @@ using System.Numerics;
 using ImGuiNET;
 using ktsu.ScopedAction;
 
+/// <summary>
+/// Provides methods for aligning content within a container.
+/// </summary>
 public static class Alignment
 {
+	/// <summary>
+	/// Centers the content within the available content region.
+	/// </summary>
+	/// <param name="contentSize">The size of the content to be centered.</param>
 	public class Center(Vector2 contentSize) : CenterWithin(contentSize, new Vector2(ImGui.GetContentRegionAvail().X, contentSize.Y))
 	{
 	}
 
+	/// <summary>
+	/// Centers the content within a specified container size.
+	/// </summary>
 	public class CenterWithin : ScopedAction
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CenterWithin"/> class.
+		/// </summary>
+		/// <param name="contentSize">The size of the content to be centered.</param>
+		/// <param name="containerSize">The size of the container within which the content will be centered.</param>
 		public CenterWithin(Vector2 contentSize, Vector2 containerSize)
 		{
 			// We need to manipulate the cursor a lot to support the layout of this widget and
