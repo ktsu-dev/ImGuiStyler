@@ -3,7 +3,6 @@ namespace ktsu.ImGuiStyler;
 using ImGuiNET;
 using ktsu.ScopedAction;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class Indent
 {
 	public static ScopedIndent ByDefault() => new();

@@ -3,7 +3,6 @@ namespace ktsu.ImGuiStyler;
 using ImGuiNET;
 using ktsu.ScopedAction;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class Theme
 {
 	private static float NormalLuminanceMult { get; set; } = 0.4f;

@@ -6,7 +6,6 @@ using ImGuiNET;
 using ktsu.Extensions;
 using ktsu.ScopedAction;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class Color
 {
 	public const float OptimalTextContrastRatio = 4.5f;

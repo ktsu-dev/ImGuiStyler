@@ -4,7 +4,6 @@ using System.Numerics;
 using ImGuiNET;
 using ktsu.ScopedAction;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public class ScopedStyleVar : ScopedAction
 {
 	public ScopedStyleVar(ImGuiStyleVar target, Vector2 vector)
