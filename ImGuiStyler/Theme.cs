@@ -3,6 +3,9 @@ namespace ktsu.ImGuiStyler;
 using ImGuiNET;
 using ktsu.ScopedAction;
 
+/// <summary>
+/// Provides methods and properties to manage and apply themes for ImGui elements.
+/// </summary>
 public static class Theme
 {
 	private static float NormalLuminanceMult { get; set; } = 0.4f;
@@ -24,19 +27,74 @@ public static class Theme
 	private static float DisabledSaturationMult { get; set; } = .1f;
 	private static float BorderLuminanceMult { get; set; } = .7f;
 
+	/// <summary>
+	/// Gets the state color based on whether it is enabled or disabled.
+	/// </summary>
+	/// <param name="baseColor">The base color.</param>
+	/// <param name="enabled">A boolean indicating if the state is enabled.</param>
+	/// <returns>The state color.</returns>
 	public static ImColor GetStateColor(ImColor baseColor, bool enabled) => enabled ? baseColor : baseColor.MultiplySaturation(DisabledSaturationMult);
+	/// <summary>
+	/// Gets the normal color by adjusting the luminance and saturation of the state color.
+	/// </summary>
+	/// <param name="stateColor">The state color.</param>
+	/// <returns>The normal color.</returns>
 	public static ImColor GetNormalColor(ImColor stateColor) => stateColor.MultiplyLuminance(NormalLuminanceMult).MultiplySaturation(NormalSaturationMult);
+	/// <summary>
+	/// Gets the accent color by adjusting the luminance, saturation, and hue of the state color.
+	/// </summary>
+	/// <param name="stateColor">The state color.</param>
+	/// <returns>The accent color.</returns>
 	public static ImColor GetAccentColor(ImColor stateColor) => stateColor.MultiplyLuminance(AccentLuminanceMult).MultiplySaturation(AccentSaturationMult).OffsetHue(AccentHueOffset).WithAlpha(1);
+	/// <summary>
+	/// Gets the accent hovered color by adjusting the luminance, saturation, and hue of the state color.
+	/// </summary>
+	/// <param name="stateColor">The state color.</param>
+	/// <returns>The accent hovered color.</returns>
 	public static ImColor GetAccentHoveredColor(ImColor stateColor) => stateColor.MultiplyLuminance(AccentHoveredLuminanceMult).MultiplySaturation(AccentHoveredSaturationMult).OffsetHue(AccentHueOffset).WithAlpha(1);
+	/// <summary>
+	/// Gets the header color by adjusting the luminance and saturation of the state color.
+	/// </summary>
+	/// <param name="stateColor">The state color.</param>
+	/// <returns>The header color.</returns>
 	public static ImColor GetHeaderColor(ImColor stateColor) => stateColor.MultiplyLuminance(HeaderLuminanceMult).MultiplySaturation(HeaderSaturationMult);
+	/// <summary>
+	/// Gets the active color by adjusting the luminance and saturation of the state color.
+	/// </summary>
+	/// <param name="stateColor">The state color.</param>
+	/// <returns>The active color.</returns>
 	public static ImColor GetActiveColor(ImColor stateColor) => stateColor.MultiplyLuminance(ActiveLuminanceMult).MultiplySaturation(ActiveSaturationMult);
+	/// <summary>
+	/// Gets the hovered color by adjusting the luminance and saturation of the state color.
+	/// </summary>
+	/// <param name="stateColor">The state color.</param>
+	/// <returns>The hovered color.</returns>
 	public static ImColor GetHoveredColor(ImColor stateColor) => stateColor.MultiplyLuminance(HoverLuminanceMult).MultiplySaturation(HoverSaturationMult);
+	/// <summary>
+	/// Gets the drag color by adjusting the luminance of the state color.
+	/// </summary>
+	/// <param name="stateColor">The state color.</param>
+	/// <returns>The drag color.</returns>
 	public static ImColor GetDragColor(ImColor stateColor) => stateColor.MultiplyLuminance(DragLuminanceMult);
+	/// <summary>
+	/// Gets the background color by adjusting the luminance and saturation of the state color.
+	/// </summary>
+	/// <param name="stateColor">The state color.</param>
+	/// <returns>The background color.</returns>
 	public static ImColor GetBackgroundColor(ImColor stateColor) => stateColor.MultiplyLuminance(BackgroundLuminanceMult).MultiplySaturation(BackgroundSaturationMult);
+	/// <summary>
+	/// Gets the text color that contrasts optimally with the background color.
+	/// </summary>
+	/// <param name="backgroundColor">The background color.</param>
+	/// <returns>The text color.</returns>
 	public static ImColor GetTextColor(ImColor backgroundColor) => backgroundColor.CalculateOptimalContrastingColor();
 
+	/// <summary>
+	/// Provides a palette of predefined colors for use in themes.
+	/// </summary>
 	public static class Palette
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public static ImColor Red { get; set; } = ImGuiStyler.Color.FromHex("#ff4a49");
 		public static ImColor Green { get; set; } = ImGuiStyler.Color.FromHex("#49ff4a");
 		public static ImColor Blue { get; set; } = ImGuiStyler.Color.FromHex("#49a3ff");
@@ -63,8 +121,13 @@ public static class Theme
 		public static ImColor Warning { get; set; } = Yellow;
 		public static ImColor Info { get; set; } = Cyan;
 		public static ImColor Success { get; set; } = Green;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
+	/// <summary>
+	/// Applies the theme colors to the ImGui style.
+	/// </summary>
+	/// <param name="baseColor">The base color to apply to the theme.</param>
 	public static void Apply(ImColor baseColor)
 	{
 		var normalColor = GetNormalColor(baseColor);
@@ -121,8 +184,21 @@ public static class Theme
 		colors[(int)ImGuiCol.PopupBg] = backgroundColor.Value;
 	}
 
+	/// <summary>
+	/// Represents a scoped action that applies a theme color to ImGui elements.
+	/// </summary>
+	/// <remarks>
+	/// This class is used to temporarily apply a theme color to ImGui elements within a specific scope.
+	/// When the scope ends, the previous style is restored.
+	/// </remarks>
 	public class ScopedThemeColor : ScopedAction
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ScopedThemeColor"/> class.
+		/// Applies a theme color to ImGui elements within a specific scope.
+		/// </summary>
+		/// <param name="baseColor">The base color to apply to the theme.</param>
+		/// <param name="enabled">A boolean indicating if the state is enabled.</param>
 		public ScopedThemeColor(ImColor baseColor, bool enabled)
 		{
 			var stateColor = GetStateColor(baseColor, enabled);
@@ -189,6 +265,16 @@ public static class Theme
 		}
 	}
 
+	/// <summary>
+	/// Creates a new instance of the <see cref="ScopedThemeColor"/> class with the specified color and enabled state.
+	/// </summary>
+	/// <param name="color">The color to apply to the theme.</param>
+	/// <returns>A new instance of the <see cref="ScopedThemeColor"/> class.</returns>
 	public static ScopedThemeColor Color(ImColor color) => new(color, enabled: true);
+	/// <summary>
+	/// Creates a new instance of the <see cref="ScopedThemeColor"/> class with the specified color and disabled state.
+	/// </summary>
+	/// <param name="color">The color to apply to the theme.</param>
+	/// <returns>A new instance of the <see cref="ScopedThemeColor"/> class with the disabled state.</returns>
 	public static ScopedThemeColor ColorDisabled(ImColor color) => new(color, enabled: false);
 }
