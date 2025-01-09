@@ -168,7 +168,7 @@ public static class Theme
 		colors[(int)ImGuiCol.FrameBg] = normalColor.Value;
 		colors[(int)ImGuiCol.FrameBgActive] = activeColor.Value;
 		colors[(int)ImGuiCol.FrameBgHovered] = hoveredColor.Value;
-		colors[(int)ImGuiCol.NavHighlight] = activeColor.Value;
+		colors[(int)ImGuiCol.NavCursor] = activeColor.Value;
 		colors[(int)ImGuiCol.ResizeGrip] = normalColor.Value;
 		colors[(int)ImGuiCol.ResizeGripActive] = activeColor.Value;
 		colors[(int)ImGuiCol.ResizeGripHovered] = hoveredColor.Value;
@@ -240,7 +240,7 @@ public static class Theme
 			PushStyleAndCount(ImGuiCol.FrameBg, normalColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.FrameBgActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.FrameBgHovered, hoveredColor, ref numStyles);
-			PushStyleAndCount(ImGuiCol.NavHighlight, normalColor, ref numStyles);
+			PushStyleAndCount(ImGuiCol.NavCursor, normalColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ResizeGrip, normalColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ResizeGripActive, activeColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.ResizeGripHovered, hoveredColor, ref numStyles);
