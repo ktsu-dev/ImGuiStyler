@@ -55,8 +55,7 @@ public static class Alignment
 			OnClose = () =>
 			{
 				ImGui.SetCursorScreenPos(cursorContainerTopLeft + new Vector2(containerSize.X, 0f));
-				ImGui.NewLine();
-				ImGui.SetCursorScreenPos(cursorAfterDummy);
+				ImGui.Dummy(new Vector2(0, containerSize.Y));
 			};
 		}
 	}
