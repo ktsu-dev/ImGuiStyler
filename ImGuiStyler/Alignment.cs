@@ -34,19 +34,11 @@ public static class Alignment
 			// is called after the Dummy() it means that CursorPosPrevLine is set to an unexpected value
 			// so we "abuse" setting the cursor and calling NewLine to force CursorPosPrevLine to be what we need.
 
-			// - Draw a Dummy to progress the cursor to the end of the container and leave it
-			//   on a new line. We need this position for later
-			// - Move the cursor to the start of where the content will draw
+			// - Move the cursor to the top left of the content
 			// - Move the cursor to the top right of the container
-			// - Call NewLine() from the top right of the container so that the previous line
-			//   position is stored from where the new line started. This allows SameLine() to
-			//   work as it will take the current cursor position and revert it to where it was
-			//   when NewLine() was called
-			// - Move the cursor to where the Dummy progressed it. Any new widgets will be drawn
-			//   on that new line.
+			// - Make a dummy with the height of the container so that the cursor will advance to
+			//   a new line after the container size, while support ImGui.NewLine() to work as expected
 			var cursorContainerTopLeft = ImGui.GetCursorScreenPos();
-			ImGui.Dummy(containerSize);
-			var cursorAfterDummy = ImGui.GetCursorScreenPos();
 			var clippedsize = new Vector2(Math.Min(contentSize.X, containerSize.X), Math.Min(contentSize.Y, containerSize.Y));
 			var offset = (containerSize - clippedsize) / 2;
 			var cursorContentStart = cursorContainerTopLeft + offset;
@@ -55,8 +47,7 @@ public static class Alignment
 			OnClose = () =>
 			{
 				ImGui.SetCursorScreenPos(cursorContainerTopLeft + new Vector2(containerSize.X, 0f));
-				ImGui.NewLine();
-				ImGui.SetCursorScreenPos(cursorAfterDummy);
+				ImGui.Dummy(new Vector2(0, containerSize.Y));
 			};
 		}
 	}
