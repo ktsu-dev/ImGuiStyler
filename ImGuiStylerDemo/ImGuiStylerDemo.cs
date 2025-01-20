@@ -26,7 +26,14 @@ internal class ImGuiStylerDemo
 	{
 		ImGui.TextUnformatted("Hello, ImGuiStyler!");
 		ImGui.Button("Button");
+		ImGui.SameLine();
 		ImGui.Checkbox("Checkbox", ref valueBool);
+		using (new ScopedDisabled(true))
+		{
+			ImGui.Button("Disabled Button");
+			ImGui.SameLine();
+			ImGui.Checkbox("Disabled Checkbox", ref valueBool);
+		}
 		ImGui.DragInt("DragInt", ref valueInt);
 		ImGui.InputText("InputText", ref valueString, 128);
 		ImGui.SliderFloat("SliderFloat", ref valueFloat, 0.0f, 1.0f);
