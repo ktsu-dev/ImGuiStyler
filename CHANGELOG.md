@@ -1,5 +1,12 @@
 ## v1.0.15 (patch)
 
+Changes since v1.0.15-pre.31:
+
+- delete icon to fix lfs ([@matt-edmondson](https://github.com/matt-edmondson))
+- Readd icon ([@matt-edmondson](https://github.com/matt-edmondson))
+
+## v1.0.15 (patch)
+
 Changes since v1.0.14-pre.1:
 
 - Add scripts for automated metadata management and versioning ([@matt-edmondson](https://github.com/matt-edmondson))
