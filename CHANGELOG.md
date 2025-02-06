@@ -1,3 +1,17 @@
+## v1.1.0 (minor)
+
+Changes since v1.0.0:
+
+- [minor] Force minor version update ([@matt-edmondson](https://github.com/matt-edmondson))
+- Add scripts for automated metadata management and versioning ([@matt-edmondson](https://github.com/matt-edmondson))
+- delete icon to fix lfs ([@matt-edmondson](https://github.com/matt-edmondson))
+- Fix for ImGui asserts ([@Damon3000s](https://github.com/Damon3000s))
+- Fix ImGui compile errors ([@Damon3000s](https://github.com/Damon3000s))
+- Readd icon ([@matt-edmondson](https://github.com/matt-edmondson))
+- Renamed metadata files ([@matt-edmondson](https://github.com/matt-edmondson))
+- Replace LICENSE file with LICENSE.md and update copyright information ([@matt-edmondson](https://github.com/matt-edmondson))
+- Update the comments for CenterWithin to match the new logic ([@Damon3000s](https://github.com/Damon3000s))
+
 ## v1.0.15 (patch)
 
 Changes since v1.0.15-pre.33:
