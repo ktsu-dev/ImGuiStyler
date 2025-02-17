@@ -2,7 +2,9 @@ namespace ktsu.ImGuiStyler;
 
 using System.Globalization;
 using System.Numerics;
+
 using ImGuiNET;
+
 using ktsu.Extensions;
 using ktsu.ScopedAction;
 
@@ -178,29 +180,34 @@ public static class Color
 	/// <param name="q">The second parameter for the conversion.</param>
 	/// <param name="t">The hue value.</param>
 	/// <returns>The RGB component value.</returns>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "<Pending>")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "Nah, im good")]
 	private static float HueToRGB(float p, float q, float t)
 	{
 		if (t < 0)
 		{
 			t += 1;
 		}
+
 		if (t > 1)
 		{
 			t -= 1;
 		}
+
 		if (t < 1f / 6f)
 		{
 			return p + ((q - p) * 6f * t);
 		}
+
 		if (t < 1f / 2f)
 		{
 			return q;
 		}
+
 		if (t < 2f / 3f)
 		{
 			return p + ((q - p) * ((2f / 3f) - t) * 6f);
 		}
+
 		return p;
 	}
 
@@ -270,7 +277,6 @@ public static class Color
 	public static ImColor UltraVioletPurple => FromRGB(95, 75, 139);
 	public static ImColor LivingCoral => FromRGB(255, 111, 97);
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
 
 	/// <summary>
 	/// Provides a palette of predefined colors.
@@ -497,6 +503,7 @@ public static class Color
 			{
 				h = ((r - g) / d) + 4;
 			}
+
 			h /= 6;
 			if (h < 0)
 			{

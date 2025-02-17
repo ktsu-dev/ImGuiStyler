@@ -1,7 +1,9 @@
 namespace ktsu.ImGuiWidgetsDemo;
 
 using System.Numerics;
+
 using ImGuiNET;
+
 using ktsu.ImGuiApp;
 using ktsu.ImGuiStyler;
 
@@ -52,6 +54,7 @@ internal class ImGuiStylerDemo
 		{
 			ImGui.TextUnformatted(textToCenterLong);
 		}
+
 		ImGui.EndChild();
 
 		var boxSize = new Vector2(300, 300);
@@ -64,12 +67,14 @@ internal class ImGuiStylerDemo
 		{
 			ImGui.TextUnformatted(centeredLabel);
 		}
+
 		var box2CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box2CursorPos, box2CursorPos + boxSize, 0xFF666666);
 		using (new Alignment.CenterWithin(labelSize, boxSize))
 		{
 			ImGui.TextUnformatted(centeredLabel);
 		}
+
 		ImGui.SameLine();
 		var box3CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box3CursorPos, box3CursorPos + boxSize, 0xFF888888);
@@ -77,6 +82,7 @@ internal class ImGuiStylerDemo
 		{
 			ImGui.TextUnformatted(centeredLabel);
 		}
+
 		var box4CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box4CursorPos, box4CursorPos + boxSize, 0xFFAAAAAA);
 		using (new Alignment.CenterWithin(labelSize, boxSize))

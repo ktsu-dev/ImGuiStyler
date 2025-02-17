@@ -1,6 +1,7 @@
 namespace ktsu.ImGuiStyler;
 
 using ImGuiNET;
+
 using ktsu.ScopedAction;
 
 /// <summary>
