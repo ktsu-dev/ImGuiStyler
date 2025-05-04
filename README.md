@@ -81,4 +81,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 ## Contact
 
 For questions or support, please open an issue or contact the maintainer through GitHub.
-
