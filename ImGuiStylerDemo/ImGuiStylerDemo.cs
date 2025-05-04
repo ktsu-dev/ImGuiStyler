@@ -1,3 +1,7 @@
+// Copyright (c) ktsu.dev
+// All rights reserved.
+// Licensed under the MIT license.
+
 namespace ktsu.ImGuiWidgetsDemo;
 
 using System.Numerics;
@@ -40,7 +44,7 @@ internal class ImGuiStylerDemo
 		ImGui.LabelText("LabelText", "value");
 		ImGui.BulletText("BulletText");
 		ImGui.Bullet();
-		string textToCenter = "Centered Text";
+		var textToCenter = "Centered Text";
 		var textSize = ImGui.CalcTextSize(textToCenter);
 		using (new Alignment.Center(textSize))
 		{
@@ -48,7 +52,7 @@ internal class ImGuiStylerDemo
 		}
 
 		ImGui.BeginChild("Child", new(100, 100), ImGuiChildFlags.Borders);
-		string textToCenterLong = "Loooooooooong Centered Text";
+		var textToCenterLong = "Loooooooooong Centered Text";
 		var longTextSize = ImGui.CalcTextSize(textToCenterLong);
 		using (new Alignment.Center(longTextSize))
 		{
@@ -58,7 +62,7 @@ internal class ImGuiStylerDemo
 		ImGui.EndChild();
 
 		var boxSize = new Vector2(300, 300);
-		string centeredLabel = "Centered";
+		var centeredLabel = "Centered";
 		var labelSize = ImGui.CalcTextSize(centeredLabel);
 
 		var box1CursorPos = ImGui.GetCursorScreenPos();

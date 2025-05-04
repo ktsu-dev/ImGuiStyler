@@ -1,3 +1,7 @@
+// Copyright (c) ktsu.dev
+// All rights reserved.
+// Licensed under the MIT license.
+
 namespace ktsu.ImGuiStyler;
 
 using ImGuiNET;
@@ -141,8 +145,8 @@ public static class Theme
 		var dragColor = GetDragColor(baseColor);
 		var controlTextColor = normalColor.CalculateOptimalContrastingColor();
 		var nakedTextColor = backgroundColor.CalculateOptimalContrastingColor();
-		float controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
-		float nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
+		var controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
+		var nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
 		var textColor = controlTextConrast > nakedTextConrast ? controlTextColor : nakedTextColor;
 		var borderColor = nakedTextColor.MultiplyLuminance(BorderLuminanceMult);
 
@@ -213,12 +217,12 @@ public static class Theme
 			var dragColor = GetDragColor(stateColor);
 			var controlTextColor = normalColor.CalculateOptimalContrastingColor();
 			var nakedTextColor = backgroundColor.CalculateOptimalContrastingColor();
-			float controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
-			float nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
+			var controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
+			var nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
 			var textColor = controlTextConrast > nakedTextConrast ? controlTextColor : nakedTextColor;
 			var borderColor = nakedTextColor.MultiplyLuminance(BorderLuminanceMult);
 
-			int numStyles = 0;
+			var numStyles = 0;
 			PushStyleAndCount(ImGuiCol.Text, textColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.TextSelectedBg, stateColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.TextDisabled, textColor, ref numStyles);

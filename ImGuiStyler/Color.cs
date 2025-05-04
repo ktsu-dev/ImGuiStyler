@@ -1,3 +1,7 @@
+// Copyright (c) ktsu.dev
+// All rights reserved.
+// Licensed under the MIT license.
+
 namespace ktsu.ImGuiStyler;
 
 using System.Globalization;
@@ -44,10 +48,10 @@ public static class Color
 			throw new ArgumentException("Hex color must be in the format #RRGGBB or #RRGGBBAA", nameof(hex));
 		}
 
-		byte r = byte.Parse(hex.AsSpan(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-		byte g = byte.Parse(hex.AsSpan(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-		byte b = byte.Parse(hex.AsSpan(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-		byte a = byte.Parse(hex.AsSpan(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+		var r = byte.Parse(hex.AsSpan(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+		var g = byte.Parse(hex.AsSpan(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+		var b = byte.Parse(hex.AsSpan(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+		var a = byte.Parse(hex.AsSpan(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 
 		return FromRGBA(r, g, b, a);
 	}
@@ -163,8 +167,8 @@ public static class Color
 		}
 		else
 		{
-			float q = l < 0.5f ? l * (1f + s) : l + s - (l * s);
-			float p = (2f * l) - q;
+			var q = l < 0.5f ? l * (1f + s) : l + s - (l * s);
+			var p = (2f * l) - q;
 			r = HueToRGB(p, q, h + (1f / 3f));
 			g = HueToRGB(p, q, h);
 			b = HueToRGB(p, q, h - (1f / 3f));
@@ -474,13 +478,13 @@ public static class Color
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0045:Convert to conditional expression", Justification = "<Pending>")]
 	public static Vector4 ToHSLA(this ImColor color)
 	{
-		float r = color.Value.X;
-		float g = color.Value.Y;
-		float b = color.Value.Z;
-		float a = color.Value.W;
+		var r = color.Value.X;
+		var g = color.Value.Y;
+		var b = color.Value.Z;
+		var a = color.Value.W;
 
-		float max = Math.Max(r, Math.Max(g, b));
-		float min = Math.Min(r, Math.Min(g, b));
+		var max = Math.Max(r, Math.Max(g, b));
+		var min = Math.Min(r, Math.Min(g, b));
 		float h, s, l = (max + min) / 2f;
 
 		if (max == min)
@@ -489,7 +493,7 @@ public static class Color
 		}
 		else
 		{
-			float d = max - min;
+			var d = max - min;
 			s = l > 0.5f ? d / (2f - max - min) : d / (max + min);
 			if (max == r)
 			{
@@ -530,8 +534,8 @@ public static class Color
 	/// <returns>The contrast ratio of the color over the background color.</returns>
 	public static float GetContrastRatioOver(this ImColor color, ImColor background)
 	{
-		float relativeLuminance = color.GetRelativeLuminance();
-		float backgroundRelativeLuminance = background.GetRelativeLuminance();
+		var relativeLuminance = color.GetRelativeLuminance();
+		var backgroundRelativeLuminance = background.GetRelativeLuminance();
 		return (backgroundRelativeLuminance + 0.05f) / (relativeLuminance + 0.05f);
 	}
 
@@ -543,15 +547,15 @@ public static class Color
 	public static ImColor CalculateOptimalContrastingColor(this ImColor color)
 	{
 		float bestLuminance = 0;
-		float bestDistance = float.MaxValue;
-		int steps = 256;
-		for (int i = 0; i < steps; i++)
+		var bestDistance = float.MaxValue;
+		var steps = 256;
+		for (var i = 0; i < steps; i++)
 		{
-			float l = i / (steps - 1f);
+			var l = i / (steps - 1f);
 			var candidateColor = color.WithLuminance(l);
-			float contrast = 1f / candidateColor.GetContrastRatioOver(color);
+			var contrast = 1f / candidateColor.GetContrastRatioOver(color);
 			// compare the distance to the target luminance to determine the best contrast
-			float distance = Math.Abs(OptimalTextContrastRatio - contrast);
+			var distance = Math.Abs(OptimalTextContrastRatio - contrast);
 			if (distance < bestDistance)
 			{
 				bestDistance = distance;
