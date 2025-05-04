@@ -1,3 +1,9 @@
+## v1.3.2 (patch)
+
+Changes since v1.3.1:
+
+- Update project SDKs in ImGuiStyler and ImGuiStylerDemo, and remove trailing whitespace in README.md ([@matt-edmondson](https://github.com/matt-edmondson))
+
 ## v1.3.1 (patch)
 
 Changes since v1.3.0:
