@@ -1,3 +1,49 @@
+## v1.3.3-pre.15 (prerelease)
+
+Incremental prerelease update.
+## v1.3.3-pre.14 (prerelease)
+
+Changes since v1.3.3-pre.13:
+## v1.3.3-pre.13 (prerelease)
+
+Changes since v1.3.3-pre.12:
+## v1.3.3-pre.12 (prerelease)
+
+Changes since v1.3.3-pre.11:
+
+- Update System.Text.Json to 9.0.5 ([@dependabot[bot]](https://github.com/dependabot[bot]))
+## v1.3.3-pre.11 (prerelease)
+
+Changes since v1.3.3-pre.10:
+## v1.3.3-pre.10 (prerelease)
+
+Changes since v1.3.3-pre.9:
+## v1.3.3-pre.9 (prerelease)
+
+Changes since v1.3.3-pre.8:
+## v1.3.3-pre.8 (prerelease)
+
+Changes since v1.3.3-pre.7:
+## v1.3.3-pre.7 (prerelease)
+
+Changes since v1.3.3-pre.6:
+## v1.3.3-pre.6 (prerelease)
+
+Changes since v1.3.3-pre.5:
+## v1.3.3-pre.5 (prerelease)
+
+Changes since v1.3.3-pre.4:
+## v1.3.3-pre.4 (prerelease)
+
+Changes since v1.3.3-pre.3:
+
+- Bump the ktsu group with 2 updates ([@dependabot[bot]](https://github.com/dependabot[bot]))
+## v1.3.3-pre.3 (prerelease)
+
+Changes since v1.3.3-pre.2:
+## v1.3.3-pre.2 (prerelease)
+
+Changes since v1.3.3-pre.1:
 ## v1.3.3-pre.1 (prerelease)
 
 Changes since v1.3.2:
