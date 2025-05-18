@@ -1,6 +1,6 @@
 MIT License
 
-https://github.com/ktsu-dev/ktsu-dev/ImGuiStyler
+https://github.com/ktsu-dev/ImGuiStyler
 
 Copyright (c) 2023-2025 ktsu-dev
 
