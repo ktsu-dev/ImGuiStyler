@@ -1,6 +1,6 @@
-## v1.3.3-pre.16 (prerelease)
+## v1.3.3-pre.17 (prerelease)
 
-Changes since v1.3.3-pre.15:
+Changes since v1.3.3-pre.16:
 
 - Add LICENSE template ([@matt-edmondson](https://github.com/matt-edmondson))
 - Add test project and try to fix colors not being correct ([@matt-edmondson](https://github.com/matt-edmondson))
