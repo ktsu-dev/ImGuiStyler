@@ -6,7 +6,7 @@ namespace ktsu.ImGuiWidgetsDemo;
 
 using System.Numerics;
 
-using ImGuiNET;
+using Hexa.NET.ImGui;
 
 using ktsu.ImGuiApp;
 using ktsu.ImGuiStyler;
@@ -22,8 +22,16 @@ internal class ImGuiStylerDemo
 
 	private static void Main(string[] args)
 	{
-		ImGuiStylerDemo imGuiWidgetsDemo = new();
-		ImGuiApp.Start(nameof(ImGuiStylerDemo), new ImGuiAppWindowState(), imGuiWidgetsDemo.OnStart, imGuiWidgetsDemo.OnTick, imGuiWidgetsDemo.OnMenu, imGuiWidgetsDemo.OnWindowResized);
+		ImGuiStylerDemo demo = new();
+		ImGuiApp.Start(new()
+		{
+			Title = "ImGuiStyler Demo",
+			OnAppMenu = demo.OnMenu,
+			OnMoveOrResize = demo.OnWindowResized,
+			OnRender = demo.OnTick,
+			OnStart = demo.OnStart,
+			SaveIniSettings = false,
+		});
 	}
 
 	private void OnStart() => Theme.Apply(Theme.Palette.Normal);
@@ -36,7 +44,7 @@ internal class ImGuiStylerDemo
 		ImGui.DragInt("DragInt", ref valueInt);
 		ImGui.InputText("InputText", ref valueString, 128);
 		ImGui.SliderFloat("SliderFloat", ref valueFloat, 0.0f, 1.0f);
-		ImGui.ProgressBar(0.95f, new(300, 0));
+		ImGui.ProgressBar(0.95f, new Vector2(300, 0));
 		ImGui.Text("Text");
 		ImGui.TextColored(new Vector4(1.0f, 0.0f, 0.0f, 1.0f), "TextColored");
 		ImGui.TextDisabled("TextDisabled");
@@ -44,16 +52,16 @@ internal class ImGuiStylerDemo
 		ImGui.LabelText("LabelText", "value");
 		ImGui.BulletText("BulletText");
 		ImGui.Bullet();
-		var textToCenter = "Centered Text";
-		var textSize = ImGui.CalcTextSize(textToCenter);
+		string textToCenter = "Centered Text";
+		Vector2 textSize = ImGui.CalcTextSize(textToCenter);
 		using (new Alignment.Center(textSize))
 		{
 			ImGui.TextUnformatted(textToCenter);
 		}
 
 		ImGui.BeginChild("Child", new(100, 100), ImGuiChildFlags.Borders);
-		var textToCenterLong = "Loooooooooong Centered Text";
-		var longTextSize = ImGui.CalcTextSize(textToCenterLong);
+		string textToCenterLong = "Loooooooooong Centered Text";
+		Vector2 longTextSize = ImGui.CalcTextSize(textToCenterLong);
 		using (new Alignment.Center(longTextSize))
 		{
 			ImGui.TextUnformatted(textToCenterLong);
@@ -61,18 +69,18 @@ internal class ImGuiStylerDemo
 
 		ImGui.EndChild();
 
-		var boxSize = new Vector2(300, 300);
-		var centeredLabel = "Centered";
-		var labelSize = ImGui.CalcTextSize(centeredLabel);
+		Vector2 boxSize = new(300, 300);
+		string centeredLabel = "Centered";
+		Vector2 labelSize = ImGui.CalcTextSize(centeredLabel);
 
-		var box1CursorPos = ImGui.GetCursorScreenPos();
+		Vector2 box1CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box1CursorPos, box1CursorPos + boxSize, 0xFF444444);
 		using (new Alignment.CenterWithin(labelSize, boxSize))
 		{
 			ImGui.TextUnformatted(centeredLabel);
 		}
 
-		var box2CursorPos = ImGui.GetCursorScreenPos();
+		Vector2 box2CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box2CursorPos, box2CursorPos + boxSize, 0xFF666666);
 		using (new Alignment.CenterWithin(labelSize, boxSize))
 		{
@@ -80,14 +88,14 @@ internal class ImGuiStylerDemo
 		}
 
 		ImGui.SameLine();
-		var box3CursorPos = ImGui.GetCursorScreenPos();
+		Vector2 box3CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box3CursorPos, box3CursorPos + boxSize, 0xFF888888);
 		using (new Alignment.CenterWithin(labelSize, boxSize))
 		{
 			ImGui.TextUnformatted(centeredLabel);
 		}
 
-		var box4CursorPos = ImGui.GetCursorScreenPos();
+		Vector2 box4CursorPos = ImGui.GetCursorScreenPos();
 		ImGui.GetWindowDrawList().AddRectFilled(box4CursorPos, box4CursorPos + boxSize, 0xFFAAAAAA);
 		using (new Alignment.CenterWithin(labelSize, boxSize))
 		{

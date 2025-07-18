@@ -6,7 +6,7 @@ namespace ktsu.ImGuiStyler;
 
 using System.Numerics;
 
-using ImGuiNET;
+using Hexa.NET.ImGui;
 
 /// <summary>
 /// Provides functionality for creating and aligning buttons in ImGui.

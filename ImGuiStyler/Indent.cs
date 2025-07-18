@@ -4,7 +4,7 @@
 
 namespace ktsu.ImGuiStyler;
 
-using ImGuiNET;
+using Hexa.NET.ImGui;
 
 using ktsu.ScopedAction;
 
@@ -49,7 +49,7 @@ public static class Indent
 		public ScopedIndentBy(float width) : base(ImGuiStyleVar.IndentSpacing, width)
 		{
 			ImGui.Indent(width);
-			var onClose = OnClose;
+			Action? onClose = OnClose;
 			OnClose = () =>
 			{
 				ImGui.Unindent(width);

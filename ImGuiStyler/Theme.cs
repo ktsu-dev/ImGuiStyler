@@ -4,7 +4,7 @@
 
 namespace ktsu.ImGuiStyler;
 
-using ImGuiNET;
+using Hexa.NET.ImGui;
 
 using ktsu.ScopedAction;
 
@@ -135,22 +135,22 @@ public static class Theme
 	/// <param name="baseColor">The base color to apply to the theme.</param>
 	public static void Apply(ImColor baseColor)
 	{
-		var normalColor = GetNormalColor(baseColor);
-		var accentColor = GetAccentColor(baseColor);
-		var accentHoveredColor = GetAccentHoveredColor(baseColor);
-		var headerColor = GetHeaderColor(baseColor);
-		var hoveredColor = GetHoveredColor(baseColor);
-		var activeColor = GetActiveColor(baseColor);
-		var backgroundColor = GetBackgroundColor(baseColor);
-		var dragColor = GetDragColor(baseColor);
-		var controlTextColor = normalColor.CalculateOptimalContrastingColor();
-		var nakedTextColor = backgroundColor.CalculateOptimalContrastingColor();
-		var controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
-		var nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
-		var textColor = controlTextConrast > nakedTextConrast ? controlTextColor : nakedTextColor;
-		var borderColor = nakedTextColor.MultiplyLuminance(BorderLuminanceMult);
+		ImColor normalColor = GetNormalColor(baseColor);
+		ImColor accentColor = GetAccentColor(baseColor);
+		ImColor accentHoveredColor = GetAccentHoveredColor(baseColor);
+		ImColor headerColor = GetHeaderColor(baseColor);
+		ImColor hoveredColor = GetHoveredColor(baseColor);
+		ImColor activeColor = GetActiveColor(baseColor);
+		ImColor backgroundColor = GetBackgroundColor(baseColor);
+		ImColor dragColor = GetDragColor(baseColor);
+		ImColor controlTextColor = normalColor.CalculateOptimalContrastingColor();
+		ImColor nakedTextColor = backgroundColor.CalculateOptimalContrastingColor();
+		float controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
+		float nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
+		ImColor textColor = controlTextConrast > nakedTextConrast ? controlTextColor : nakedTextColor;
+		ImColor borderColor = nakedTextColor.MultiplyLuminance(BorderLuminanceMult);
 
-		var colors = ImGui.GetStyle().Colors;
+		Span<System.Numerics.Vector4> colors = ImGui.GetStyle().Colors;
 		colors[(int)ImGuiCol.Text] = textColor.Value;
 		colors[(int)ImGuiCol.TextSelectedBg] = baseColor.Value;
 		colors[(int)ImGuiCol.TextDisabled] = textColor.Value;
@@ -206,23 +206,23 @@ public static class Theme
 		/// <param name="enabled">A boolean indicating if the state is enabled.</param>
 		public ScopedThemeColor(ImColor baseColor, bool enabled)
 		{
-			var stateColor = GetStateColor(baseColor, enabled);
-			var normalColor = GetNormalColor(stateColor);
-			var accentColor = GetAccentColor(baseColor);
-			var accentHoveredColor = GetAccentHoveredColor(baseColor);
-			var headerColor = GetHeaderColor(stateColor);
-			var hoveredColor = GetHoveredColor(stateColor);
-			var activeColor = GetActiveColor(stateColor);
-			var backgroundColor = GetBackgroundColor(stateColor);
-			var dragColor = GetDragColor(stateColor);
-			var controlTextColor = normalColor.CalculateOptimalContrastingColor();
-			var nakedTextColor = backgroundColor.CalculateOptimalContrastingColor();
-			var controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
-			var nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
-			var textColor = controlTextConrast > nakedTextConrast ? controlTextColor : nakedTextColor;
-			var borderColor = nakedTextColor.MultiplyLuminance(BorderLuminanceMult);
+			ImColor stateColor = GetStateColor(baseColor, enabled);
+			ImColor normalColor = GetNormalColor(stateColor);
+			ImColor accentColor = GetAccentColor(baseColor);
+			ImColor accentHoveredColor = GetAccentHoveredColor(baseColor);
+			ImColor headerColor = GetHeaderColor(stateColor);
+			ImColor hoveredColor = GetHoveredColor(stateColor);
+			ImColor activeColor = GetActiveColor(stateColor);
+			ImColor backgroundColor = GetBackgroundColor(stateColor);
+			ImColor dragColor = GetDragColor(stateColor);
+			ImColor controlTextColor = normalColor.CalculateOptimalContrastingColor();
+			ImColor nakedTextColor = backgroundColor.CalculateOptimalContrastingColor();
+			float controlTextConrast = controlTextColor.GetContrastRatioOver(normalColor);
+			float nakedTextConrast = nakedTextColor.GetContrastRatioOver(backgroundColor);
+			ImColor textColor = controlTextConrast > nakedTextConrast ? controlTextColor : nakedTextColor;
+			ImColor borderColor = nakedTextColor.MultiplyLuminance(BorderLuminanceMult);
 
-			var numStyles = 0;
+			int numStyles = 0;
 			PushStyleAndCount(ImGuiCol.Text, textColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.TextSelectedBg, stateColor, ref numStyles);
 			PushStyleAndCount(ImGuiCol.TextDisabled, textColor, ref numStyles);

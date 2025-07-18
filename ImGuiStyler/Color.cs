@@ -7,7 +7,7 @@ namespace ktsu.ImGuiStyler;
 using System.Globalization;
 using System.Numerics;
 
-using ImGuiNET;
+using Hexa.NET.ImGui;
 
 using ktsu.Extensions;
 using ktsu.ScopedAction;
@@ -48,10 +48,10 @@ public static class Color
 			throw new ArgumentException("Hex color must be in the format #RRGGBB or #RRGGBBAA", nameof(hex));
 		}
 
-		var r = byte.Parse(hex.AsSpan(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-		var g = byte.Parse(hex.AsSpan(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-		var b = byte.Parse(hex.AsSpan(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-		var a = byte.Parse(hex.AsSpan(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+		byte r = byte.Parse(hex.AsSpan(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+		byte g = byte.Parse(hex.AsSpan(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+		byte b = byte.Parse(hex.AsSpan(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+		byte a = byte.Parse(hex.AsSpan(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 
 		return FromRGBA(r, g, b, a);
 	}
@@ -167,8 +167,8 @@ public static class Color
 		}
 		else
 		{
-			var q = l < 0.5f ? l * (1f + s) : l + s - (l * s);
-			var p = (2f * l) - q;
+			float q = l < 0.5f ? l * (1f + s) : l + s - (l * s);
+			float p = (2f * l) - q;
 			r = HueToRGB(p, q, h + (1f / 3f));
 			g = HueToRGB(p, q, h);
 			b = HueToRGB(p, q, h - (1f / 3f));
@@ -341,7 +341,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
 	public static ImColor DesaturateBy(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.Y = Math.Clamp(hsla.Y - amount, 0, 1);
 		return FromHSLA(hsla);
 	}
@@ -354,7 +354,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
 	public static ImColor SaturateBy(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.Y = Math.Clamp(hsla.Y + amount, 0, 1);
 		return FromHSLA(hsla);
 	}
@@ -367,7 +367,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
 	public static ImColor WithSaturation(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.Y = Math.Clamp(amount, 0, 1);
 		return FromHSLA(hsla);
 	}
@@ -380,7 +380,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
 	public static ImColor MultiplySaturation(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.Y = Math.Clamp(hsla.Y * amount, 0, 1);
 		return FromHSLA(hsla);
 	}
@@ -393,7 +393,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted hue.</returns>
 	public static ImColor OffsetHue(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.X = (1f + (hsla.X + amount)) % 1f;
 		return FromHSLA(hsla);
 	}
@@ -406,7 +406,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted lightness.</returns>
 	public static ImColor LightenBy(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.Z = Math.Clamp(hsla.Z + amount, 0, 1);
 		return FromHSLA(hsla);
 	}
@@ -419,7 +419,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted lightness.</returns>
 	public static ImColor DarkenBy(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.Z = Math.Clamp(hsla.Z - amount, 0, 1);
 		return FromHSLA(hsla);
 	}
@@ -432,7 +432,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted luminance.</returns>
 	public static ImColor WithLuminance(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.Z = Math.Clamp(amount, 0, 1);
 		return FromHSLA(hsla);
 	}
@@ -445,7 +445,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted luminance.</returns>
 	public static ImColor MultiplyLuminance(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.Z = Math.Clamp(hsla.Z * amount, 0, 1);
 		return FromHSLA(hsla);
 	}
@@ -458,7 +458,7 @@ public static class Color
 	/// <returns>A new <see cref="ImColor"/> object with the adjusted alpha.</returns>
 	public static ImColor WithAlpha(this ImColor color, float amount)
 	{
-		var hsla = color.ToHSLA();
+		Vector4 hsla = color.ToHSLA();
 		hsla.W = Math.Clamp(amount, 0, 1);
 		return FromHSLA(hsla);
 	}
@@ -478,13 +478,13 @@ public static class Color
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0045:Convert to conditional expression", Justification = "<Pending>")]
 	public static Vector4 ToHSLA(this ImColor color)
 	{
-		var r = color.Value.X;
-		var g = color.Value.Y;
-		var b = color.Value.Z;
-		var a = color.Value.W;
+		float r = color.Value.X;
+		float g = color.Value.Y;
+		float b = color.Value.Z;
+		float a = color.Value.W;
 
-		var max = Math.Max(r, Math.Max(g, b));
-		var min = Math.Min(r, Math.Min(g, b));
+		float max = Math.Max(r, Math.Max(g, b));
+		float min = Math.Min(r, Math.Min(g, b));
 		float h, s, l = (max + min) / 2f;
 
 		if (max == min)
@@ -493,7 +493,7 @@ public static class Color
 		}
 		else
 		{
-			var d = max - min;
+			float d = max - min;
 			s = l > 0.5f ? d / (2f - max - min) : d / (max + min);
 			if (max == r)
 			{
@@ -534,8 +534,8 @@ public static class Color
 	/// <returns>The contrast ratio of the color over the background color.</returns>
 	public static float GetContrastRatioOver(this ImColor color, ImColor background)
 	{
-		var relativeLuminance = color.GetRelativeLuminance();
-		var backgroundRelativeLuminance = background.GetRelativeLuminance();
+		float relativeLuminance = color.GetRelativeLuminance();
+		float backgroundRelativeLuminance = background.GetRelativeLuminance();
 		return (backgroundRelativeLuminance + 0.05f) / (relativeLuminance + 0.05f);
 	}
 
@@ -547,15 +547,15 @@ public static class Color
 	public static ImColor CalculateOptimalContrastingColor(this ImColor color)
 	{
 		float bestLuminance = 0;
-		var bestDistance = float.MaxValue;
-		var steps = 256;
-		for (var i = 0; i < steps; i++)
+		float bestDistance = float.MaxValue;
+		int steps = 256;
+		for (int i = 0; i < steps; i++)
 		{
-			var l = i / (steps - 1f);
-			var candidateColor = color.WithLuminance(l);
-			var contrast = 1f / candidateColor.GetContrastRatioOver(color);
+			float l = i / (steps - 1f);
+			ImColor candidateColor = color.WithLuminance(l);
+			float contrast = 1f / candidateColor.GetContrastRatioOver(color);
 			// compare the distance to the target luminance to determine the best contrast
-			var distance = Math.Abs(OptimalTextContrastRatio - contrast);
+			float distance = Math.Abs(OptimalTextContrastRatio - contrast);
 			if (distance < bestDistance)
 			{
 				bestDistance = distance;

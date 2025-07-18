@@ -3,7 +3,7 @@
 // Licensed under the MIT license.
 
 namespace ktsu.ImGuiStyler;
-using ImGuiNET;
+using Hexa.NET.ImGui;
 
 /// <summary>
 /// Provides functionality for managing text in ImGui.

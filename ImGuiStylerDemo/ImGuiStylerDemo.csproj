@@ -1,8 +1,9 @@
-<Project Sdk="ktsu.Sdk.App/1.8.0">
+﻿<Project Sdk="ktsu.Sdk.ImGuiApp">
 
   <ItemGroup>
-    <PackageReference Include="ktsu.ImGuiApp" Version="1.12.4" />
-    <PackageReference Include="System.Text.Json" Version="9.0.7" />
+    <PackageReference Include="Hexa.NET.ImGui" />
+    <PackageReference Include="ktsu.ImGuiApp" />
+    <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 
   <ItemGroup>

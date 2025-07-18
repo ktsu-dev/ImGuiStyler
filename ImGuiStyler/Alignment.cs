@@ -6,7 +6,7 @@ namespace ktsu.ImGuiStyler;
 
 using System.Numerics;
 
-using ImGuiNET;
+using Hexa.NET.ImGui;
 
 using ktsu.ScopedAction;
 
@@ -44,10 +44,10 @@ public static class Alignment
 			// - Move the cursor to the top right of the container
 			// - Make a dummy with the height of the container so that the cursor will advance to
 			//   a new line after the container size, while support ImGui.NewLine() to work as expected
-			var cursorContainerTopLeft = ImGui.GetCursorScreenPos();
-			var clippedsize = new Vector2(Math.Min(contentSize.X, containerSize.X), Math.Min(contentSize.Y, containerSize.Y));
-			var offset = (containerSize - clippedsize) / 2;
-			var cursorContentStart = cursorContainerTopLeft + offset;
+			Vector2 cursorContainerTopLeft = ImGui.GetCursorScreenPos();
+			Vector2 clippedsize = new(Math.Min(contentSize.X, containerSize.X), Math.Min(contentSize.Y, containerSize.Y));
+			Vector2 offset = (containerSize - clippedsize) / 2;
+			Vector2 cursorContentStart = cursorContainerTopLeft + offset;
 			ImGui.SetCursorScreenPos(cursorContentStart);
 
 			OnClose = () =>
