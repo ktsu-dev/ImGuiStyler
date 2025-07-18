@@ -1,3 +1,6 @@
+## v1.3.3
+
+No significant changes detected since v1.3.3.
 ## v1.3.3 (patch)
 
 Changes since v1.3.2:
@@ -87,9 +90,7 @@ Changes since v1.3.3-pre.2:
 Changes since v1.3.3-pre.1:
 ## v1.3.3-pre.1 (prerelease)
 
-Changes since v1.3.2:
-
-- Sync scripts\PSBuild.psm1 ([@ktsu[bot]](https://github.com/ktsu[bot]))
+Incremental prerelease update.
 ## v1.3.2 (patch)
 
 Changes since v1.3.1:
