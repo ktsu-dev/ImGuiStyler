@@ -10,7 +10,6 @@ using System.Numerics;
 using Hexa.NET.ImGui;
 
 using ktsu.Extensions;
-using ktsu.ScopedAction;
 
 /// <summary>
 /// Provides methods for creating and manipulating colors in ImGui.
@@ -18,9 +17,11 @@ using ktsu.ScopedAction;
 public static class Color
 {
 	/// <summary>
-	/// Represents the optimal text contrast ratio.
+	/// Represents the optimal text contrast ratio for accessibility.
 	/// </summary>
 	public const float OptimalTextContrastRatio = 4.5f;
+
+	#region Color Creation Methods
 
 	/// <summary>
 	/// Converts a hexadecimal color string to an <see cref="ImColor"/> object.
@@ -177,6 +178,10 @@ public static class Color
 		return FromRGBA(r, g, b, a);
 	}
 
+	#endregion
+
+	#region Private Helper Methods
+
 	/// <summary>
 	/// Converts a hue to an RGB component.
 	/// </summary>
@@ -184,7 +189,7 @@ public static class Color
 	/// <param name="q">The second parameter for the conversion.</param>
 	/// <param name="t">The hue value.</param>
 	/// <returns>The RGB component value.</returns>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "Nah, im good")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "Clarity over brevity")]
 	private static float HueToRGB(float p, float q, float t)
 	{
 		if (t < 0)
@@ -215,354 +220,205 @@ public static class Color
 		return p;
 	}
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-	public static ImColor Red => FromRGB(255, 0, 0);
-	public static ImColor Green => FromRGB(0, 255, 0);
-	public static ImColor Blue => FromRGB(0, 0, 255);
-	public static ImColor Yellow => FromRGB(255, 255, 0);
-	public static ImColor Cyan => FromRGB(0, 255, 255);
-	public static ImColor Magenta => FromRGB(255, 0, 255);
-	public static ImColor White => FromRGB(255, 255, 255);
-	public static ImColor Black => FromRGB(0, 0, 0);
-	public static ImColor Gray => FromRGB(128, 128, 128);
-	public static ImColor LightGray => FromRGB(192, 192, 192);
-	public static ImColor DarkGray => FromRGB(64, 64, 64);
-	public static ImColor Transparent => FromRGBA(0, 0, 0, 0);
-	public static ImColor Orange => FromRGB(255, 165, 0);
-	public static ImColor Purple => FromRGB(128, 0, 128);
-	public static ImColor Brown => FromRGB(165, 42, 42);
-	public static ImColor Pink => FromRGB(255, 192, 203);
-	public static ImColor Gold => FromRGB(255, 215, 0);
-	public static ImColor Silver => FromRGB(192, 192, 192);
-	public static ImColor Bronze => FromRGB(205, 127, 50);
-	public static ImColor Teal => FromRGB(0, 128, 128);
-	public static ImColor Olive => FromRGB(128, 128, 0);
-	public static ImColor Maroon => FromRGB(128, 0, 0);
-	public static ImColor Navy => FromRGB(0, 0, 128);
-	public static ImColor Lime => FromRGB(0, 255, 0);
-	public static ImColor Indigo => FromRGB(75, 0, 130);
-	public static ImColor Turquoise => FromRGB(64, 224, 208);
-	public static ImColor Violet => FromRGB(238, 130, 238);
-	public static ImColor Beige => FromRGB(245, 245, 220);
-	public static ImColor Peach => FromRGB(255, 218, 185);
-	public static ImColor Mint => FromRGB(189, 252, 201);
-	public static ImColor Lavender => FromRGB(230, 230, 250);
-	public static ImColor Coral => FromRGB(255, 127, 80);
-	public static ImColor Salmon => FromRGB(250, 128, 114);
-	public static ImColor Khaki => FromRGB(240, 230, 140);
-	public static ImColor Plum => FromRGB(221, 160, 221);
-	public static ImColor GoldMetallic => FromRGB(212, 175, 55);
-	public static ImColor SilverMetallic => FromRGB(168, 169, 173);
-	public static ImColor BronzeMetallic => FromRGB(205, 127, 50);
-	public static ImColor CopperMetallic => FromRGB(184, 115, 51);
-	public static ImColor GunmetalMetallic => FromRGB(42, 52, 57);
-	public static ImColor Amethyst => FromRGB(153, 102, 204);
-	public static ImColor Emerald => FromRGB(80, 200, 120);
-	public static ImColor Sapphire => FromRGB(15, 82, 186);
-	public static ImColor Ruby => FromRGB(224, 17, 95);
-	public static ImColor Diamond => FromRGB(185, 242, 255);
-	public static ImColor Pearl => FromRGB(234, 224, 200);
-	public static ImColor Onyx => FromRGB(53, 56, 57);
-	public static ImColor RubyRed => FromRGB(132, 63, 91);
-	public static ImColor SapphireBlue => FromRGB(0, 103, 165);
-	public static ImColor EmeraldGreen => FromRGB(0, 153, 68);
-	public static ImColor AmethystPurple => FromRGB(153, 102, 204);
-	public static ImColor CitrineYellow => FromRGB(228, 208, 10);
-	public static ImColor TopazOrange => FromRGB(255, 191, 0);
-	public static ImColor AquamarineBlue => FromRGB(0, 191, 255);
-	public static ImColor PeridotGreen => FromRGB(153, 204, 0);
-	public static ImColor RoseQuartzPink => FromRGB(170, 152, 169);
-	public static ImColor SerenityBlue => FromRGB(131, 146, 159);
-	public static ImColor MarsalaRed => FromRGB(150, 75, 75);
-	public static ImColor RadiantOrchidPurple => FromRGB(191, 85, 156);
-	public static ImColor TangerineOrange => FromRGB(242, 133, 0);
-	public static ImColor ClassicBlue => FromRGB(0, 133, 202);
-	public static ImColor GreeneryGreen => FromRGB(136, 176, 75);
-	public static ImColor UltraVioletPurple => FromRGB(95, 75, 139);
-	public static ImColor LivingCoral => FromRGB(255, 111, 97);
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+	#endregion
 
 	/// <summary>
-	/// Provides a palette of predefined colors.
+	/// Comprehensive color palette with organized categories.
 	/// </summary>
 	public static class Palette
 	{
+		/// <summary>
+		/// Basic primary and secondary colors.
+		/// </summary>
+		public static class Basic
+		{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-		public static ImColor Red => FromHex("#ff4a49");
-		public static ImColor Green => FromHex("#49ff4a");
-		public static ImColor Blue => FromHex("#49a3ff");
-
-		public static ImColor Cyan => FromHex("#49feff");
-		public static ImColor Magenta => FromHex("#ff49fe");
-		public static ImColor Yellow => FromHex("#ecff49");
-
-		public static ImColor Orange => FromHex("#ffa549");
-		public static ImColor Pink => FromHex("#ff49a3");
-		public static ImColor Lime => FromHex("#a3ff49");
-		public static ImColor Purple => FromHex("#c949ff");
+			public static ImColor Red => FromHex("#ff4a49");
+			public static ImColor Green => FromHex("#49ff4a");
+			public static ImColor Blue => FromHex("#49a3ff");
+			public static ImColor Yellow => FromHex("#ecff49");
+			public static ImColor Cyan => FromHex("#49feff");
+			public static ImColor Magenta => FromHex("#ff49fe");
+			public static ImColor Orange => FromHex("#ffa549");
+			public static ImColor Pink => FromHex("#ff49a3");
+			public static ImColor Lime => FromHex("#a3ff49");
+			public static ImColor Purple => FromHex("#c949ff");
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-	}
-
-	/// <summary>
-	/// Represents a scoped color change in ImGui.
-	/// </summary>
-	/// <remarks>
-	/// This class ensures that the color change is reverted when the scope ends.
-	/// </remarks>
-	public class ScopedColor : ScopedAction
-	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ScopedColor"/> class with a specified target and color.
-		/// </summary>
-		/// <param name="target">The ImGui color target to change.</param>
-		/// <param name="color">The color to apply to the target.</param>
-		public ScopedColor(ImGuiCol target, ImColor color) : base(
-		onOpen: () => ImGui.PushStyleColor(target, color.Value),
-		onClose: ImGui.PopStyleColor)
-		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="ScopedColor"/> class with a specified color for the button.
+		/// Neutral colors for backgrounds, borders, and subtle elements.
 		/// </summary>
-		/// <param name="color">The color to apply to the button.</param>
-		public ScopedColor(ImColor color)
+		public static class Neutral
 		{
-			ImGui.PushStyleColor(ImGuiCol.Button, color.Value);
-			OnClose = ImGui.PopStyleColor;
-		}
-	}
-
-	/// <summary>
-	/// Desaturates the color by a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The amount to desaturate (0-1).</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
-	public static ImColor DesaturateBy(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.Y = Math.Clamp(hsla.Y - amount, 0, 1);
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Saturates the color by a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The amount to saturate (0-1).</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
-	public static ImColor SaturateBy(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.Y = Math.Clamp(hsla.Y + amount, 0, 1);
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Sets the saturation of the color to a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The new saturation value (0-1).</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
-	public static ImColor WithSaturation(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.Y = Math.Clamp(amount, 0, 1);
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Multiplies the saturation of the color by a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The factor to multiply the saturation by.</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted saturation.</returns>
-	public static ImColor MultiplySaturation(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.Y = Math.Clamp(hsla.Y * amount, 0, 1);
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Offsets the hue of the color by a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The amount to offset the hue by (0-1).</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted hue.</returns>
-	public static ImColor OffsetHue(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.X = (1f + (hsla.X + amount)) % 1f;
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Lightens the color by a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The amount to lighten the color by (0-1).</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted lightness.</returns>
-	public static ImColor LightenBy(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.Z = Math.Clamp(hsla.Z + amount, 0, 1);
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Darkens the color by a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The amount to darken the color by (0-1).</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted lightness.</returns>
-	public static ImColor DarkenBy(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.Z = Math.Clamp(hsla.Z - amount, 0, 1);
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Sets the luminance of the color to a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The new luminance value (0-1).</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted luminance.</returns>
-	public static ImColor WithLuminance(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.Z = Math.Clamp(amount, 0, 1);
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Multiplies the luminance of the color by a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The factor to multiply the luminance by.</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted luminance.</returns>
-	public static ImColor MultiplyLuminance(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.Z = Math.Clamp(hsla.Z * amount, 0, 1);
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Sets the alpha of the color to a specified amount.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="amount">The new alpha value (0-1).</param>
-	/// <returns>A new <see cref="ImColor"/> object with the adjusted alpha.</returns>
-	public static ImColor WithAlpha(this ImColor color, float amount)
-	{
-		Vector4 hsla = color.ToHSLA();
-		hsla.W = Math.Clamp(amount, 0, 1);
-		return FromHSLA(hsla);
-	}
-
-	/// <summary>
-	/// Converts the color to grayscale.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <returns>A new <see cref="ImColor"/> object in grayscale.</returns>
-	public static ImColor ToGrayscale(this ImColor color) => color.WithSaturation(0);
-
-	/// <summary>
-	/// Converts the color to HSLA (Hue, Saturation, Lightness, Alpha) format.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <returns>A <see cref="Vector4"/> representing the color in HSLA format.</returns>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0045:Convert to conditional expression", Justification = "<Pending>")]
-	public static Vector4 ToHSLA(this ImColor color)
-	{
-		float r = color.Value.X;
-		float g = color.Value.Y;
-		float b = color.Value.Z;
-		float a = color.Value.W;
-
-		float max = Math.Max(r, Math.Max(g, b));
-		float min = Math.Min(r, Math.Min(g, b));
-		float h, s, l = (max + min) / 2f;
-
-		if (max == min)
-		{
-			h = s = 0;
-		}
-		else
-		{
-			float d = max - min;
-			s = l > 0.5f ? d / (2f - max - min) : d / (max + min);
-			if (max == r)
-			{
-				h = (g - b) / d;
-			}
-			else if (max == g)
-			{
-				h = ((b - r) / d) + 2;
-			}
-			else
-			{
-				h = ((r - g) / d) + 4;
-			}
-
-			h /= 6;
-			if (h < 0)
-			{
-				h += 1;
-			}
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+			public static ImColor White => FromHex("#ffffff");
+			public static ImColor Black => FromHex("#000000");
+			public static ImColor Gray => FromHex("#808080");
+			public static ImColor LightGray => FromHex("#c0c0c0");
+			public static ImColor DarkGray => FromHex("#404040");
+			public static ImColor Transparent => FromHex("#00000000");
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
-		return new Vector4(h, s, l, a);
-	}
-
-	/// <summary>
-	/// Gets the relative luminance of the color.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <returns>The relative luminance of the color.</returns>
-	public static float GetRelativeLuminance(this ImColor color) =>
-		(color.Value.X * 0.2126f) + (color.Value.Y * 0.7152f) + (color.Value.Z * 0.0722f);
-
-	/// <summary>
-	/// Calculates the contrast ratio of the color over a background color.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <param name="background">The background color.</param>
-	/// <returns>The contrast ratio of the color over the background color.</returns>
-	public static float GetContrastRatioOver(this ImColor color, ImColor background)
-	{
-		float relativeLuminance = color.GetRelativeLuminance();
-		float backgroundRelativeLuminance = background.GetRelativeLuminance();
-		return (backgroundRelativeLuminance + 0.05f) / (relativeLuminance + 0.05f);
-	}
-
-	/// <summary>
-	/// Calculates the optimal contrasting color for the given color.
-	/// </summary>
-	/// <param name="color">The original color.</param>
-	/// <returns>A new <see cref="ImColor"/> object representing the optimal contrasting color.</returns>
-	public static ImColor CalculateOptimalContrastingColor(this ImColor color)
-	{
-		float bestLuminance = 0;
-		float bestDistance = float.MaxValue;
-		int steps = 256;
-		for (int i = 0; i < steps; i++)
+		/// <summary>
+		/// Semantic colors for UI states and meanings.
+		/// </summary>
+		public static class Semantic
 		{
-			float l = i / (steps - 1f);
-			ImColor candidateColor = color.WithLuminance(l);
-			float contrast = 1f / candidateColor.GetContrastRatioOver(color);
-			// compare the distance to the target luminance to determine the best contrast
-			float distance = Math.Abs(OptimalTextContrastRatio - contrast);
-			if (distance < bestDistance)
-			{
-				bestDistance = distance;
-				bestLuminance = l;
-			}
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+			public static ImColor Error => Basic.Red;
+			public static ImColor Warning => Basic.Yellow;
+			public static ImColor Success => Basic.Green;
+			public static ImColor Info => Basic.Cyan;
+			public static ImColor Primary => Basic.Blue;
+			public static ImColor Secondary => Basic.Purple;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
-		return color.WithLuminance(bestLuminance);
+		/// <summary>
+		/// Natural and earthy colors.
+		/// </summary>
+		public static class Natural
+		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+			public static ImColor Brown => FromRGB(165, 42, 42);
+			public static ImColor Olive => FromRGB(128, 128, 0);
+			public static ImColor Maroon => FromRGB(128, 0, 0);
+			public static ImColor Navy => FromRGB(0, 0, 128);
+			public static ImColor Teal => FromRGB(0, 128, 128);
+			public static ImColor Indigo => FromRGB(75, 0, 130);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+		}
+
+		/// <summary>
+		/// Vibrant and colorful shades.
+		/// </summary>
+		public static class Vibrant
+		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+			public static ImColor Coral => FromRGB(255, 127, 80);
+			public static ImColor Salmon => FromRGB(250, 128, 114);
+			public static ImColor Turquoise => FromRGB(64, 224, 208);
+			public static ImColor Violet => FromRGB(238, 130, 238);
+			public static ImColor Gold => FromRGB(255, 215, 0);
+			public static ImColor Silver => FromRGB(192, 192, 192);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+		}
+
+		/// <summary>
+		/// Soft, pastel colors for gentle UIs.
+		/// </summary>
+		public static class Pastel
+		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+			public static ImColor Beige => FromRGB(245, 245, 220);
+			public static ImColor Peach => FromRGB(255, 218, 185);
+			public static ImColor Mint => FromRGB(189, 252, 201);
+			public static ImColor Lavender => FromRGB(230, 230, 250);
+			public static ImColor Khaki => FromRGB(240, 230, 140);
+			public static ImColor Plum => FromRGB(221, 160, 221);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+		}
+
+		/// <summary>
+		/// Colors inspired by popular development themes.
+		/// </summary>
+		public static class Themes
+		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+			// Dark Themes
+			public static ImColor Dracula => FromHex("#bd93f9");
+			public static ImColor Nord => FromHex("#5e81ac");
+			public static ImColor TokyoNight => FromHex("#7aa2f7");
+			public static ImColor GruvboxDark => FromHex("#fe8019");
+			public static ImColor OneDark => FromHex("#61afef");
+			public static ImColor CatppuccinMocha => FromHex("#89b4fa");
+			public static ImColor Monokai => FromHex("#f92672");
+			public static ImColor Nightfly => FromHex("#82aaff");
+			public static ImColor Kanagawa => FromHex("#7e9cd8");
+			public static ImColor PaperColorDark => FromHex("#8fbcbb");
+			public static ImColor Nightfox => FromHex("#719cd6");
+			public static ImColor EverforestDark => FromHex("#a7c080");
+			public static ImColor VSCodeDark => FromHex("#0078d4");
+
+			// Light Themes
+			public static ImColor VSCodeLight => FromHex("#0078d4");
+			public static ImColor GruvboxLight => FromHex("#af3a03");
+			public static ImColor PaperColorLight => FromHex("#005f87");
+			public static ImColor EverforestLight => FromHex("#8da101");
+			public static ImColor CatppuccinLatte => FromHex("#8839ef");
+
+			// Medium Themes
+			public static ImColor CatppuccinFrappe => FromHex("#ca9ee6");
+			public static ImColor CatppuccinMacchiato => FromHex("#c6a0f6");
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+		}
+
+		/// <summary>
+		/// Gets all available colors organized by category.
+		/// </summary>
+		public static IReadOnlyDictionary<string, IReadOnlyDictionary<string, ImColor>> AllColors =>
+			new Dictionary<string, IReadOnlyDictionary<string, ImColor>>
+			{
+				[nameof(Basic)] = new Dictionary<string, ImColor>
+				{
+					[nameof(Basic.Red)] = Basic.Red,
+					[nameof(Basic.Green)] = Basic.Green,
+					[nameof(Basic.Blue)] = Basic.Blue,
+					[nameof(Basic.Yellow)] = Basic.Yellow,
+					[nameof(Basic.Cyan)] = Basic.Cyan,
+					[nameof(Basic.Magenta)] = Basic.Magenta,
+					[nameof(Basic.Orange)] = Basic.Orange,
+					[nameof(Basic.Pink)] = Basic.Pink,
+					[nameof(Basic.Lime)] = Basic.Lime,
+					[nameof(Basic.Purple)] = Basic.Purple,
+				},
+				[nameof(Neutral)] = new Dictionary<string, ImColor>
+				{
+					[nameof(Neutral.White)] = Neutral.White,
+					[nameof(Neutral.Black)] = Neutral.Black,
+					[nameof(Neutral.Gray)] = Neutral.Gray,
+					[nameof(Neutral.LightGray)] = Neutral.LightGray,
+					[nameof(Neutral.DarkGray)] = Neutral.DarkGray,
+					[nameof(Neutral.Transparent)] = Neutral.Transparent,
+				},
+				[nameof(Semantic)] = new Dictionary<string, ImColor>
+				{
+					[nameof(Semantic.Error)] = Semantic.Error,
+					[nameof(Semantic.Warning)] = Semantic.Warning,
+					[nameof(Semantic.Success)] = Semantic.Success,
+					[nameof(Semantic.Info)] = Semantic.Info,
+					[nameof(Semantic.Primary)] = Semantic.Primary,
+					[nameof(Semantic.Secondary)] = Semantic.Secondary,
+				},
+				[nameof(Natural)] = new Dictionary<string, ImColor>
+				{
+					[nameof(Natural.Brown)] = Natural.Brown,
+					[nameof(Natural.Olive)] = Natural.Olive,
+					[nameof(Natural.Maroon)] = Natural.Maroon,
+					[nameof(Natural.Navy)] = Natural.Navy,
+					[nameof(Natural.Teal)] = Natural.Teal,
+					[nameof(Natural.Indigo)] = Natural.Indigo,
+				},
+				[nameof(Vibrant)] = new Dictionary<string, ImColor>
+				{
+					[nameof(Vibrant.Coral)] = Vibrant.Coral,
+					[nameof(Vibrant.Salmon)] = Vibrant.Salmon,
+					[nameof(Vibrant.Turquoise)] = Vibrant.Turquoise,
+					[nameof(Vibrant.Violet)] = Vibrant.Violet,
+					[nameof(Vibrant.Gold)] = Vibrant.Gold,
+					[nameof(Vibrant.Silver)] = Vibrant.Silver,
+				},
+				[nameof(Pastel)] = new Dictionary<string, ImColor>
+				{
+					[nameof(Pastel.Beige)] = Pastel.Beige,
+					[nameof(Pastel.Peach)] = Pastel.Peach,
+					[nameof(Pastel.Mint)] = Pastel.Mint,
+					[nameof(Pastel.Lavender)] = Pastel.Lavender,
+					[nameof(Pastel.Khaki)] = Pastel.Khaki,
+					[nameof(Pastel.Plum)] = Pastel.Plum,
+				},
+			};
 	}
 }

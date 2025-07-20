@@ -32,8 +32,8 @@ internal class ImGuiStylerDemo
 	private static readonly float[] styleVarValues = [4.0f, 8.0f, 6.0f, 12.0f]; // FramePadding.X, FramePadding.Y, ItemSpacing.X, ItemSpacing.Y
 
 	// Cache theme info for performance
-	private static readonly IReadOnlyList<Theme.ThemeInfo> availablePaletteColors = Theme.AvailablePaletteColors;
-	private static readonly IReadOnlyList<Theme.ThemeDefinitionInfo> availableThemeDefinitions = Theme.AvailableThemeDefinitions;
+	private static readonly IReadOnlyList<ThemeInfo> availablePaletteColors = Theme.AvailablePaletteColors;
+	private static readonly IReadOnlyList<ThemeDefinitionInfo> availableThemeDefinitions = Theme.AvailableThemeDefinitions;
 
 	private static readonly string[] textColorNames = ["Normal", "Error", "Warning", "Info", "Success"];
 
@@ -51,7 +51,7 @@ internal class ImGuiStylerDemo
 		});
 	}
 
-	private void OnStart() => Theme.Apply(Theme.Palette.Normal);
+	private void OnStart() => Theme.Apply(Color.Palette.Semantic.Primary);
 
 	private void OnTick(float dt)
 	{
@@ -155,7 +155,7 @@ internal class ImGuiStylerDemo
 		ImGui.SliderFloat("Normal Slider", ref valueFloat, 0.0f, 1.0f);
 
 		ImGui.Text("Scoped Red theme:");
-		using (Theme.Color(Theme.Palette.Red))
+		using (Theme.FromColor(Color.Palette.Basic.Red))
 		{
 			ImGui.Button("Red Themed Button");
 			ImGui.Checkbox("Red Themed Checkbox", ref valueBool);
@@ -163,7 +163,7 @@ internal class ImGuiStylerDemo
 		}
 
 		ImGui.Text("Scoped Green theme:");
-		using (Theme.Color(Theme.Palette.Green))
+		using (Theme.FromColor(Color.Palette.Basic.Green))
 		{
 			ImGui.Button("Green Themed Button");
 			ImGui.Checkbox("Green Themed Checkbox", ref valueBool);
@@ -171,7 +171,7 @@ internal class ImGuiStylerDemo
 		}
 
 		ImGui.Text("Disabled theme state:");
-		using (Theme.ColorDisabled(Theme.Palette.Blue))
+		using (Theme.DisabledFromColor(Color.Palette.Basic.Blue))
 		{
 			ImGui.Button("Disabled Themed Button");
 			ImGui.Checkbox("Disabled Themed Checkbox", ref valueBool);
@@ -236,7 +236,7 @@ internal class ImGuiStylerDemo
 		}
 
 		ImGui.Text("Sample text with selected color:");
-		Text.Color.ScopedTextColor textColorScope = selectedTextColor switch
+		ScopedTextColor textColorScope = selectedTextColor switch
 		{
 			0 => Text.Color.Normal(),
 			1 => Text.Color.Error(),
@@ -310,7 +310,7 @@ internal class ImGuiStylerDemo
 			0 => CreateColorFromHex(),
 			1 => CreateColorFromRGB(),
 			2 => CreateColorFromHSL(),
-			_ => Color.White
+			_ => Color.Palette.Neutral.White
 		};
 
 		ImGui.ColorButton("Created Color", createdColor.Value, ImGuiColorEditFlags.None, new Vector2(100, 40));
@@ -343,10 +343,10 @@ internal class ImGuiStylerDemo
 		ImGui.Columns(4, "ColorPalette");
 
 		ImColor[] predefinedColors = [
-			Color.Red, Color.Green, Color.Blue, Color.Yellow,
-			Color.Cyan, Color.Magenta, Color.Orange, Color.Purple,
-			Color.Pink, Color.Lime, Color.Brown, Color.Gold,
-			Color.Silver, Color.Teal, Color.Olive, Color.Navy
+			Color.Palette.Basic.Red, Color.Palette.Basic.Green, Color.Palette.Basic.Blue, Color.Palette.Basic.Yellow,
+			Color.Palette.Basic.Cyan, Color.Palette.Basic.Magenta, Color.Palette.Basic.Orange, Color.Palette.Basic.Purple,
+			Color.Palette.Basic.Pink, Color.Palette.Basic.Lime, Color.Palette.Natural.Brown, Color.Palette.Vibrant.Gold,
+			Color.Palette.Vibrant.Silver, Color.Palette.Natural.Teal, Color.Palette.Natural.Olive, Color.Palette.Natural.Navy
 		];
 
 		string[] predefinedNames = [
@@ -393,7 +393,7 @@ internal class ImGuiStylerDemo
 		}
 		catch (ArgumentException)
 		{
-			return Color.Red;
+			return Color.Palette.Basic.Red;
 		}
 	}
 
@@ -571,7 +571,7 @@ internal class ImGuiStylerDemo
 		ImGui.Button("Normal Button 2");
 
 		ImGui.Text("Themed buttons with alignment:");
-		using (Theme.Color(Theme.Palette.Green))
+		using (Theme.FromColor(Color.Palette.Basic.Green))
 		{
 			using (Button.Alignment.Center())
 			{
@@ -580,7 +580,7 @@ internal class ImGuiStylerDemo
 			}
 		}
 
-		using (Theme.Color(Theme.Palette.Orange))
+		using (Theme.FromColor(Color.Palette.Basic.Orange))
 		{
 			using (Button.Alignment.Left())
 			{
@@ -600,7 +600,7 @@ internal class ImGuiStylerDemo
 		}
 		ImGui.SameLine();
 
-		using (Theme.Color(Theme.Palette.Error))
+		using (Theme.FromColor(Color.Palette.Semantic.Error))
 		{
 			if (ImGui.Button("Danger Action", new Vector2(150, 40)))
 			{
@@ -617,7 +617,7 @@ internal class ImGuiStylerDemo
 			}
 			ImGui.SameLine();
 
-			using (Theme.Color(Theme.Palette.Warning))
+			using (Theme.FromColor(Color.Palette.Semantic.Warning))
 			{
 				if (ImGui.Button("Cancel", new Vector2(80, 0)))
 				{
@@ -626,7 +626,7 @@ internal class ImGuiStylerDemo
 			}
 			ImGui.SameLine();
 
-			using (Theme.Color(Theme.Palette.Error))
+			using (Theme.FromColor(Color.Palette.Semantic.Error))
 			{
 				if (ImGui.Button("Delete", new Vector2(80, 0)))
 				{
@@ -640,7 +640,7 @@ internal class ImGuiStylerDemo
 		// Disabled button states
 		ImGui.Text("Disabled Button States:");
 
-		using (Theme.ColorDisabled(Theme.Palette.Blue))
+		using (Theme.DisabledFromColor(Color.Palette.Basic.Blue))
 		{
 			ImGui.Button("Disabled Blue");
 			ImGui.SameLine();
@@ -650,7 +650,7 @@ internal class ImGuiStylerDemo
 		ImGui.Text("Mix of enabled and disabled:");
 		ImGui.Button("Enabled Button");
 		ImGui.SameLine();
-		using (Theme.ColorDisabled(Theme.Palette.Red))
+		using (Theme.DisabledFromColor(Color.Palette.Basic.Red))
 		{
 			ImGui.Button("Disabled Red");
 		}
@@ -755,21 +755,21 @@ internal class ImGuiStylerDemo
 		ImGui.TextUnformatted("🎨 Theme Configuration");
 		using (Indent.ByDefault())
 		{
-			using (Theme.Color(Theme.Palette.Blue))
+			using (Theme.FromColor(Color.Palette.Basic.Blue))
 			{
 				ImGui.Button("Blue Theme Section");
 			}
 
 			using (Indent.By(25.0f))
 			{
-				using (Theme.Color(Theme.Palette.Green))
+				using (Theme.FromColor(Color.Palette.Basic.Green))
 				{
 					ImGui.TextUnformatted("Green subsection");
 					ImGui.Button("Green Action");
 				}
 			}
 
-			using (Theme.Color(Theme.Palette.Orange))
+			using (Theme.FromColor(Color.Palette.Basic.Orange))
 			{
 				ImGui.Button("Orange Theme Section");
 			}
@@ -868,14 +868,14 @@ internal class ImGuiStylerDemo
 		ImGui.Separator();
 
 		// Group themes by category for better organization
-		IOrderedEnumerable<IGrouping<string, Theme.ThemeDefinitionInfo>> themesByCategory = availableThemeDefinitions.GroupBy(t => t.Category).OrderBy(g => g.Key);
+		IOrderedEnumerable<IGrouping<string, ThemeDefinitionInfo>> themesByCategory = availableThemeDefinitions.GroupBy(t => t.Category).OrderBy(g => g.Key);
 
-		foreach (IGrouping<string, Theme.ThemeDefinitionInfo> categoryGroup in themesByCategory)
+		foreach (IGrouping<string, ThemeDefinitionInfo> categoryGroup in themesByCategory)
 		{
 			ImGui.Text($"{categoryGroup.Key} Themes:");
 			ImGui.Indent();
 
-			foreach (Theme.ThemeDefinitionInfo themeInfo in categoryGroup)
+			foreach (ThemeDefinitionInfo themeInfo in categoryGroup)
 			{
 				if (ImGui.Button($"Apply {themeInfo.Name}"))
 				{
@@ -963,7 +963,7 @@ internal class ImGuiStylerDemo
 		ImGui.Text("Example 1: Settings Panel");
 		ImGui.BeginChild("SettingsPanel", new Vector2(0, 200), ImGuiChildFlags.Borders);
 		{
-			using (Theme.Color(Theme.Palette.Blue))
+			using (Theme.FromColor(Color.Palette.Basic.Blue))
 			{
 				string headerText = "⚙ Application Settings";
 				Vector2 headerSize = ImGui.CalcTextSize(headerText);
@@ -1000,7 +1000,7 @@ internal class ImGuiStylerDemo
 						}
 						ImGui.SameLine();
 
-						using (Theme.Color(Theme.Palette.Warning))
+						using (Theme.FromColor(Color.Palette.Semantic.Warning))
 						{
 							if (ImGui.Button("Reset to Default", new Vector2(150, 0)))
 							{
@@ -1019,7 +1019,7 @@ internal class ImGuiStylerDemo
 		ImGui.Text("Example 2: Status Dashboard");
 		ImGui.BeginChild("StatusDashboard", new Vector2(0, 180), ImGuiChildFlags.Borders);
 		{
-			using (Theme.Color(Theme.Palette.Green))
+			using (Theme.FromColor(Color.Palette.Basic.Green))
 			{
 				string titleText = "📊 System Status";
 				Vector2 titleSize = ImGui.CalcTextSize(titleText);
@@ -1088,7 +1088,7 @@ internal class ImGuiStylerDemo
 		ImGui.Text("Example 3: Form with Validation");
 		ImGui.BeginChild("FormExample", new Vector2(0, 200), ImGuiChildFlags.Borders);
 		{
-			using (Theme.Color(Theme.Palette.Purple))
+			using (Theme.FromColor(Color.Palette.Basic.Purple))
 			{
 				string formTitle = "📝 User Registration";
 				Vector2 formTitleSize = ImGui.CalcTextSize(formTitle);
@@ -1142,7 +1142,7 @@ internal class ImGuiStylerDemo
 
 					if (canSubmit)
 					{
-						using (Theme.Color(Theme.Palette.Success))
+						using (Theme.FromColor(Color.Palette.Semantic.Success))
 						{
 							if (ImGui.Button("Submit Registration", new Vector2(200, 0)))
 							{
@@ -1152,7 +1152,7 @@ internal class ImGuiStylerDemo
 					}
 					else
 					{
-						using (Theme.ColorDisabled(Theme.Palette.Gray))
+						using (Theme.DisabledFromColor(Color.Palette.Neutral.Gray))
 						{
 							ImGui.Button("Submit Registration", new Vector2(200, 0));
 						}

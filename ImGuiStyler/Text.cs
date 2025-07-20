@@ -8,12 +8,12 @@ using Hexa.NET.ImGui;
 /// <summary>
 /// Provides functionality for managing text in ImGui.
 /// </summary>
-public static class Text
+public static partial class Text
 {
 	/// <summary>
 	/// Provides functionality for managing text colors in ImGui.
 	/// </summary>
-	public static class Color
+	public static partial class Color
 	{
 		/// <summary>
 		/// Contains predefined color definitions for text.
@@ -23,27 +23,27 @@ public static class Text
 			/// <summary>
 			/// Gets or sets the normal text color.
 			/// </summary>
-			public static ImColor Normal { get; set; } = ImGuiStyler.Color.White;
+			public static ImColor Normal { get; set; } = ImGuiStyler.Color.Palette.Neutral.White;
 
 			/// <summary>
 			/// Gets or sets the error text color.
 			/// </summary>
-			public static ImColor Error { get; set; } = ImGuiStyler.Color.Red;
+			public static ImColor Error { get; set; } = ImGuiStyler.Color.Palette.Basic.Red;
 
 			/// <summary>
 			/// Gets or sets the warning text color.
 			/// </summary>
-			public static ImColor Warning { get; set; } = ImGuiStyler.Color.Yellow;
+			public static ImColor Warning { get; set; } = ImGuiStyler.Color.Palette.Basic.Yellow;
 
 			/// <summary>
 			/// Gets or sets the info text color.
 			/// </summary>
-			public static ImColor Info { get; set; } = ImGuiStyler.Color.Cyan;
+			public static ImColor Info { get; set; } = ImGuiStyler.Color.Palette.Basic.Cyan;
 
 			/// <summary>
 			/// Gets or sets the success text color.
 			/// </summary>
-			public static ImColor Success { get; set; } = ImGuiStyler.Color.Green;
+			public static ImColor Success { get; set; } = ImGuiStyler.Color.Palette.Basic.Green;
 		}
 
 		/// <summary>
@@ -75,13 +75,5 @@ public static class Text
 		/// </summary>
 		/// <returns>A <see cref="ScopedTextColor"/> instance that reverts the color when disposed.</returns>
 		public static ScopedTextColor Success() => new(Definitions.Success);
-
-		/// <summary>
-		/// Represents a scoped text color change in ImGui.
-		/// </summary>
-		/// <param name="color">The color to apply to the text.</param>
-		public class ScopedTextColor(ImColor color) : ImGuiStyler.Color.ScopedColor(ImGuiCol.Text, color)
-		{
-		}
 	}
 }
