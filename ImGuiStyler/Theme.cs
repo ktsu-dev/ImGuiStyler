@@ -265,8 +265,8 @@ public static class Theme
 		TabColor = ThemeSources.Gruvbox.Dark1.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
 		TabHoveredColor = ThemeSources.Gruvbox.Dark2.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
 		TabActiveColor = ThemeSources.Gruvbox.BrightOrange.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		PlotLinesColor = ThemeSources.Gruvbox.BrightBlue,
-		PlotHistogramColor = ThemeSources.Gruvbox.BrightAqua
+		PlotLinesColor = ThemeSources.Gruvbox.FadedBlue,
+		PlotHistogramColor = ThemeSources.Gruvbox.FadedAqua
 	};
 
 	/// <summary>
@@ -588,30 +588,30 @@ public static class Theme
 	/// </summary>
 	public static ThemeDefinition EverforestDark => new()
 	{
-		BackgroundColor = ThemeSources.Everforest.Dark.Background.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
-		TextColor = ThemeSources.Everforest.Dark.Foreground,
-		AccentColor = ThemeSources.Everforest.Dark.Mauve,
-		ButtonColor = ThemeSources.Everforest.Dark.Surface0.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
-		ButtonHoveredColor = ThemeSources.Everforest.Dark.Surface1.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
-		ButtonActiveColor = ThemeSources.Everforest.Dark.Mauve,
-		FrameColor = ThemeSources.Everforest.Dark.Surface0.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
-		FrameHoveredColor = ThemeSources.Everforest.Dark.Surface1.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
-		FrameActiveColor = ThemeSources.Everforest.Dark.Mauve,
-		HeaderColor = ThemeSources.Everforest.Dark.Surface0.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
-		HeaderHoveredColor = ThemeSources.Everforest.Dark.Surface1.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
-		HeaderActiveColor = ThemeSources.Everforest.Dark.Mauve,
-		BorderColor = ThemeSources.Everforest.Dark.Border,
-		ScrollbarColor = ThemeSources.Everforest.Dark.Scrollbar,
-		ScrollbarHoveredColor = ThemeSources.Everforest.Dark.ScrollbarHover,
-		ScrollbarActiveColor = ThemeSources.Everforest.Dark.Mauve,
+		BackgroundColor = ThemeSources.Everforest.Dark.Bg0.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
+		TextColor = ThemeSources.Everforest.Dark.Fg,
+		AccentColor = ThemeSources.Everforest.Dark.Purple,
+		ButtonColor = ThemeSources.Everforest.Dark.Bg1.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
+		ButtonHoveredColor = ThemeSources.Everforest.Dark.Bg2.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
+		ButtonActiveColor = ThemeSources.Everforest.Dark.Purple,
+		FrameColor = ThemeSources.Everforest.Dark.Bg1.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
+		FrameHoveredColor = ThemeSources.Everforest.Dark.Bg2.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
+		FrameActiveColor = ThemeSources.Everforest.Dark.Purple,
+		HeaderColor = ThemeSources.Everforest.Dark.Bg1.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
+		HeaderHoveredColor = ThemeSources.Everforest.Dark.Bg2.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
+		HeaderActiveColor = ThemeSources.Everforest.Dark.Purple,
+		BorderColor = ThemeSources.Everforest.Dark.Bg3,
+		ScrollbarColor = ThemeSources.Everforest.Dark.Bg2,
+		ScrollbarHoveredColor = ThemeSources.Everforest.Dark.Bg3,
+		ScrollbarActiveColor = ThemeSources.Everforest.Dark.Purple,
 		CheckMarkColor = ThemeSources.Everforest.Dark.Green,
-		SliderGrabColor = ThemeSources.Everforest.Dark.Mauve,
+		SliderGrabColor = ThemeSources.Everforest.Dark.Purple,
 		SliderGrabActiveColor = ThemeSources.Everforest.Dark.Yellow,
-		TabColor = ThemeSources.Everforest.Dark.Surface0.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
-		TabHoveredColor = ThemeSources.Everforest.Dark.Surface1.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
-		TabActiveColor = ThemeSources.Everforest.Dark.Mauve.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Foreground),
+		TabColor = ThemeSources.Everforest.Dark.Bg1.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
+		TabHoveredColor = ThemeSources.Everforest.Dark.Bg2.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
+		TabActiveColor = ThemeSources.Everforest.Dark.Purple.AdjustForSufficientContrast(ThemeSources.Everforest.Dark.Fg),
 		PlotLinesColor = ThemeSources.Everforest.Dark.Aqua,
-		PlotHistogramColor = ThemeSources.Everforest.Dark.Pink
+		PlotHistogramColor = ThemeSources.Everforest.Dark.Red
 	};
 
 	/// <summary>
@@ -673,8 +673,8 @@ public static class Theme
 		TabColor = ThemeSources.Gruvbox.Light1.AdjustForSufficientContrast(ThemeSources.Gruvbox.Dark1),
 		TabHoveredColor = ThemeSources.Gruvbox.Light2.AdjustForSufficientContrast(ThemeSources.Gruvbox.Dark1),
 		TabActiveColor = ThemeSources.Gruvbox.BrightOrange.AdjustForSufficientContrast(ThemeSources.Gruvbox.Dark1),
-		PlotLinesColor = ThemeSources.Gruvbox.DarkBlue,
-		PlotHistogramColor = ThemeSources.Gruvbox.DarkAqua
+		PlotLinesColor = ThemeSources.Gruvbox.FadedBlue,
+		PlotHistogramColor = ThemeSources.Gruvbox.FadedAqua
 	};
 
 	/// <summary>
@@ -713,30 +713,30 @@ public static class Theme
 	/// </summary>
 	public static ThemeDefinition EverforestLight => new()
 	{
-		BackgroundColor = ThemeSources.Everforest.Light.Background.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
-		TextColor = ThemeSources.Everforest.Light.Foreground,
-		AccentColor = ThemeSources.Everforest.Light.Mauve,
-		ButtonColor = ThemeSources.Everforest.Light.Surface0.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
-		ButtonHoveredColor = ThemeSources.Everforest.Light.Surface1.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
-		ButtonActiveColor = ThemeSources.Everforest.Light.Mauve,
-		FrameColor = ThemeSources.Everforest.Light.Surface0.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
-		FrameHoveredColor = ThemeSources.Everforest.Light.Surface1.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
-		FrameActiveColor = ThemeSources.Everforest.Light.Mauve,
-		HeaderColor = ThemeSources.Everforest.Light.Surface0.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
-		HeaderHoveredColor = ThemeSources.Everforest.Light.Surface1.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
-		HeaderActiveColor = ThemeSources.Everforest.Light.Mauve,
-		BorderColor = ThemeSources.Everforest.Light.Border,
-		ScrollbarColor = ThemeSources.Everforest.Light.Scrollbar,
-		ScrollbarHoveredColor = ThemeSources.Everforest.Light.ScrollbarHover,
-		ScrollbarActiveColor = ThemeSources.Everforest.Light.Mauve,
+		BackgroundColor = ThemeSources.Everforest.Light.Bg0.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
+		TextColor = ThemeSources.Everforest.Light.Fg,
+		AccentColor = ThemeSources.Everforest.Light.Purple,
+		ButtonColor = ThemeSources.Everforest.Light.Bg1.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
+		ButtonHoveredColor = ThemeSources.Everforest.Light.Bg2.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
+		ButtonActiveColor = ThemeSources.Everforest.Light.Purple,
+		FrameColor = ThemeSources.Everforest.Light.Bg1.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
+		FrameHoveredColor = ThemeSources.Everforest.Light.Bg2.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
+		FrameActiveColor = ThemeSources.Everforest.Light.Purple,
+		HeaderColor = ThemeSources.Everforest.Light.Bg1.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
+		HeaderHoveredColor = ThemeSources.Everforest.Light.Bg2.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
+		HeaderActiveColor = ThemeSources.Everforest.Light.Purple,
+		BorderColor = ThemeSources.Everforest.Light.Bg3,
+		ScrollbarColor = ThemeSources.Everforest.Light.Bg2,
+		ScrollbarHoveredColor = ThemeSources.Everforest.Light.Bg3,
+		ScrollbarActiveColor = ThemeSources.Everforest.Light.Purple,
 		CheckMarkColor = ThemeSources.Everforest.Light.Green,
-		SliderGrabColor = ThemeSources.Everforest.Light.Mauve,
+		SliderGrabColor = ThemeSources.Everforest.Light.Purple,
 		SliderGrabActiveColor = ThemeSources.Everforest.Light.Yellow,
-		TabColor = ThemeSources.Everforest.Light.Surface0.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
-		TabHoveredColor = ThemeSources.Everforest.Light.Surface1.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
-		TabActiveColor = ThemeSources.Everforest.Light.Mauve.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Foreground),
+		TabColor = ThemeSources.Everforest.Light.Bg1.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
+		TabHoveredColor = ThemeSources.Everforest.Light.Bg2.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
+		TabActiveColor = ThemeSources.Everforest.Light.Purple.AdjustForSufficientContrast(ThemeSources.Everforest.Light.Fg),
 		PlotLinesColor = ThemeSources.Everforest.Light.Aqua,
-		PlotHistogramColor = ThemeSources.Everforest.Light.Pink
+		PlotHistogramColor = ThemeSources.Everforest.Light.Red
 	};
 
 	/// <summary>
@@ -744,30 +744,30 @@ public static class Theme
 	/// </summary>
 	public static ThemeDefinition TokyoNightStorm => new()
 	{
-		BackgroundColor = ThemeSources.TokyoNight.Storm.Background.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		TextColor = ThemeSources.TokyoNight.Storm.Foreground,
-		AccentColor = ThemeSources.TokyoNight.Storm.Blue,
-		ButtonColor = ThemeSources.TokyoNight.Storm.Surface.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		ButtonHoveredColor = ThemeSources.TokyoNight.Storm.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		ButtonActiveColor = ThemeSources.TokyoNight.Storm.Blue,
-		FrameColor = ThemeSources.TokyoNight.Storm.Surface.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		FrameHoveredColor = ThemeSources.TokyoNight.Storm.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		FrameActiveColor = ThemeSources.TokyoNight.Storm.Blue,
-		HeaderColor = ThemeSources.TokyoNight.Storm.Surface.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		HeaderHoveredColor = ThemeSources.TokyoNight.Storm.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		HeaderActiveColor = ThemeSources.TokyoNight.Storm.Blue,
-		BorderColor = ThemeSources.TokyoNight.Storm.Border,
-		ScrollbarColor = ThemeSources.TokyoNight.Storm.Surface,
-		ScrollbarHoveredColor = ThemeSources.TokyoNight.Storm.SurfaceElevated,
-		ScrollbarActiveColor = ThemeSources.TokyoNight.Storm.Blue,
-		CheckMarkColor = ThemeSources.TokyoNight.Storm.Green,
-		SliderGrabColor = ThemeSources.TokyoNight.Storm.Blue,
-		SliderGrabActiveColor = ThemeSources.TokyoNight.Storm.BlueDark,
-		TabColor = ThemeSources.TokyoNight.Storm.Surface.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		TabHoveredColor = ThemeSources.TokyoNight.Storm.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		TabActiveColor = ThemeSources.TokyoNight.Storm.Blue.AdjustForSufficientContrast(ThemeSources.TokyoNight.Storm.Foreground),
-		PlotLinesColor = ThemeSources.TokyoNight.Storm.Aqua,
-		PlotHistogramColor = ThemeSources.TokyoNight.Storm.Pink
+		BackgroundColor = ThemeSources.TokyoNight.BgDark.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		TextColor = ThemeSources.TokyoNight.Fg,
+		AccentColor = ThemeSources.TokyoNight.Blue,
+		ButtonColor = ThemeSources.TokyoNight.BgHighlight.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		ButtonHoveredColor = ThemeSources.TokyoNight.Dark3.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		ButtonActiveColor = ThemeSources.TokyoNight.Blue,
+		FrameColor = ThemeSources.TokyoNight.BgHighlight.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		FrameHoveredColor = ThemeSources.TokyoNight.Dark3.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		FrameActiveColor = ThemeSources.TokyoNight.Blue,
+		HeaderColor = ThemeSources.TokyoNight.BgHighlight.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		HeaderHoveredColor = ThemeSources.TokyoNight.Dark3.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		HeaderActiveColor = ThemeSources.TokyoNight.Blue,
+		BorderColor = ThemeSources.TokyoNight.FgGutter,
+		ScrollbarColor = ThemeSources.TokyoNight.BgHighlight,
+		ScrollbarHoveredColor = ThemeSources.TokyoNight.Dark3,
+		ScrollbarActiveColor = ThemeSources.TokyoNight.Blue,
+		CheckMarkColor = ThemeSources.TokyoNight.Green,
+		SliderGrabColor = ThemeSources.TokyoNight.Blue,
+		SliderGrabActiveColor = ThemeSources.TokyoNight.Blue0,
+		TabColor = ThemeSources.TokyoNight.BgHighlight.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		TabHoveredColor = ThemeSources.TokyoNight.Dark3.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		TabActiveColor = ThemeSources.TokyoNight.Blue.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
+		PlotLinesColor = ThemeSources.TokyoNight.Cyan,
+		PlotHistogramColor = ThemeSources.TokyoNight.Purple
 	};
 
 	/// <summary>
@@ -837,30 +837,30 @@ public static class Theme
 	/// </summary>
 	public static ThemeDefinition MaterialDarker => new()
 	{
-		BackgroundColor = ThemeSources.Material.Darker.Background.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
-		TextColor = ThemeSources.Material.Darker.Foreground,
+		BackgroundColor = ThemeSources.Material.Darker.Background.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
+		TextColor = ThemeSources.Material.Darker.OnBackground,
 		AccentColor = ThemeSources.Material.Darker.Primary,
-		ButtonColor = ThemeSources.Material.Darker.Surface.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
-		ButtonHoveredColor = ThemeSources.Material.Darker.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
+		ButtonColor = ThemeSources.Material.Darker.Surface.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
+		ButtonHoveredColor = ThemeSources.Material.Darker.Card.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
 		ButtonActiveColor = ThemeSources.Material.Darker.Primary,
-		FrameColor = ThemeSources.Material.Darker.Surface.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
-		FrameHoveredColor = ThemeSources.Material.Darker.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
+		FrameColor = ThemeSources.Material.Darker.Surface.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
+		FrameHoveredColor = ThemeSources.Material.Darker.Card.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
 		FrameActiveColor = ThemeSources.Material.Darker.Primary,
-		HeaderColor = ThemeSources.Material.Darker.Surface.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
-		HeaderHoveredColor = ThemeSources.Material.Darker.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
+		HeaderColor = ThemeSources.Material.Darker.Surface.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
+		HeaderHoveredColor = ThemeSources.Material.Darker.Card.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
 		HeaderActiveColor = ThemeSources.Material.Darker.Primary,
-		BorderColor = ThemeSources.Material.Darker.Border,
+		BorderColor = ThemeSources.Material.Darker.Surface,
 		ScrollbarColor = ThemeSources.Material.Darker.Surface,
-		ScrollbarHoveredColor = ThemeSources.Material.Darker.SurfaceElevated,
+		ScrollbarHoveredColor = ThemeSources.Material.Darker.Card,
 		ScrollbarActiveColor = ThemeSources.Material.Darker.Primary,
-		CheckMarkColor = ThemeSources.Material.Darker.Icon,
+		CheckMarkColor = ThemeSources.Material.Darker.Success,
 		SliderGrabColor = ThemeSources.Material.Darker.Primary,
 		SliderGrabActiveColor = ThemeSources.Material.Darker.Secondary,
-		TabColor = ThemeSources.Material.Darker.Surface.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
-		TabHoveredColor = ThemeSources.Material.Darker.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
-		TabActiveColor = ThemeSources.Material.Darker.Primary.AdjustForSufficientContrast(ThemeSources.Material.Darker.Foreground),
-		PlotLinesColor = ThemeSources.Material.Darker.OnSurface,
-		PlotHistogramColor = ThemeSources.Material.Darker.OnPrimary
+		TabColor = ThemeSources.Material.Darker.Surface.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
+		TabHoveredColor = ThemeSources.Material.Darker.Card.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
+		TabActiveColor = ThemeSources.Material.Darker.Primary.AdjustForSufficientContrast(ThemeSources.Material.Darker.OnBackground),
+		PlotLinesColor = ThemeSources.Material.Darker.Info,
+		PlotHistogramColor = ThemeSources.Material.Darker.Accent
 	};
 
 	/// <summary>
@@ -868,30 +868,30 @@ public static class Theme
 	/// </summary>
 	public static ThemeDefinition MaterialOcean => new()
 	{
-		BackgroundColor = ThemeSources.Material.Ocean.Background.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
-		TextColor = ThemeSources.Material.Ocean.Foreground,
+		BackgroundColor = ThemeSources.Material.Ocean.Background.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
+		TextColor = ThemeSources.Material.Ocean.OnBackground,
 		AccentColor = ThemeSources.Material.Ocean.Primary,
-		ButtonColor = ThemeSources.Material.Ocean.Surface.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
-		ButtonHoveredColor = ThemeSources.Material.Ocean.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
+		ButtonColor = ThemeSources.Material.Ocean.Surface.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
+		ButtonHoveredColor = ThemeSources.Material.Ocean.Card.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
 		ButtonActiveColor = ThemeSources.Material.Ocean.Primary,
-		FrameColor = ThemeSources.Material.Ocean.Surface.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
-		FrameHoveredColor = ThemeSources.Material.Ocean.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
+		FrameColor = ThemeSources.Material.Ocean.Surface.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
+		FrameHoveredColor = ThemeSources.Material.Ocean.Card.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
 		FrameActiveColor = ThemeSources.Material.Ocean.Primary,
-		HeaderColor = ThemeSources.Material.Ocean.Surface.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
-		HeaderHoveredColor = ThemeSources.Material.Ocean.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
+		HeaderColor = ThemeSources.Material.Ocean.Surface.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
+		HeaderHoveredColor = ThemeSources.Material.Ocean.Card.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
 		HeaderActiveColor = ThemeSources.Material.Ocean.Primary,
-		BorderColor = ThemeSources.Material.Ocean.Border,
+		BorderColor = ThemeSources.Material.Ocean.Surface,
 		ScrollbarColor = ThemeSources.Material.Ocean.Surface,
-		ScrollbarHoveredColor = ThemeSources.Material.Ocean.SurfaceElevated,
+		ScrollbarHoveredColor = ThemeSources.Material.Ocean.Card,
 		ScrollbarActiveColor = ThemeSources.Material.Ocean.Primary,
-		CheckMarkColor = ThemeSources.Material.Ocean.Icon,
+		CheckMarkColor = ThemeSources.Material.Ocean.Success,
 		SliderGrabColor = ThemeSources.Material.Ocean.Primary,
 		SliderGrabActiveColor = ThemeSources.Material.Ocean.Secondary,
-		TabColor = ThemeSources.Material.Ocean.Surface.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
-		TabHoveredColor = ThemeSources.Material.Ocean.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
-		TabActiveColor = ThemeSources.Material.Ocean.Primary.AdjustForSufficientContrast(ThemeSources.Material.Ocean.Foreground),
-		PlotLinesColor = ThemeSources.Material.Ocean.OnSurface,
-		PlotHistogramColor = ThemeSources.Material.Ocean.OnPrimary
+		TabColor = ThemeSources.Material.Ocean.Surface.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
+		TabHoveredColor = ThemeSources.Material.Ocean.Card.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
+		TabActiveColor = ThemeSources.Material.Ocean.Primary.AdjustForSufficientContrast(ThemeSources.Material.Ocean.OnBackground),
+		PlotLinesColor = ThemeSources.Material.Ocean.Info,
+		PlotHistogramColor = ThemeSources.Material.Ocean.Accent
 	};
 
 	/// <summary>
@@ -899,30 +899,30 @@ public static class Theme
 	/// </summary>
 	public static ThemeDefinition MaterialPalenight => new()
 	{
-		BackgroundColor = ThemeSources.Material.Palenight.Background.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
-		TextColor = ThemeSources.Material.Palenight.Foreground,
+		BackgroundColor = ThemeSources.Material.Palenight.Background.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
+		TextColor = ThemeSources.Material.Palenight.OnBackground,
 		AccentColor = ThemeSources.Material.Palenight.Primary,
-		ButtonColor = ThemeSources.Material.Palenight.Surface.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
-		ButtonHoveredColor = ThemeSources.Material.Palenight.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
+		ButtonColor = ThemeSources.Material.Palenight.Surface.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
+		ButtonHoveredColor = ThemeSources.Material.Palenight.Card.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
 		ButtonActiveColor = ThemeSources.Material.Palenight.Primary,
-		FrameColor = ThemeSources.Material.Palenight.Surface.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
-		FrameHoveredColor = ThemeSources.Material.Palenight.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
+		FrameColor = ThemeSources.Material.Palenight.Surface.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
+		FrameHoveredColor = ThemeSources.Material.Palenight.Card.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
 		FrameActiveColor = ThemeSources.Material.Palenight.Primary,
-		HeaderColor = ThemeSources.Material.Palenight.Surface.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
-		HeaderHoveredColor = ThemeSources.Material.Palenight.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
+		HeaderColor = ThemeSources.Material.Palenight.Surface.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
+		HeaderHoveredColor = ThemeSources.Material.Palenight.Card.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
 		HeaderActiveColor = ThemeSources.Material.Palenight.Primary,
-		BorderColor = ThemeSources.Material.Palenight.Border,
+		BorderColor = ThemeSources.Material.Palenight.Surface,
 		ScrollbarColor = ThemeSources.Material.Palenight.Surface,
-		ScrollbarHoveredColor = ThemeSources.Material.Palenight.SurfaceElevated,
+		ScrollbarHoveredColor = ThemeSources.Material.Palenight.Card,
 		ScrollbarActiveColor = ThemeSources.Material.Palenight.Primary,
-		CheckMarkColor = ThemeSources.Material.Palenight.Icon,
+		CheckMarkColor = ThemeSources.Material.Palenight.Success,
 		SliderGrabColor = ThemeSources.Material.Palenight.Primary,
 		SliderGrabActiveColor = ThemeSources.Material.Palenight.Secondary,
-		TabColor = ThemeSources.Material.Palenight.Surface.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
-		TabHoveredColor = ThemeSources.Material.Palenight.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
-		TabActiveColor = ThemeSources.Material.Palenight.Primary.AdjustForSufficientContrast(ThemeSources.Material.Palenight.Foreground),
-		PlotLinesColor = ThemeSources.Material.Palenight.OnSurface,
-		PlotHistogramColor = ThemeSources.Material.Palenight.OnPrimary
+		TabColor = ThemeSources.Material.Palenight.Surface.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
+		TabHoveredColor = ThemeSources.Material.Palenight.Card.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
+		TabActiveColor = ThemeSources.Material.Palenight.Primary.AdjustForSufficientContrast(ThemeSources.Material.Palenight.OnBackground),
+		PlotLinesColor = ThemeSources.Material.Palenight.Info,
+		PlotHistogramColor = ThemeSources.Material.Palenight.Accent
 	};
 
 	/// <summary>
