@@ -918,7 +918,7 @@ internal class ImGuiStylerDemo
 		ImGui.TextUnformatted("Theme.Apply(Theme.Palette.Blue);");
 		ImGui.TextUnformatted("");
 		ImGui.TextUnformatted("// Create a custom theme definition");
-		ImGui.TextUnformatted("var customTheme = new Theme.ThemeDefinition()");
+		ImGui.TextUnformatted("var customTheme = new ThemeDefinition()");
 		ImGui.TextUnformatted("{");
 		ImGui.TextUnformatted("    BackgroundColor = Color.FromHex(\"#1e1e1e\"),");
 		ImGui.TextUnformatted("    TextColor = Color.FromHex(\"#ffffff\"),");
