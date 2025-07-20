@@ -11,7 +11,6 @@ using ktsu.ImGuiApp;
 using ktsu.ImGuiStyler;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
 internal class ImGuiStylerDemo
 {
 	private static bool valueBool = true;
@@ -32,17 +31,9 @@ internal class ImGuiStylerDemo
 	private static int buttonAlignment = 1; // 0=Left, 1=Center
 	private static readonly float[] styleVarValues = [4.0f, 8.0f, 6.0f, 12.0f]; // FramePadding.X, FramePadding.Y, ItemSpacing.X, ItemSpacing.Y
 
-	private static readonly string[] themeColorNames = [
-		"Normal", "Red", "Green", "Blue", "Cyan", "Magenta", "Yellow",
-		"Orange", "Pink", "Lime", "Purple", "White", "Gray", "LightGray", "DarkGray"
-	];
-
-	private static readonly ImColor[] themeColors = [
-		Theme.Palette.Normal, Theme.Palette.Red, Theme.Palette.Green, Theme.Palette.Blue,
-		Theme.Palette.Cyan, Theme.Palette.Magenta, Theme.Palette.Yellow, Theme.Palette.Orange,
-		Theme.Palette.Pink, Theme.Palette.Lime, Theme.Palette.Purple, Theme.Palette.White,
-		Theme.Palette.Gray, Theme.Palette.LightGray, Theme.Palette.DarkGray
-	];
+	// Cache theme info for performance
+	private static readonly IReadOnlyList<Theme.ThemeInfo> availablePaletteColors = Theme.AvailablePaletteColors;
+	private static readonly IReadOnlyList<Theme.ThemeDefinitionInfo> availableThemeDefinitions = Theme.AvailableThemeDefinitions;
 
 	private static readonly string[] textColorNames = ["Normal", "Error", "Warning", "Info", "Success"];
 
@@ -51,7 +42,7 @@ internal class ImGuiStylerDemo
 		ImGuiStylerDemo demo = new();
 		ImGuiApp.Start(new()
 		{
-			Title = "ImGuiStyler Demo - Comprehensive Feature Showcase",
+			Title = "ImGuiStyler Demo",
 			OnAppMenu = demo.OnMenu,
 			OnMoveOrResize = demo.OnWindowResized,
 			OnRender = demo.OnTick,
@@ -70,9 +61,15 @@ internal class ImGuiStylerDemo
 
 		if (ImGui.BeginTabBar("DemoTabs"))
 		{
-			if (ImGui.BeginTabItem("Theme System"))
+			if (ImGui.BeginTabItem("Simple Themes"))
 			{
 				ShowThemeSystemDemo();
+				ImGui.EndTabItem();
+			}
+
+			if (ImGui.BeginTabItem("Complete Themes"))
+			{
+				ShowCompleteThemesDemo();
 				ImGui.EndTabItem();
 			}
 
@@ -130,9 +127,9 @@ internal class ImGuiStylerDemo
 
 		// Global theme selection
 		ImGui.Text("Global Theme:");
-		if (ImGui.Combo("Theme Color", ref selectedThemeColor, themeColorNames, themeColorNames.Length))
+		if (ImGui.Combo("Theme Color", ref selectedThemeColor, availablePaletteColors.Select(c => c.Name).ToArray(), availablePaletteColors.Count))
 		{
-			Theme.Apply(themeColors[selectedThemeColor]);
+			Theme.Apply(availablePaletteColors[selectedThemeColor].Color);
 		}
 
 		ImGui.Separator();
@@ -140,10 +137,10 @@ internal class ImGuiStylerDemo
 		// Theme palette showcase
 		ImGui.Text("Theme Palette Colors:");
 		ImGui.Columns(5, "ThemePalette");
-		for (int i = 0; i < themeColors.Length; i++)
+		for (int i = 0; i < availablePaletteColors.Count; i++)
 		{
-			ImGui.ColorButton($"##{themeColorNames[i]}", themeColors[i].Value, ImGuiColorEditFlags.None, new Vector2(60, 40));
-			ImGui.Text(themeColorNames[i]);
+			ImGui.ColorButton($"##{availablePaletteColors[i].Name}", availablePaletteColors[i].Color.Value, ImGuiColorEditFlags.None, new Vector2(60, 40));
+			ImGui.Text(availablePaletteColors[i].Name);
 			ImGui.NextColumn();
 		}
 		ImGui.Columns(1);
@@ -184,7 +181,7 @@ internal class ImGuiStylerDemo
 		// Show theme color calculations
 		ImGui.Separator();
 		ImGui.Text("Theme Color Calculations:");
-		ImColor baseColor = themeColors[selectedThemeColor];
+		ImColor baseColor = availablePaletteColors[selectedThemeColor].Color;
 		ImGui.Text($"Base Color: {baseColor.Value.X:F2}, {baseColor.Value.Y:F2}, {baseColor.Value.Z:F2}");
 		ImGui.ColorButton("Base", baseColor.Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
 		ImGui.SameLine();
@@ -857,6 +854,102 @@ internal class ImGuiStylerDemo
 			ImGui.TextUnformatted("This child window has rounded corners");
 			ImGui.Button("Rounded Button");
 			ImGui.EndChild();
+		}
+	}
+
+	private static void ShowCompleteThemesDemo()
+	{
+		ImGui.TextUnformatted("Complete Theme Definitions");
+		ImGui.Text("Comprehensive theme definitions with precise control over all UI elements.");
+		ImGui.Separator();
+
+		ImGui.Text("Complete Theme Showcase:");
+		ImGui.Text("These themes define every UI element color individually for precise control.");
+		ImGui.Separator();
+
+		// Group themes by category for better organization
+		IOrderedEnumerable<IGrouping<string, Theme.ThemeDefinitionInfo>> themesByCategory = availableThemeDefinitions.GroupBy(t => t.Category).OrderBy(g => g.Key);
+
+		foreach (IGrouping<string, Theme.ThemeDefinitionInfo> categoryGroup in themesByCategory)
+		{
+			ImGui.Text($"{categoryGroup.Key} Themes:");
+			ImGui.Indent();
+
+			foreach (Theme.ThemeDefinitionInfo themeInfo in categoryGroup)
+			{
+				if (ImGui.Button($"Apply {themeInfo.Name}"))
+				{
+					Theme.Apply(themeInfo.Definition);
+				}
+				ImGui.SameLine();
+				ImGui.Text($"- {themeInfo.Description}");
+			}
+
+			ImGui.Unindent();
+			ImGui.Separator();
+		}
+
+		ImGui.Separator();
+
+		ImGui.Text("Theme Definition Properties:");
+		ImGui.BulletText("BackgroundColor - Primary background color");
+		ImGui.BulletText("TextColor - Primary text color");
+		ImGui.BulletText("AccentColor - Primary accent color");
+		ImGui.BulletText("ButtonColor - Button background color");
+		ImGui.BulletText("ButtonHoveredColor - Button hover color");
+		ImGui.BulletText("ButtonActiveColor - Button active color");
+		ImGui.BulletText("FrameColor - Input frame background color");
+		ImGui.BulletText("HeaderColor - Header background color");
+		ImGui.BulletText("BorderColor - Border color");
+		ImGui.BulletText("ScrollbarColor - Scrollbar color");
+		ImGui.BulletText("CheckMarkColor - Checkbox checkmark color");
+		ImGui.BulletText("SliderGrabColor - Slider grab color");
+		ImGui.BulletText("TabColor - Tab background color");
+		ImGui.BulletText("PlotLinesColor - Plot line color");
+		ImGui.BulletText("PlotHistogramColor - Plot histogram color");
+
+		ImGui.Separator();
+
+		ImGui.Text("Usage Examples:");
+		ImGui.TextUnformatted("// Apply a complete theme definition");
+		ImGui.TextUnformatted("Theme.Apply(Theme.Dracula);");
+		ImGui.TextUnformatted("");
+		ImGui.TextUnformatted("// Apply a simple color-based theme");
+		ImGui.TextUnformatted("Theme.Apply(Theme.Palette.Blue);");
+		ImGui.TextUnformatted("");
+		ImGui.TextUnformatted("// Create a custom theme definition");
+		ImGui.TextUnformatted("var customTheme = new Theme.ThemeDefinition()");
+		ImGui.TextUnformatted("{");
+		ImGui.TextUnformatted("    BackgroundColor = Color.FromHex(\"#1e1e1e\"),");
+		ImGui.TextUnformatted("    TextColor = Color.FromHex(\"#ffffff\"),");
+		ImGui.TextUnformatted("    AccentColor = Color.FromHex(\"#007acc\"),");
+		ImGui.TextUnformatted("    // ... other properties");
+		ImGui.TextUnformatted("};");
+		ImGui.TextUnformatted("Theme.Apply(customTheme);");
+
+		ImGui.Separator();
+
+		ImGui.Text("Test the current theme with different UI elements:");
+		ImGui.Button("Sample Button");
+		ImGui.SameLine();
+		ImGui.Checkbox("Sample Checkbox", ref valueBool);
+		ImGui.SliderFloat("Sample Slider", ref valueFloat, 0.0f, 1.0f);
+		ImGui.InputText("Sample Input", ref valueString, 128);
+		ImGui.ProgressBar(0.7f, new Vector2(-1, 0), "Sample Progress");
+
+		using (Text.Color.Success())
+		{
+			ImGui.TextUnformatted("Success text color");
+		}
+
+		using (Text.Color.Error())
+		{
+			ImGui.TextUnformatted("Error text color");
+		}
+
+		using (Text.Color.Warning())
+		{
+			ImGui.TextUnformatted("Warning text color");
 		}
 	}
 
