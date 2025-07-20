@@ -1,5 +1,3 @@
-## v1.3.3 (patch)
+## v1.3.3
 
-Changes since v1.3.2:
-
-- Refactor configuration and update project files ([@matt-edmondson](https://github.com/matt-edmondson))
+Changes since v1.3.3:
