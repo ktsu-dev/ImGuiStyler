@@ -115,398 +115,94 @@ public static class Theme
 	/// Dracula theme - Dark purple theme with vibrant colors.
 	/// Now generated using intelligent color family selection for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition Dracula => SimplePaletteGenerator.CreateDraculaTheme();
+	public static ThemeDefinition Dracula => PaletteGenerator.CreateDraculaTheme();
 
 	/// <summary>
 	/// Nord theme - Arctic, north-bluish color theme.
 	/// Now generated using intelligent color family selection for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition Nord => SimplePaletteGenerator.CreateNordTheme();
+	public static ThemeDefinition Nord => PaletteGenerator.CreateNordTheme();
 
 	/// <summary>
-	/// VSCode Dark theme - Dark theme inspired by Visual Studio Code.
+	/// VS Code Dark theme - The popular dark theme from Visual Studio Code.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition VSCodeDark => new()
-	{
-		BackgroundColor = ThemeSources.VSCode.Dark.Background.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		TextColor = ThemeSources.VSCode.Dark.Foreground,
-		AccentColor = ThemeSources.VSCode.Dark.AccentBlue,
-		ButtonColor = ThemeSources.VSCode.Dark.Button.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		ButtonHoveredColor = ThemeSources.VSCode.Dark.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		ButtonActiveColor = ThemeSources.VSCode.Dark.AccentBlue,
-		FrameColor = ThemeSources.VSCode.Dark.InputBackground.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		FrameHoveredColor = ThemeSources.VSCode.Dark.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		FrameActiveColor = ThemeSources.VSCode.Dark.AccentBlue,
-		HeaderColor = ThemeSources.VSCode.Dark.Button.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		HeaderHoveredColor = ThemeSources.VSCode.Dark.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		HeaderActiveColor = ThemeSources.VSCode.Dark.AccentBlue,
-		BorderColor = ThemeSources.VSCode.Dark.InputBackground,
-		ScrollbarColor = ThemeSources.VSCode.Dark.Button,
-		ScrollbarHoveredColor = ThemeSources.VSCode.Dark.ButtonHover,
-		ScrollbarActiveColor = ThemeSources.VSCode.Dark.AccentBlue,
-		CheckMarkColor = ThemeSources.VSCode.Dark.AccentBlue,
-		SliderGrabColor = ThemeSources.VSCode.Dark.AccentBlue,
-		SliderGrabActiveColor = ThemeSources.VSCode.Dark.AccentGreen,
-		TabColor = ThemeSources.VSCode.Dark.Button.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		TabHoveredColor = ThemeSources.VSCode.Dark.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		TabActiveColor = ThemeSources.VSCode.Dark.AccentBlue.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
-		PlotLinesColor = ThemeSources.VSCode.Dark.AccentBlue,
-		PlotHistogramColor = ThemeSources.VSCode.Dark.AccentGreen
-	};
+	public static ThemeDefinition VSCodeDark => PaletteGenerator.CreateVSCodeDarkTheme();
 
 	/// <summary>
-	/// OneDark theme - Popular dark theme with balanced colors.
+	/// One Dark theme - Popular dark theme with balanced colors.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition OneDark => new()
-	{
-		BackgroundColor = ThemeSources.OneDark.Background.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		TextColor = ThemeSources.OneDark.Foreground,
-		AccentColor = ThemeSources.OneDark.Blue,
-		ButtonColor = ThemeSources.OneDark.Selection.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		ButtonHoveredColor = ThemeSources.OneDark.BackgroundLight.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		ButtonActiveColor = ThemeSources.OneDark.Blue,
-		FrameColor = ThemeSources.OneDark.Selection.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		FrameHoveredColor = ThemeSources.OneDark.BackgroundLight.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		FrameActiveColor = ThemeSources.OneDark.Blue,
-		HeaderColor = ThemeSources.OneDark.Selection.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		HeaderHoveredColor = ThemeSources.OneDark.BackgroundLight.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		HeaderActiveColor = ThemeSources.OneDark.Blue,
-		BorderColor = ThemeSources.OneDark.BackgroundLight,
-		ScrollbarColor = ThemeSources.OneDark.Selection,
-		ScrollbarHoveredColor = ThemeSources.OneDark.BackgroundLight,
-		ScrollbarActiveColor = ThemeSources.OneDark.Blue,
-		CheckMarkColor = ThemeSources.OneDark.Green,
-		SliderGrabColor = ThemeSources.OneDark.Blue,
-		SliderGrabActiveColor = ThemeSources.OneDark.Cyan,
-		TabColor = ThemeSources.OneDark.Selection.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		TabHoveredColor = ThemeSources.OneDark.BackgroundLight.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		TabActiveColor = ThemeSources.OneDark.Blue.AdjustForSufficientContrast(ThemeSources.OneDark.Foreground),
-		PlotLinesColor = ThemeSources.OneDark.Purple,
-		PlotHistogramColor = ThemeSources.OneDark.Red
-	};
+	public static ThemeDefinition OneDark => PaletteGenerator.CreateOneDarkTheme();
 
 	/// <summary>
 	/// Gruvbox Dark theme - Retro groove color scheme with dark background.
 	/// Now generated using intelligent color family selection for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition GruvboxDark => SimplePaletteGenerator.CreateGruvboxTheme();
+	public static ThemeDefinition GruvboxDark => PaletteGenerator.CreateGruvboxTheme();
 
 	/// <summary>
-	/// Catppuccin Latte theme - Light and warm pastel theme.
-	/// Uses proper color hierarchy: Base → Surface0 → Surface1 for consistent text readability.
+	/// Catppuccin Latte theme - Light theme with warm colors.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition CatppuccinLatte => new()
-	{
-		BackgroundColor = ThemeSources.CatppuccinLatte.Base.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		TextColor = ThemeSources.CatppuccinLatte.Text,
-		AccentColor = ThemeSources.CatppuccinLatte.Mauve,
-		ButtonColor = ThemeSources.CatppuccinLatte.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		ButtonHoveredColor = ThemeSources.CatppuccinLatte.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		ButtonActiveColor = ThemeSources.CatppuccinLatte.Mauve,
-		FrameColor = ThemeSources.CatppuccinLatte.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		FrameHoveredColor = ThemeSources.CatppuccinLatte.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		FrameActiveColor = ThemeSources.CatppuccinLatte.Mauve,
-		HeaderColor = ThemeSources.CatppuccinLatte.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		HeaderHoveredColor = ThemeSources.CatppuccinLatte.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		HeaderActiveColor = ThemeSources.CatppuccinLatte.Mauve,
-		BorderColor = ThemeSources.CatppuccinLatte.Surface1,
-		ScrollbarColor = ThemeSources.CatppuccinLatte.Surface0,
-		ScrollbarHoveredColor = ThemeSources.CatppuccinLatte.Surface1,
-		ScrollbarActiveColor = ThemeSources.CatppuccinLatte.Mauve,
-		CheckMarkColor = ThemeSources.CatppuccinLatte.Mauve,
-		SliderGrabColor = ThemeSources.CatppuccinLatte.Mauve,
-		SliderGrabActiveColor = ThemeSources.CatppuccinLatte.Mauve,
-		TabColor = ThemeSources.CatppuccinLatte.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		TabHoveredColor = ThemeSources.CatppuccinLatte.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		TabActiveColor = ThemeSources.CatppuccinLatte.Mauve.AdjustForSufficientContrast(ThemeSources.CatppuccinLatte.Text),
-		PlotLinesColor = ThemeSources.CatppuccinLatte.Blue,
-		PlotHistogramColor = ThemeSources.CatppuccinLatte.Green
-	};
+	public static ThemeDefinition CatppuccinLatte => PaletteGenerator.CreateCatppuccinLatteTheme();
 
 	/// <summary>
-	/// Catppuccin Frappe theme - Dark theme with purple accents.
-	/// Uses proper color hierarchy: Base → Surface0 → Surface1 for consistent text readability.
+	/// Catppuccin Frappe theme - Dark theme with warm purple tones.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition CatppuccinFrappe => new()
-	{
-		BackgroundColor = ThemeSources.CatppuccinFrappe.Base.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		TextColor = ThemeSources.CatppuccinFrappe.Text,
-		AccentColor = ThemeSources.CatppuccinFrappe.Mauve,
-		ButtonColor = ThemeSources.CatppuccinFrappe.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		ButtonHoveredColor = ThemeSources.CatppuccinFrappe.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		ButtonActiveColor = ThemeSources.CatppuccinFrappe.Mauve,
-		FrameColor = ThemeSources.CatppuccinFrappe.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		FrameHoveredColor = ThemeSources.CatppuccinFrappe.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		FrameActiveColor = ThemeSources.CatppuccinFrappe.Mauve,
-		HeaderColor = ThemeSources.CatppuccinFrappe.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		HeaderHoveredColor = ThemeSources.CatppuccinFrappe.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		HeaderActiveColor = ThemeSources.CatppuccinFrappe.Mauve,
-		BorderColor = ThemeSources.CatppuccinFrappe.Surface1,
-		ScrollbarColor = ThemeSources.CatppuccinFrappe.Surface0,
-		ScrollbarHoveredColor = ThemeSources.CatppuccinFrappe.Surface1,
-		ScrollbarActiveColor = ThemeSources.CatppuccinFrappe.Mauve,
-		CheckMarkColor = ThemeSources.CatppuccinFrappe.Mauve,
-		SliderGrabColor = ThemeSources.CatppuccinFrappe.Mauve,
-		SliderGrabActiveColor = ThemeSources.CatppuccinFrappe.Mauve,
-		TabColor = ThemeSources.CatppuccinFrappe.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		TabHoveredColor = ThemeSources.CatppuccinFrappe.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		TabActiveColor = ThemeSources.CatppuccinFrappe.Mauve.AdjustForSufficientContrast(ThemeSources.CatppuccinFrappe.Text),
-		PlotLinesColor = ThemeSources.CatppuccinFrappe.Blue,
-		PlotHistogramColor = ThemeSources.CatppuccinFrappe.Green
-	};
+	public static ThemeDefinition CatppuccinFrappe => PaletteGenerator.CreateCatppuccinFrappeTheme();
 
 	/// <summary>
 	/// Catppuccin Macchiato theme - Dark theme with soft purple tones.
-	/// Uses proper color hierarchy: Base → Surface0 → Surface1 for consistent text readability.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition CatppuccinMacchiato => new()
-	{
-		BackgroundColor = ThemeSources.CatppuccinMacchiato.Base.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		TextColor = ThemeSources.CatppuccinMacchiato.Text,
-		AccentColor = ThemeSources.CatppuccinMacchiato.Mauve,
-		ButtonColor = ThemeSources.CatppuccinMacchiato.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		ButtonHoveredColor = ThemeSources.CatppuccinMacchiato.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		ButtonActiveColor = ThemeSources.CatppuccinMacchiato.Mauve,
-		FrameColor = ThemeSources.CatppuccinMacchiato.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		FrameHoveredColor = ThemeSources.CatppuccinMacchiato.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		FrameActiveColor = ThemeSources.CatppuccinMacchiato.Mauve,
-		HeaderColor = ThemeSources.CatppuccinMacchiato.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		HeaderHoveredColor = ThemeSources.CatppuccinMacchiato.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		HeaderActiveColor = ThemeSources.CatppuccinMacchiato.Mauve,
-		BorderColor = ThemeSources.CatppuccinMacchiato.Surface1,
-		ScrollbarColor = ThemeSources.CatppuccinMacchiato.Surface0,
-		ScrollbarHoveredColor = ThemeSources.CatppuccinMacchiato.Surface1,
-		ScrollbarActiveColor = ThemeSources.CatppuccinMacchiato.Mauve,
-		CheckMarkColor = ThemeSources.CatppuccinMacchiato.Mauve,
-		SliderGrabColor = ThemeSources.CatppuccinMacchiato.Mauve,
-		SliderGrabActiveColor = ThemeSources.CatppuccinMacchiato.Mauve,
-		TabColor = ThemeSources.CatppuccinMacchiato.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		TabHoveredColor = ThemeSources.CatppuccinMacchiato.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		TabActiveColor = ThemeSources.CatppuccinMacchiato.Mauve.AdjustForSufficientContrast(ThemeSources.CatppuccinMacchiato.Text),
-		PlotLinesColor = ThemeSources.CatppuccinMacchiato.Blue,
-		PlotHistogramColor = ThemeSources.CatppuccinMacchiato.Green
-	};
+	public static ThemeDefinition CatppuccinMacchiato => PaletteGenerator.CreateCatppuccinMacchiatoTheme();
 
 	/// <summary>
 	/// Catppuccin Mocha theme - Dark theme with blue accents.
-	/// Uses authentic Catppuccin color palette with semantic naming and proper color hierarchy.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition CatppuccinMocha => new()
-	{
-		BackgroundColor = ThemeSources.CatppuccinMocha.Base.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		TextColor = ThemeSources.CatppuccinMocha.Text,
-		AccentColor = ThemeSources.CatppuccinMocha.Blue,
-		ButtonColor = ThemeSources.CatppuccinMocha.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		ButtonHoveredColor = ThemeSources.CatppuccinMocha.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		ButtonActiveColor = ThemeSources.CatppuccinMocha.Surface0,
-		FrameColor = ThemeSources.CatppuccinMocha.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		FrameHoveredColor = ThemeSources.CatppuccinMocha.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		FrameActiveColor = ThemeSources.CatppuccinMocha.Surface0,
-		HeaderColor = ThemeSources.CatppuccinMocha.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		HeaderHoveredColor = ThemeSources.CatppuccinMocha.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		HeaderActiveColor = ThemeSources.CatppuccinMocha.Surface0,
-		BorderColor = ThemeSources.CatppuccinMocha.Surface1,
-		ScrollbarColor = ThemeSources.CatppuccinMocha.Surface0,
-		ScrollbarHoveredColor = ThemeSources.CatppuccinMocha.Surface1,
-		ScrollbarActiveColor = ThemeSources.CatppuccinMocha.Surface0,
-		CheckMarkColor = ThemeSources.CatppuccinMocha.Blue,
-		SliderGrabColor = ThemeSources.CatppuccinMocha.Blue,
-		SliderGrabActiveColor = ThemeSources.CatppuccinMocha.Blue,
-		TabColor = ThemeSources.CatppuccinMocha.Surface0.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		TabHoveredColor = ThemeSources.CatppuccinMocha.Surface1.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		TabActiveColor = ThemeSources.CatppuccinMocha.Blue.AdjustForSufficientContrast(ThemeSources.CatppuccinMocha.Text),
-		PlotLinesColor = ThemeSources.CatppuccinMocha.Sky,
-		PlotHistogramColor = ThemeSources.CatppuccinMocha.Green
-	};
+	public static ThemeDefinition CatppuccinMocha => PaletteGenerator.CreateCatppuccinMochaTheme();
 
 	/// <summary>
-	/// Monokai theme - Classic dark theme with bright accents.
+	/// Monokai theme - Dark theme with vibrant colors.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition Monokai => new()
-	{
-		BackgroundColor = ThemeSources.Monokai.Background.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		TextColor = ThemeSources.Monokai.Foreground,
-		AccentColor = ThemeSources.Monokai.Pink,
-		ButtonColor = ThemeSources.Monokai.LineHighlight.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		ButtonHoveredColor = ThemeSources.Monokai.Selection.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		ButtonActiveColor = ThemeSources.Monokai.Pink,
-		FrameColor = ThemeSources.Monokai.LineHighlight.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		FrameHoveredColor = ThemeSources.Monokai.Selection.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		FrameActiveColor = ThemeSources.Monokai.Pink,
-		HeaderColor = ThemeSources.Monokai.LineHighlight.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		HeaderHoveredColor = ThemeSources.Monokai.Selection.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		HeaderActiveColor = ThemeSources.Monokai.Pink,
-		BorderColor = ThemeSources.Monokai.Comment,
-		ScrollbarColor = ThemeSources.Monokai.LineHighlight,
-		ScrollbarHoveredColor = ThemeSources.Monokai.Selection,
-		ScrollbarActiveColor = ThemeSources.Monokai.Pink,
-		CheckMarkColor = ThemeSources.Monokai.Green,
-		SliderGrabColor = ThemeSources.Monokai.Pink,
-		SliderGrabActiveColor = ThemeSources.Monokai.Orange,
-		TabColor = ThemeSources.Monokai.LineHighlight.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		TabHoveredColor = ThemeSources.Monokai.Selection.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		TabActiveColor = ThemeSources.Monokai.Pink.AdjustForSufficientContrast(ThemeSources.Monokai.Foreground),
-		PlotLinesColor = ThemeSources.Monokai.Cyan,
-		PlotHistogramColor = ThemeSources.Monokai.Purple
-	};
+	public static ThemeDefinition Monokai => PaletteGenerator.CreateMonokaiTheme();
 
 	/// <summary>
-	/// Tokyo Night theme - Dark blue theme inspired by Tokyo's night skyline.
+	/// Tokyo Night theme - Dark theme inspired by Tokyo's night skyline.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition TokyoNight => new()
-	{
-		BackgroundColor = ThemeSources.TokyoNight.Bg.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		TextColor = ThemeSources.TokyoNight.Fg,
-		AccentColor = ThemeSources.TokyoNight.Blue,
-		ButtonColor = ThemeSources.TokyoNight.BgHighlight.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		ButtonHoveredColor = ThemeSources.TokyoNight.Dark3.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		ButtonActiveColor = ThemeSources.TokyoNight.Blue,
-		FrameColor = ThemeSources.TokyoNight.BgHighlight.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		FrameHoveredColor = ThemeSources.TokyoNight.Dark3.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		FrameActiveColor = ThemeSources.TokyoNight.Blue,
-		HeaderColor = ThemeSources.TokyoNight.BgHighlight.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		HeaderHoveredColor = ThemeSources.TokyoNight.Dark3.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		HeaderActiveColor = ThemeSources.TokyoNight.Blue,
-		BorderColor = ThemeSources.TokyoNight.Comment,
-		ScrollbarColor = ThemeSources.TokyoNight.BgHighlight,
-		ScrollbarHoveredColor = ThemeSources.TokyoNight.Dark3,
-		ScrollbarActiveColor = ThemeSources.TokyoNight.Blue,
-		CheckMarkColor = ThemeSources.TokyoNight.Green,
-		SliderGrabColor = ThemeSources.TokyoNight.Blue,
-		SliderGrabActiveColor = ThemeSources.TokyoNight.Purple,
-		TabColor = ThemeSources.TokyoNight.BgHighlight.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		TabHoveredColor = ThemeSources.TokyoNight.Dark3.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		TabActiveColor = ThemeSources.TokyoNight.Blue.AdjustForSufficientContrast(ThemeSources.TokyoNight.Fg),
-		PlotLinesColor = ThemeSources.TokyoNight.Cyan,
-		PlotHistogramColor = ThemeSources.TokyoNight.Red
-	};
+	public static ThemeDefinition TokyoNight => PaletteGenerator.CreateTokyoNightTheme();
 
 	/// <summary>
-	/// Nightfly theme - Dark theme with blue and purple accents.
+	/// Nightfly theme - Dark theme with cool blue tones.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition Nightfly => new()
-	{
-		BackgroundColor = ThemeSources.Nightfly.Background.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		TextColor = ThemeSources.Nightfly.Foreground,
-		AccentColor = ThemeSources.Nightfly.Blue,
-		ButtonColor = ThemeSources.Nightfly.Selection.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		ButtonHoveredColor = ThemeSources.Nightfly.Surface.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		ButtonActiveColor = ThemeSources.Nightfly.Blue,
-		FrameColor = ThemeSources.Nightfly.Selection.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		FrameHoveredColor = ThemeSources.Nightfly.Surface.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		FrameActiveColor = ThemeSources.Nightfly.Blue,
-		HeaderColor = ThemeSources.Nightfly.Selection.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		HeaderHoveredColor = ThemeSources.Nightfly.Surface.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		HeaderActiveColor = ThemeSources.Nightfly.Blue,
-		BorderColor = ThemeSources.Nightfly.Border,
-		ScrollbarColor = ThemeSources.Nightfly.Selection,
-		ScrollbarHoveredColor = ThemeSources.Nightfly.Surface,
-		ScrollbarActiveColor = ThemeSources.Nightfly.Blue,
-		CheckMarkColor = ThemeSources.Nightfly.Cyan,
-		SliderGrabColor = ThemeSources.Nightfly.Blue,
-		SliderGrabActiveColor = ThemeSources.Nightfly.Purple,
-		TabColor = ThemeSources.Nightfly.Selection.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		TabHoveredColor = ThemeSources.Nightfly.Surface.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		TabActiveColor = ThemeSources.Nightfly.Blue.AdjustForSufficientContrast(ThemeSources.Nightfly.Foreground),
-		PlotLinesColor = ThemeSources.Nightfly.Green,
-		PlotHistogramColor = ThemeSources.Nightfly.Red
-	};
+	public static ThemeDefinition Nightfly => PaletteGenerator.CreateNightflyTheme();
 
 	/// <summary>
-	/// Kanagawa theme - Japanese-inspired earthy theme.
+	/// Kanagawa theme - Dark theme with traditional Japanese colors.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition Kanagawa => new()
-	{
-		BackgroundColor = ThemeSources.Kanagawa.Background.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		TextColor = ThemeSources.Kanagawa.Foreground,
-		AccentColor = ThemeSources.Kanagawa.CrystalBlue,
-		ButtonColor = ThemeSources.Kanagawa.Selection.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		ButtonHoveredColor = ThemeSources.Kanagawa.Surface.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		ButtonActiveColor = ThemeSources.Kanagawa.CrystalBlue,
-		FrameColor = ThemeSources.Kanagawa.Selection.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		FrameHoveredColor = ThemeSources.Kanagawa.Surface.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		FrameActiveColor = ThemeSources.Kanagawa.CrystalBlue,
-		HeaderColor = ThemeSources.Kanagawa.Selection.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		HeaderHoveredColor = ThemeSources.Kanagawa.Surface.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		HeaderActiveColor = ThemeSources.Kanagawa.CrystalBlue,
-		BorderColor = ThemeSources.Kanagawa.Border,
-		ScrollbarColor = ThemeSources.Kanagawa.Selection,
-		ScrollbarHoveredColor = ThemeSources.Kanagawa.Surface,
-		ScrollbarActiveColor = ThemeSources.Kanagawa.CrystalBlue,
-		CheckMarkColor = ThemeSources.Kanagawa.AutumnGreen,
-		SliderGrabColor = ThemeSources.Kanagawa.CrystalBlue,
-		SliderGrabActiveColor = ThemeSources.Kanagawa.SpringViolet,
-		TabColor = ThemeSources.Kanagawa.Selection.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		TabHoveredColor = ThemeSources.Kanagawa.Surface.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		TabActiveColor = ThemeSources.Kanagawa.CrystalBlue.AdjustForSufficientContrast(ThemeSources.Kanagawa.Foreground),
-		PlotLinesColor = ThemeSources.Kanagawa.WaveAqua,
-		PlotHistogramColor = ThemeSources.Kanagawa.SurimihanaOrange
-	};
+	public static ThemeDefinition Kanagawa => PaletteGenerator.CreateKanagawaTheme();
 
 	/// <summary>
-	/// Paper Color Dark theme - Dark variant with warm colors.
+	/// PaperColor Dark theme - Dark variant with warm colors.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition PaperColorDark => new()
-	{
-		BackgroundColor = ThemeSources.PaperColor.Dark.Background.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		TextColor = ThemeSources.PaperColor.Dark.Foreground,
-		AccentColor = ThemeSources.PaperColor.Dark.Cyan,
-		ButtonColor = ThemeSources.PaperColor.Dark.Surface.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		ButtonHoveredColor = ThemeSources.PaperColor.Dark.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		ButtonActiveColor = ThemeSources.PaperColor.Dark.Cyan,
-		FrameColor = ThemeSources.PaperColor.Dark.Surface.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		FrameHoveredColor = ThemeSources.PaperColor.Dark.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		FrameActiveColor = ThemeSources.PaperColor.Dark.Cyan,
-		HeaderColor = ThemeSources.PaperColor.Dark.Surface.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		HeaderHoveredColor = ThemeSources.PaperColor.Dark.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		HeaderActiveColor = ThemeSources.PaperColor.Dark.Cyan,
-		BorderColor = ThemeSources.PaperColor.Dark.Border,
-		ScrollbarColor = ThemeSources.PaperColor.Dark.Surface,
-		ScrollbarHoveredColor = ThemeSources.PaperColor.Dark.SurfaceElevated,
-		ScrollbarActiveColor = ThemeSources.PaperColor.Dark.Cyan,
-		CheckMarkColor = ThemeSources.PaperColor.Dark.Magenta,
-		SliderGrabColor = ThemeSources.PaperColor.Dark.Cyan,
-		SliderGrabActiveColor = ThemeSources.PaperColor.Dark.Blue,
-		TabColor = ThemeSources.PaperColor.Dark.Surface.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		TabHoveredColor = ThemeSources.PaperColor.Dark.SurfaceElevated.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		TabActiveColor = ThemeSources.PaperColor.Dark.Cyan.AdjustForSufficientContrast(ThemeSources.PaperColor.Dark.Foreground),
-		PlotLinesColor = ThemeSources.PaperColor.Dark.Orange,
-		PlotHistogramColor = ThemeSources.PaperColor.Dark.Green
-	};
+	public static ThemeDefinition PaperColorDark => PaletteGenerator.CreatePaperColorDarkTheme();
 
 	/// <summary>
-	/// Nightfox theme - Dark theme with orange accents.
+	/// Nightfox theme - Dark theme with blue and orange accents.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition Nightfox => new()
-	{
-		BackgroundColor = ThemeSources.Nightfox.Background.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		TextColor = ThemeSources.Nightfox.Foreground,
-		AccentColor = ThemeSources.Nightfox.Blue,
-		ButtonColor = ThemeSources.Nightfox.Selection.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		ButtonHoveredColor = ThemeSources.Nightfox.Surface.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		ButtonActiveColor = ThemeSources.Nightfox.Blue,
-		FrameColor = ThemeSources.Nightfox.Selection.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		FrameHoveredColor = ThemeSources.Nightfox.Surface.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		FrameActiveColor = ThemeSources.Nightfox.Blue,
-		HeaderColor = ThemeSources.Nightfox.Selection.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		HeaderHoveredColor = ThemeSources.Nightfox.Surface.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		HeaderActiveColor = ThemeSources.Nightfox.Blue,
-		BorderColor = ThemeSources.Nightfox.Border,
-		ScrollbarColor = ThemeSources.Nightfox.Selection,
-		ScrollbarHoveredColor = ThemeSources.Nightfox.Surface,
-		ScrollbarActiveColor = ThemeSources.Nightfox.Blue,
-		CheckMarkColor = ThemeSources.Nightfox.Green,
-		SliderGrabColor = ThemeSources.Nightfox.Blue,
-		SliderGrabActiveColor = ThemeSources.Nightfox.BlueDark,
-		TabColor = ThemeSources.Nightfox.Selection.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		TabHoveredColor = ThemeSources.Nightfox.Surface.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		TabActiveColor = ThemeSources.Nightfox.Blue.AdjustForSufficientContrast(ThemeSources.Nightfox.Foreground),
-		PlotLinesColor = ThemeSources.Nightfox.Orange,
-		PlotHistogramColor = ThemeSources.Nightfox.Red
-	};
+	public static ThemeDefinition Nightfox => PaletteGenerator.CreateNightfoxTheme();
 
 	/// <summary>
-	/// Everforest Dark theme - Forest-inspired dark green theme.
+	/// Everforest Dark theme - Dark forest theme with green accents.
 	/// </summary>
 	public static ThemeDefinition EverforestDark => new()
 	{
@@ -537,36 +233,10 @@ public static class Theme
 	};
 
 	/// <summary>
-	/// VS Code Light theme - The popular light theme from Visual Studio Code.
-	/// Uses authentic VS Code color palette with semantic naming.
+	/// VS Code Light theme - Light theme from Visual Studio Code.
+	/// Now generated using intelligent color family relationships for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition VSCodeLight => new()
-	{
-		BackgroundColor = ThemeSources.VSCode.Light.Background.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		TextColor = ThemeSources.VSCode.Light.Foreground,
-		AccentColor = ThemeSources.VSCode.Light.AccentBlue,
-		ButtonColor = ThemeSources.VSCode.Light.Button.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		ButtonHoveredColor = ThemeSources.VSCode.Light.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		ButtonActiveColor = ThemeSources.VSCode.Light.AccentBlue,
-		FrameColor = ThemeSources.VSCode.Light.InputBackground.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		FrameHoveredColor = ThemeSources.VSCode.Light.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		FrameActiveColor = ThemeSources.VSCode.Light.AccentBlue,
-		HeaderColor = ThemeSources.VSCode.Light.Button.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		HeaderHoveredColor = ThemeSources.VSCode.Light.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		HeaderActiveColor = ThemeSources.VSCode.Light.AccentBlue,
-		BorderColor = ThemeSources.VSCode.Light.Border,
-		ScrollbarColor = ThemeSources.VSCode.Light.Button,
-		ScrollbarHoveredColor = ThemeSources.VSCode.Light.ButtonHover,
-		ScrollbarActiveColor = ThemeSources.VSCode.Light.AccentBlue,
-		CheckMarkColor = ThemeSources.VSCode.Light.AccentGreen,
-		SliderGrabColor = ThemeSources.VSCode.Light.AccentBlue,
-		SliderGrabActiveColor = ThemeSources.VSCode.Light.AccentBlueBright,
-		TabColor = ThemeSources.VSCode.Light.Button.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		TabHoveredColor = ThemeSources.VSCode.Light.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		TabActiveColor = ThemeSources.VSCode.Light.AccentBlue.AdjustForSufficientContrast(ThemeSources.VSCode.Light.Foreground),
-		PlotLinesColor = ThemeSources.VSCode.Light.AccentPurple,
-		PlotHistogramColor = ThemeSources.VSCode.Light.AccentTeal
-	};
+	public static ThemeDefinition VSCodeLight => PaletteGenerator.CreateVSCodeLightTheme();
 
 	/// <summary>
 	/// Gruvbox Light theme - Light variant of the retro groove color scheme.
@@ -1229,8 +899,8 @@ public static class Theme
 		new() { Name = "Dracula", Description = "A dark theme with purple accents and vampire-inspired colors", Category = "Dark", Definition = Dracula },
 		new() { Name = "OneDark", Description = "Popular dark theme with balanced colors", Category = "Dark", Definition = OneDark },
 		new() { Name = "One Dark Pro", Description = "Enhanced version of the popular One Dark theme", Category = "Dark", Definition = OneDarkPro },
-		new() { Name = "Nightfox", Description = "Dark theme with orange accents", Category = "Dark", Definition = Nightfox },
-		new() { Name = "Everforest Dark", Description = "Forest-inspired dark green theme", Category = "Dark", Definition = EverforestDark },
+		new() { Name = "Nightfox", Description = "Dark theme with blue and orange accents", Category = "Dark", Definition = Nightfox },
+		new() { Name = "Everforest Dark", Description = "Dark forest theme with green accents", Category = "Dark", Definition = EverforestDark },
 		new() { Name = "VS Code Dark", Description = "The popular dark theme from Visual Studio Code", Category = "Dark", Definition = VSCodeDark },
 		new() { Name = "Solarized Dark", Description = "Popular color scheme designed for readability", Category = "Dark", Definition = SolarizedDark },
 		new() { Name = "Material Darker", Description = "Dark variant of Google's Material Design", Category = "Dark", Definition = MaterialDarker },

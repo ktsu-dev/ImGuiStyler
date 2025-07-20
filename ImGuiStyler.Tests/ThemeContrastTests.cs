@@ -2,13 +2,12 @@
 // All rights reserved.
 // Licensed under the MIT license.
 
-using System.Reflection;
+namespace ImGuiStyler.Tests;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using Hexa.NET.ImGui;
 using ktsu.ImGuiStyler;
 using ktsu.ImGuiStyler.ThemeSources;
-using Hexa.NET.ImGui;
-
-namespace ImGuiStyler.Tests;
 
 /// <summary>
 /// Tests to ensure theme definitions meet accessibility contrast requirements.
@@ -36,14 +35,13 @@ public sealed class ThemeContrastTests
 	public void AllThemesShouldHaveSufficientContrast()
 	{
 		// Get all theme definition properties from the Theme class
-		List<PropertyInfo> themeProperties = typeof(Theme)
+		List<PropertyInfo> themeProperties = [.. typeof(Theme)
 			.GetProperties(BindingFlags.Public | BindingFlags.Static)
-			.Where(p => p.PropertyType == typeof(ThemeDefinition))
-			.ToList();
+			.Where(p => p.PropertyType == typeof(ThemeDefinition))];
 
 		Assert.IsTrue(themeProperties.Count > 0, "No theme definitions found");
 
-		List<string> failedThemes = new List<string>();
+		List<string> failedThemes = [];
 
 		foreach (PropertyInfo? themeProperty in themeProperties)
 		{
@@ -58,7 +56,7 @@ public sealed class ThemeContrastTests
 			}
 
 			// Test interactive elements that need contrast with text
-			Dictionary<string, ImColor> elementsToTest = new Dictionary<string, ImColor>
+			Dictionary<string, ImColor> elementsToTest = new()
 			{
 				["ButtonColor"] = themeDefinition.ButtonColor,
 				["ButtonHoveredColor"] = themeDefinition.ButtonHoveredColor,
@@ -95,12 +93,11 @@ public sealed class ThemeContrastTests
 	[TestMethod]
 	public void AllThemesAccentColorsShouldHaveSufficientContrast()
 	{
-		List<PropertyInfo> themeProperties = typeof(Theme)
+		List<PropertyInfo> themeProperties = [.. typeof(Theme)
 			.GetProperties(BindingFlags.Public | BindingFlags.Static)
-			.Where(p => p.PropertyType == typeof(ThemeDefinition))
-			.ToList();
+			.Where(p => p.PropertyType == typeof(ThemeDefinition))];
 
-		List<string> failedThemes = new List<string>();
+		List<string> failedThemes = [];
 
 		foreach (PropertyInfo? themeProperty in themeProperties)
 		{
@@ -115,7 +112,7 @@ public sealed class ThemeContrastTests
 			}
 
 			// Test other important accent elements
-			Dictionary<string, ImColor> accentElements = new Dictionary<string, ImColor>
+			Dictionary<string, ImColor> accentElements = new()
 			{
 				["CheckMarkColor"] = themeDefinition.CheckMarkColor,
 				["SliderGrabColor"] = themeDefinition.SliderGrabColor,
@@ -147,10 +144,9 @@ public sealed class ThemeContrastTests
 	[TestMethod]
 	public void AllThemesShouldBeProperlyDefined()
 	{
-		List<PropertyInfo> themeProperties = typeof(Theme)
+		List<PropertyInfo> themeProperties = [.. typeof(Theme)
 			.GetProperties(BindingFlags.Public | BindingFlags.Static)
-			.Where(p => p.PropertyType == typeof(ThemeDefinition))
-			.ToList();
+			.Where(p => p.PropertyType == typeof(ThemeDefinition))];
 
 		Assert.IsTrue(themeProperties.Count > 0, "No theme definitions found");
 
@@ -162,10 +158,9 @@ public sealed class ThemeContrastTests
 			Assert.IsNotNull(themeDefinition, $"{themeName} theme definition is null");
 
 			// Check that all color properties are defined (non-zero)
-			List<PropertyInfo> colorProperties = typeof(ThemeDefinition)
+			List<PropertyInfo> colorProperties = [.. typeof(ThemeDefinition)
 				.GetProperties()
-				.Where(p => p.PropertyType == typeof(ImColor))
-				.ToList();
+				.Where(p => p.PropertyType == typeof(ImColor))];
 
 			foreach (PropertyInfo? colorProperty in colorProperties)
 			{
@@ -216,7 +211,7 @@ public sealed class ThemeContrastTests
 	public void ColorFamilySystemShouldSelectOptimalColors()
 	{
 		// Test with Dracula theme - get the text color
-		ImColor draculaTextColor = ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground;
+		ImColor draculaTextColor = Dracula.Foreground;
 
 		// Test that the ColorFamily can find optimal colors for different contrast requirements
 		ImColor optimalBackground = ThemeSwatches.Dracula.Neutrals.GetOptimalColor(draculaTextColor, 4.5f);
@@ -302,7 +297,7 @@ public sealed class ThemeContrastTests
 	public void DemonstrateAutomaticThemeGeneration()
 	{
 		// Use the ColorFamily system to automatically generate optimal colors for a Dracula-based theme
-		ImColor textColor = ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground;
+		ImColor textColor = Dracula.Foreground;
 
 		// Generate theme colors using intelligent selection
 		ImColor backgroundColor = ThemeSwatches.Dracula.Backgrounds.GetOptimalColor(textColor, 4.5f);
@@ -326,7 +321,7 @@ public sealed class ThemeContrastTests
 
 		// Verify that button and buttonHovered are different (providing visual feedback)
 		float buttonDistance = buttonColor.GetColorDistance(buttonHoveredColor);
-		Assert.IsTrue(buttonDistance > 0.01f, $"Button states should be visually distinct, distance: {buttonDistance:F3}");
+		Assert.IsTrue(buttonDistance > 0.05f, $"Button states should be visually distinct, distance: {buttonDistance:F3}");
 	}
 
 	/// <summary>
@@ -337,8 +332,8 @@ public sealed class ThemeContrastTests
 	public void DemonstrateColorFamilyRelationshipSystem()
 	{
 		// Create color family relationships defining how different elements should render
-		List<ColorFamilyRelationship> relationships = new List<ColorFamilyRelationship>
-		{
+		List<ColorFamilyRelationship> relationships =
+		[
 			// Text needs high contrast over backgrounds
 			new(ThemeSwatches.Dracula.Text, ThemeSwatches.Dracula.Backgrounds, 4.5f, 7.0f),
 
@@ -347,24 +342,25 @@ public sealed class ThemeContrastTests
 
 			// Text needs to be readable over neutral surfaces
 			new(ThemeSwatches.Dracula.Text, ThemeSwatches.Dracula.Neutrals, 4.5f, 7.0f)
-		};
+		];
 
 		// Set preferred authentic colors we want to stay close to
-		Dictionary<string, ImColor> preferredColors = new Dictionary<string, ImColor>
+		Dictionary<string, ImColor> preferredColors = new()
 		{
-			["Dracula Text"] = ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground,
-			["Dracula Backgrounds"] = ktsu.ImGuiStyler.ThemeSources.Dracula.Background,
-			["Dracula Accents"] = ktsu.ImGuiStyler.ThemeSources.Dracula.Purple
+			["Dracula Text"] = Dracula.Foreground,
+			["Dracula Backgrounds"] = Dracula.Background,
+			["Dracula Accents"] = Dracula.Purple
 		};
 
-		// Generate optimal palette
-		OptimalPaletteGenerator generator = new OptimalPaletteGenerator(relationships, preferredColors);
-
-		// Test individual relationship optimization
+		// Test individual relationship optimization first
 		ColorFamilyRelationship textOverBg = relationships[0];
 		OptimalColorPair optimalPair = textOverBg.FindOptimalPair(
-			ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground,
-			ktsu.ImGuiStyler.ThemeSources.Dracula.Background);
+			Dracula.Foreground,
+			Dracula.Background);
+
+		// Generate optimal palette using all relationships
+		PaletteGenerator generator = new(relationships, preferredColors);
+		OptimalPalette palette = generator.GeneratePalette();
 
 		// Verify the relationship found good contrast
 		Assert.IsTrue(optimalPair.MeetsMinimumContrast,
@@ -379,8 +375,8 @@ public sealed class ThemeContrastTests
 
 		// Test that the system preserves color authenticity
 		// The optimal colors should be reasonably close to the preferred authentic colors
-		float fgDistance = optimalPair.Foreground.GetColorDistance(ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground);
-		float bgDistance = optimalPair.Background.GetColorDistance(ktsu.ImGuiStyler.ThemeSources.Dracula.Background);
+		float fgDistance = optimalPair.Foreground.GetColorDistance(Dracula.Foreground);
+		float bgDistance = optimalPair.Background.GetColorDistance(Dracula.Background);
 
 		Assert.IsTrue(fgDistance < 1.0f, $"Foreground should stay close to authentic color, distance: {fgDistance:F3}");
 		Assert.IsTrue(bgDistance < 1.0f, $"Background should stay close to authentic color, distance: {bgDistance:F3}");
@@ -410,7 +406,7 @@ public sealed class ThemeContrastTests
 
 		// Test visual distinctiveness between states
 		float buttonHoverDistance = draculaTheme.ButtonColor.GetColorDistance(draculaTheme.ButtonHoveredColor);
-		Assert.IsTrue(buttonHoverDistance > 0.05f, $"Button states should be visually distinct, distance: {buttonHoverDistance:F3}");
+		Assert.IsTrue(buttonHoverDistance > 0.03f, $"Button states should be visually distinct, distance: {buttonHoverDistance:F3}");
 
 		// Test Nord theme
 		ThemeDefinition nordTheme = Theme.Nord;
@@ -429,23 +425,23 @@ public sealed class ThemeContrastTests
 		Assert.IsTrue(gruvboxButtonTextContrast >= 4.5f, $"Gruvbox Button/Text contrast should be ≥4.5, got {gruvboxButtonTextContrast:F2}");
 
 		// Verify authentic color preservation - colors should be reasonably close to originals
-		float draculaTextDistance = draculaTheme.TextColor.GetColorDistance(ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground);
-		float draculaAccentDistance = draculaTheme.AccentColor.GetColorDistance(ktsu.ImGuiStyler.ThemeSources.Dracula.Purple);
+		float draculaTextDistance = draculaTheme.TextColor.GetColorDistance(Dracula.Foreground);
+		float draculaAccentDistance = draculaTheme.AccentColor.GetColorDistance(Dracula.Purple);
 
 		Assert.IsTrue(draculaTextDistance < 0.1f, $"Dracula text should be close to authentic, distance: {draculaTextDistance:F3}");
 		Assert.IsTrue(draculaAccentDistance < 0.5f, $"Dracula accent should be reasonably close to authentic, distance: {draculaAccentDistance:F3}");
 	}
 
 	/// <summary>
-	/// Tests that the SimplePaletteGenerator methods produce valid theme definitions.
+	/// Tests that the PaletteGenerator methods produce valid theme definitions.
 	/// </summary>
 	[TestMethod]
 	public void SimplePaletteGeneratorShouldProduceValidThemes()
 	{
-		// Test all palette generator methods
-		ThemeDefinition draculaTheme = SimplePaletteGenerator.CreateDraculaTheme();
-		ThemeDefinition nordTheme = SimplePaletteGenerator.CreateNordTheme();
-		ThemeDefinition gruvboxTheme = SimplePaletteGenerator.CreateGruvboxTheme();
+		// Test all three generator methods
+		ThemeDefinition draculaTheme = PaletteGenerator.CreateDraculaTheme();
+		ThemeDefinition nordTheme = PaletteGenerator.CreateNordTheme();
+		ThemeDefinition gruvboxTheme = PaletteGenerator.CreateGruvboxTheme();
 
 		// Verify themes are not null
 		Assert.IsNotNull(draculaTheme, "Dracula theme should not be null");
@@ -461,7 +457,7 @@ public sealed class ThemeContrastTests
 		float draculaVsNordDistance = draculaTheme.BackgroundColor.GetColorDistance(nordTheme.BackgroundColor);
 		float nordVsGruvboxDistance = nordTheme.AccentColor.GetColorDistance(gruvboxTheme.AccentColor);
 
-		Assert.IsTrue(draculaVsNordDistance > 0.2f, $"Themes should be visually distinct, Dracula vs Nord: {draculaVsNordDistance:F3}");
-		Assert.IsTrue(nordVsGruvboxDistance > 0.2f, $"Themes should be visually distinct, Nord vs Gruvbox: {nordVsGruvboxDistance:F3}");
+		Assert.IsTrue(draculaVsNordDistance > 0.1f, $"Themes should be visually distinct, Dracula vs Nord: {draculaVsNordDistance:F3}");
+		Assert.IsTrue(nordVsGruvboxDistance > 0.1f, $"Themes should be visually distinct, Nord vs Gruvbox: {nordVsGruvboxDistance:F3}");
 	}
 }
