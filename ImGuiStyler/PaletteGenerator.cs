@@ -567,6 +567,406 @@ public class PaletteGenerator(IEnumerable<ColorFamilyRelationship> relationships
 		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
 	}
 
+	/// <summary>
+	/// Creates an Everforest Dark theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Everforest Dark theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateEverforestDarkTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Everforest.Dark.Text, ThemeSwatches.Everforest.Dark.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Everforest.Dark.Accents, ThemeSwatches.Everforest.Dark.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Everforest.Dark.Text, ThemeSwatches.Everforest.Dark.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Everforest.Dark.Accents, ThemeSwatches.Everforest.Dark.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Everforest.Dark.Fg,
+			["Background"] = Everforest.Dark.Bg0,
+			["Accent"] = Everforest.Dark.Purple,
+			["Neutral"] = Everforest.Dark.Bg1
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates an Everforest Light theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Everforest Light theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateEverforestLightTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Everforest.Light.Text, ThemeSwatches.Everforest.Light.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Everforest.Light.Accents, ThemeSwatches.Everforest.Light.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Everforest.Light.Text, ThemeSwatches.Everforest.Light.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Everforest.Light.Accents, ThemeSwatches.Everforest.Light.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Everforest.Light.Fg,
+			["Background"] = Everforest.Light.Bg0,
+			["Accent"] = Everforest.Light.Purple,
+			["Neutral"] = Everforest.Light.Bg1
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a Solarized Dark theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Solarized Dark theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateSolarizedDarkTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Solarized.TextDark, ThemeSwatches.Solarized.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Solarized.Accents, ThemeSwatches.Solarized.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Solarized.TextDark, ThemeSwatches.Solarized.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Solarized.Accents, ThemeSwatches.Solarized.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Solarized.Base0,
+			["Background"] = Solarized.Base03,
+			["Accent"] = Solarized.Blue,
+			["Neutral"] = Solarized.Base02
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a Solarized Light theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Solarized Light theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateSolarizedLightTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Solarized.TextLight, ThemeSwatches.Solarized.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Solarized.Accents, ThemeSwatches.Solarized.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Solarized.TextLight, ThemeSwatches.Solarized.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Solarized.Accents, ThemeSwatches.Solarized.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Solarized.Base00,
+			["Background"] = Solarized.Base3,
+			["Accent"] = Solarized.Blue,
+			["Neutral"] = Solarized.Base2
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates an Ayu Dark theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Ayu Dark theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateAyuDarkTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Ayu.Dark.Text, ThemeSwatches.Ayu.Dark.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Ayu.Dark.Accents, ThemeSwatches.Ayu.Dark.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Ayu.Dark.Text, ThemeSwatches.Ayu.Dark.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Ayu.Dark.Accents, ThemeSwatches.Ayu.Dark.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Ayu.Dark.Foreground,
+			["Background"] = Ayu.Dark.Background,
+			["Accent"] = Ayu.Dark.Cyan,
+			["Neutral"] = Ayu.Dark.Panel
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates an Ayu Light theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Ayu Light theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateAyuLightTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Ayu.Light.Text, ThemeSwatches.Ayu.Light.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Ayu.Light.Accents, ThemeSwatches.Ayu.Light.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Ayu.Light.Text, ThemeSwatches.Ayu.Light.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Ayu.Light.Accents, ThemeSwatches.Ayu.Light.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Ayu.Light.Foreground,
+			["Background"] = Ayu.Light.Background,
+			["Accent"] = Ayu.Light.Cyan,
+			["Neutral"] = Ayu.Light.Panel
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates an Ayu Mirage theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Ayu Mirage theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateAyuMirageTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Ayu.Mirage.Text, ThemeSwatches.Ayu.Mirage.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Ayu.Mirage.Accents, ThemeSwatches.Ayu.Mirage.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Ayu.Mirage.Text, ThemeSwatches.Ayu.Mirage.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Ayu.Mirage.Accents, ThemeSwatches.Ayu.Mirage.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Ayu.Mirage.Foreground,
+			["Background"] = Ayu.Mirage.Background,
+			["Accent"] = Ayu.Mirage.Cyan,
+			["Neutral"] = Ayu.Mirage.Panel
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a Gruvbox Light theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Gruvbox Light theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateGruvboxLightTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Gruvbox.Text, ThemeSwatches.Gruvbox.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Gruvbox.BrightAccents, ThemeSwatches.Gruvbox.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Gruvbox.Text, ThemeSwatches.Gruvbox.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Gruvbox.BrightAccents, ThemeSwatches.Gruvbox.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Gruvbox.Dark1,
+			["Background"] = Gruvbox.Light0,
+			["BrightAccent"] = Gruvbox.BrightOrange,
+			["Neutral"] = Gruvbox.Light1
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "BrightAccent");
+	}
+
+	/// <summary>
+	/// Creates a Tokyo Night Storm theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Tokyo Night Storm theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateTokyoNightStormTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.TokyoNight.Text, ThemeSwatches.TokyoNight.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.TokyoNight.Accents, ThemeSwatches.TokyoNight.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.TokyoNight.Text, ThemeSwatches.TokyoNight.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.TokyoNight.Accents, ThemeSwatches.TokyoNight.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = TokyoNight.Fg,
+			["Background"] = TokyoNight.BgDark,
+			["Accent"] = TokyoNight.Blue,
+			["Neutral"] = TokyoNight.BgHighlight
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a Material Darker theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Material Darker theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateMaterialDarkerTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Material.Darker.Text, ThemeSwatches.Material.Darker.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Material.Darker.Accents, ThemeSwatches.Material.Darker.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Material.Darker.Text, ThemeSwatches.Material.Darker.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Material.Darker.Accents, ThemeSwatches.Material.Darker.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Material.Darker.OnBackground,
+			["Background"] = Material.Darker.Background,
+			["Accent"] = Material.Darker.Primary,
+			["Neutral"] = Material.Darker.Surface
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a Material Ocean theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Material Ocean theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateMaterialOceanTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Material.Ocean.Text, ThemeSwatches.Material.Ocean.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Material.Ocean.Accents, ThemeSwatches.Material.Ocean.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Material.Ocean.Text, ThemeSwatches.Material.Ocean.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Material.Ocean.Accents, ThemeSwatches.Material.Ocean.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Material.Ocean.OnBackground,
+			["Background"] = Material.Ocean.Background,
+			["Accent"] = Material.Ocean.Primary,
+			["Neutral"] = Material.Ocean.Surface
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a Material Palenight theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Material Palenight theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateMaterialPalenightTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Material.Palenight.Text, ThemeSwatches.Material.Palenight.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Material.Palenight.Accents, ThemeSwatches.Material.Palenight.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Material.Palenight.Text, ThemeSwatches.Material.Palenight.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Material.Palenight.Accents, ThemeSwatches.Material.Palenight.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Material.Palenight.OnBackground,
+			["Background"] = Material.Palenight.Background,
+			["Accent"] = Material.Palenight.Primary,
+			["Neutral"] = Material.Palenight.Surface
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a OneDark Pro theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized OneDark Pro theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateOneDarkProTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.OneDarkPro.Text, ThemeSwatches.OneDarkPro.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.OneDarkPro.Accents, ThemeSwatches.OneDarkPro.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.OneDarkPro.Text, ThemeSwatches.OneDarkPro.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.OneDarkPro.Accents, ThemeSwatches.OneDarkPro.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = OneDarkPro.Foreground,
+			["Background"] = OneDarkPro.Background,
+			["Accent"] = OneDarkPro.Blue,
+			["Neutral"] = OneDarkPro.Selection
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a Synthwave '84 theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized Synthwave '84 theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateSynthwave84Theme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.Synthwave84.Text, ThemeSwatches.Synthwave84.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.Synthwave84.Accents, ThemeSwatches.Synthwave84.Backgrounds, 3.0f, 4.5f),
+			new(ThemeSwatches.Synthwave84.Text, ThemeSwatches.Synthwave84.Neutrals, 4.5f, 7.0f),
+			new(ThemeSwatches.Synthwave84.Accents, ThemeSwatches.Synthwave84.Neutrals, 3.0f, 4.5f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = Synthwave84.Text,
+			["Background"] = Synthwave84.Background,
+			["Accent"] = Synthwave84.NeonPink,
+			["Neutral"] = Synthwave84.Surface
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a High Contrast Dark theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized High Contrast Dark theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateHighContrastDarkTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.HighContrast.Dark.Text, ThemeSwatches.HighContrast.Dark.Backgrounds, 7.0f, 10.0f),
+			new(ThemeSwatches.HighContrast.Dark.Accents, ThemeSwatches.HighContrast.Dark.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.HighContrast.Dark.Text, ThemeSwatches.HighContrast.Dark.Neutrals, 7.0f, 10.0f),
+			new(ThemeSwatches.HighContrast.Dark.Accents, ThemeSwatches.HighContrast.Dark.Neutrals, 4.5f, 7.0f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = HighContrast.Dark.Text,
+			["Background"] = HighContrast.Dark.Background,
+			["Accent"] = HighContrast.Dark.AccentCyan,
+			["Neutral"] = HighContrast.Dark.Surface
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
+	/// <summary>
+	/// Creates a High Contrast Light theme using intelligent color family relationships.
+	/// </summary>
+	/// <returns>An optimized High Contrast Light theme definition using relationship-based palette generation.</returns>
+	public static ThemeDefinition CreateHighContrastLightTheme()
+	{
+		List<ColorFamilyRelationship> relationships = [
+			new(ThemeSwatches.HighContrast.Light.Text, ThemeSwatches.HighContrast.Light.Backgrounds, 7.0f, 10.0f),
+			new(ThemeSwatches.HighContrast.Light.Accents, ThemeSwatches.HighContrast.Light.Backgrounds, 4.5f, 7.0f),
+			new(ThemeSwatches.HighContrast.Light.Text, ThemeSwatches.HighContrast.Light.Neutrals, 7.0f, 10.0f),
+			new(ThemeSwatches.HighContrast.Light.Accents, ThemeSwatches.HighContrast.Light.Neutrals, 4.5f, 7.0f)
+		];
+
+		Dictionary<string, ImColor> preferredColors = new()
+		{
+			["Text"] = HighContrast.Light.Text,
+			["Background"] = HighContrast.Light.Background,
+			["Accent"] = HighContrast.Light.AccentBlue,
+			["Neutral"] = HighContrast.Light.Surface
+		};
+
+		PaletteGenerator generator = new(relationships, preferredColors);
+		return generator.GenerateThemeDefinition("Text", "Background", "Accent");
+	}
+
 	#endregion
 
 	#region Private Helper Methods
