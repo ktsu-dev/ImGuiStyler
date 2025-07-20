@@ -36,29 +36,29 @@ public sealed class ThemeContrastTests
 	public void AllThemesShouldHaveSufficientContrast()
 	{
 		// Get all theme definition properties from the Theme class
-		var themeProperties = typeof(Theme)
+		List<PropertyInfo> themeProperties = typeof(Theme)
 			.GetProperties(BindingFlags.Public | BindingFlags.Static)
 			.Where(p => p.PropertyType == typeof(ThemeDefinition))
 			.ToList();
 
 		Assert.IsTrue(themeProperties.Count > 0, "No theme definitions found");
 
-		var failedThemes = new List<string>();
+		List<string> failedThemes = new List<string>();
 
-		foreach (var themeProperty in themeProperties)
+		foreach (PropertyInfo? themeProperty in themeProperties)
 		{
-			var themeName = themeProperty.Name;
-			var themeDefinition = (ThemeDefinition)themeProperty.GetValue(null)!;
+			string themeName = themeProperty.Name;
+			ThemeDefinition themeDefinition = (ThemeDefinition)themeProperty.GetValue(null)!;
 
 			// Test background vs text contrast
-			var backgroundContrastRatio = themeDefinition.TextColor.GetContrastRatioOver(themeDefinition.BackgroundColor);
+			float backgroundContrastRatio = themeDefinition.TextColor.GetContrastRatioOver(themeDefinition.BackgroundColor);
 			if (backgroundContrastRatio < WcagAANormalText)
 			{
 				failedThemes.Add($"{themeName}: Background/Text contrast {backgroundContrastRatio:F2} < {WcagAANormalText}");
 			}
 
 			// Test interactive elements that need contrast with text
-			var elementsToTest = new Dictionary<string, ImColor>
+			Dictionary<string, ImColor> elementsToTest = new Dictionary<string, ImColor>
 			{
 				["ButtonColor"] = themeDefinition.ButtonColor,
 				["ButtonHoveredColor"] = themeDefinition.ButtonHoveredColor,
@@ -71,9 +71,9 @@ public sealed class ThemeContrastTests
 				["TabActiveColor"] = themeDefinition.TabActiveColor
 			};
 
-			foreach (var element in elementsToTest)
+			foreach (KeyValuePair<string, ImColor> element in elementsToTest)
 			{
-				var contrastRatio = themeDefinition.TextColor.GetContrastRatioOver(element.Value);
+				float contrastRatio = themeDefinition.TextColor.GetContrastRatioOver(element.Value);
 				if (contrastRatio < WcagAANormalText)
 				{
 					failedThemes.Add($"{themeName}: {element.Key}/Text contrast {contrastRatio:F2} < {WcagAANormalText}");
@@ -83,7 +83,7 @@ public sealed class ThemeContrastTests
 
 		if (failedThemes.Count > 0)
 		{
-			var failureMessage = "The following themes have insufficient contrast ratios:\n" +
+			string failureMessage = "The following themes have insufficient contrast ratios:\n" +
 								string.Join("\n", failedThemes);
 			Assert.Fail(failureMessage);
 		}
@@ -95,27 +95,27 @@ public sealed class ThemeContrastTests
 	[TestMethod]
 	public void AllThemesAccentColorsShouldHaveSufficientContrast()
 	{
-		var themeProperties = typeof(Theme)
+		List<PropertyInfo> themeProperties = typeof(Theme)
 			.GetProperties(BindingFlags.Public | BindingFlags.Static)
 			.Where(p => p.PropertyType == typeof(ThemeDefinition))
 			.ToList();
 
-		var failedThemes = new List<string>();
+		List<string> failedThemes = new List<string>();
 
-		foreach (var themeProperty in themeProperties)
+		foreach (PropertyInfo? themeProperty in themeProperties)
 		{
-			var themeName = themeProperty.Name;
-			var themeDefinition = (ThemeDefinition)themeProperty.GetValue(null)!;
+			string themeName = themeProperty.Name;
+			ThemeDefinition themeDefinition = (ThemeDefinition)themeProperty.GetValue(null)!;
 
 			// Test accent color vs background contrast
-			var accentContrastRatio = themeDefinition.AccentColor.GetContrastRatioOver(themeDefinition.BackgroundColor);
+			float accentContrastRatio = themeDefinition.AccentColor.GetContrastRatioOver(themeDefinition.BackgroundColor);
 			if (accentContrastRatio < WcagAALargeText)
 			{
 				failedThemes.Add($"{themeName}: Accent/Background contrast {accentContrastRatio:F2} < {WcagAALargeText}");
 			}
 
 			// Test other important accent elements
-			var accentElements = new Dictionary<string, ImColor>
+			Dictionary<string, ImColor> accentElements = new Dictionary<string, ImColor>
 			{
 				["CheckMarkColor"] = themeDefinition.CheckMarkColor,
 				["SliderGrabColor"] = themeDefinition.SliderGrabColor,
@@ -123,9 +123,9 @@ public sealed class ThemeContrastTests
 				["PlotHistogramColor"] = themeDefinition.PlotHistogramColor
 			};
 
-			foreach (var element in accentElements)
+			foreach (KeyValuePair<string, ImColor> element in accentElements)
 			{
-				var contrastRatio = element.Value.GetContrastRatioOver(themeDefinition.BackgroundColor);
+				float contrastRatio = element.Value.GetContrastRatioOver(themeDefinition.BackgroundColor);
 				if (contrastRatio < WcagAALargeText)
 				{
 					failedThemes.Add($"{themeName}: {element.Key}/Background contrast {contrastRatio:F2} < {WcagAALargeText}");
@@ -135,7 +135,7 @@ public sealed class ThemeContrastTests
 
 		if (failedThemes.Count > 0)
 		{
-			var failureMessage = "The following themes have insufficient accent color contrast ratios:\n" +
+			string failureMessage = "The following themes have insufficient accent color contrast ratios:\n" +
 								string.Join("\n", failedThemes);
 			Assert.Fail(failureMessage);
 		}
@@ -147,36 +147,36 @@ public sealed class ThemeContrastTests
 	[TestMethod]
 	public void AllThemesShouldBeProperlyDefined()
 	{
-		var themeProperties = typeof(Theme)
+		List<PropertyInfo> themeProperties = typeof(Theme)
 			.GetProperties(BindingFlags.Public | BindingFlags.Static)
 			.Where(p => p.PropertyType == typeof(ThemeDefinition))
 			.ToList();
 
 		Assert.IsTrue(themeProperties.Count > 0, "No theme definitions found");
 
-		foreach (var themeProperty in themeProperties)
+		foreach (PropertyInfo? themeProperty in themeProperties)
 		{
-			var themeName = themeProperty.Name;
-			var themeDefinition = (ThemeDefinition)themeProperty.GetValue(null)!;
+			string themeName = themeProperty.Name;
+			ThemeDefinition themeDefinition = (ThemeDefinition)themeProperty.GetValue(null)!;
 
 			Assert.IsNotNull(themeDefinition, $"{themeName} theme definition is null");
 
 			// Check that all color properties are defined (non-zero)
-			var colorProperties = typeof(ThemeDefinition)
+			List<PropertyInfo> colorProperties = typeof(ThemeDefinition)
 				.GetProperties()
 				.Where(p => p.PropertyType == typeof(ImColor))
 				.ToList();
 
-			foreach (var colorProperty in colorProperties)
+			foreach (PropertyInfo? colorProperty in colorProperties)
 			{
-				var color = (ImColor)colorProperty.GetValue(themeDefinition)!;
+				ImColor color = (ImColor)colorProperty.GetValue(themeDefinition)!;
 				// ImColor should not be completely transparent or uninitialized
 				// Vector4 components: X=Red, Y=Green, Z=Blue, W=Alpha
 				Assert.IsTrue(color.Value.W > 0,
 					$"{themeName}.{colorProperty.Name} appears to have zero alpha (completely transparent)");
 
 				// Check that at least one of RGB components is non-zero (unless it's intentionally pure black)
-				var hasColor = color.Value.X > 0 || color.Value.Y > 0 || color.Value.Z > 0;
+				bool hasColor = color.Value.X > 0 || color.Value.Y > 0 || color.Value.Z > 0;
 				Assert.IsTrue(hasColor || (color.Value.X == 0 && color.Value.Y == 0 && color.Value.Z == 0),
 					$"{themeName}.{colorProperty.Name} appears to be undefined");
 			}
@@ -191,15 +191,15 @@ public sealed class ThemeContrastTests
 	public void ContrastAdjustmentSystemShouldWork()
 	{
 		// Test with a known low-contrast combination
-		var darkGray = Color.FromHex("#333333");
-		var lightGray = Color.FromHex("#666666");
+		ImColor darkGray = Color.FromHex("#333333");
+		ImColor lightGray = Color.FromHex("#666666");
 
 		// These should have low contrast
-		var originalContrast = lightGray.GetContrastRatioOver(darkGray);
+		float originalContrast = lightGray.GetContrastRatioOver(darkGray);
 
 		// Adjust for sufficient contrast
-		var adjustedBackground = darkGray.AdjustForSufficientContrast(lightGray);
-		var adjustedContrast = lightGray.GetContrastRatioOver(adjustedBackground);
+		ImColor adjustedBackground = darkGray.AdjustForSufficientContrast(lightGray);
+		float adjustedContrast = lightGray.GetContrastRatioOver(adjustedBackground);
 
 		// The adjusted version should have better contrast
 		Assert.IsTrue(adjustedContrast >= Color.OptimalTextContrastRatio,
@@ -216,22 +216,22 @@ public sealed class ThemeContrastTests
 	public void ColorFamilySystemShouldSelectOptimalColors()
 	{
 		// Test with Dracula theme - get the text color
-		var draculaTextColor = ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground;
+		ImColor draculaTextColor = ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground;
 
 		// Test that the ColorFamily can find optimal colors for different contrast requirements
-		var optimalBackground = ThemeSwatches.Dracula.Neutrals.GetOptimalColor(draculaTextColor, 4.5f);
-		var backgroundContrast = draculaTextColor.GetContrastRatioOver(optimalBackground);
+		ImColor optimalBackground = ThemeSwatches.Dracula.Neutrals.GetOptimalColor(draculaTextColor, 4.5f);
+		float backgroundContrast = draculaTextColor.GetContrastRatioOver(optimalBackground);
 
 		Assert.IsTrue(backgroundContrast >= 4.5f,
 			$"ColorFamily should select background with contrast ≥4.5, got {backgroundContrast:F2}");
 
 		// Test accent color selection
-		var optimalAccent = ThemeSwatches.Dracula.Accents.GetOptimalColor(draculaTextColor, 3.0f);
-		var accentContrast = draculaTextColor.GetContrastRatioOver(optimalAccent);
+		ImColor optimalAccent = ThemeSwatches.Dracula.Accents.GetOptimalColor(draculaTextColor, 3.0f);
+		float accentContrast = draculaTextColor.GetContrastRatioOver(optimalAccent);
 
 		// This should be better than just picking the first accent color
-		var firstAccentColor = ThemeSwatches.Dracula.Accents[0];
-		var firstAccentContrast = draculaTextColor.GetContrastRatioOver(firstAccentColor);
+		ImColor firstAccentColor = ThemeSwatches.Dracula.Accents[0];
+		float firstAccentContrast = draculaTextColor.GetContrastRatioOver(firstAccentColor);
 
 		Assert.IsTrue(accentContrast >= firstAccentContrast,
 			$"Optimal accent ({accentContrast:F2}) should have better contrast than first accent ({firstAccentContrast:F2})");
@@ -244,23 +244,23 @@ public sealed class ThemeContrastTests
 	public void ColorFamiliesShouldBeSortedByLuminance()
 	{
 		// Test with Gruvbox backgrounds - should be sorted darkest to lightest
-		var gruvboxBackgrounds = ThemeSwatches.Gruvbox.Backgrounds;
+		ColorFamily gruvboxBackgrounds = ThemeSwatches.Gruvbox.Backgrounds;
 
 		Assert.IsTrue(gruvboxBackgrounds.Count > 1, "Should have multiple background colors");
 
 		// Check that they are properly sorted
 		for (int i = 0; i < gruvboxBackgrounds.Count - 1; i++)
 		{
-			var currentLuminance = gruvboxBackgrounds[i].GetRelativeLuminance();
-			var nextLuminance = gruvboxBackgrounds[i + 1].GetRelativeLuminance();
+			float currentLuminance = gruvboxBackgrounds[i].GetRelativeLuminance();
+			float nextLuminance = gruvboxBackgrounds[i + 1].GetRelativeLuminance();
 
 			Assert.IsTrue(currentLuminance <= nextLuminance,
 				$"Colors should be sorted by luminance: color {i} ({currentLuminance:F3}) should be darker than color {i + 1} ({nextLuminance:F3})");
 		}
 
 		// Test that Darkest and Lightest properties work correctly
-		var darkestLuminance = gruvboxBackgrounds.Darkest.GetRelativeLuminance();
-		var lightestLuminance = gruvboxBackgrounds.Lightest.GetRelativeLuminance();
+		float darkestLuminance = gruvboxBackgrounds.Darkest.GetRelativeLuminance();
+		float lightestLuminance = gruvboxBackgrounds.Lightest.GetRelativeLuminance();
 
 		Assert.IsTrue(darkestLuminance <= lightestLuminance,
 			$"Darkest ({darkestLuminance:F3}) should be darker than Lightest ({lightestLuminance:F3})");
@@ -273,24 +273,24 @@ public sealed class ThemeContrastTests
 	public void GetThemeSwatchesShouldReturnValidFamilies()
 	{
 		// Test valid theme names
-		var draculaSwatches = ThemeSwatches.GetThemeSwatches("dracula");
+		Dictionary<string, ColorFamily>? draculaSwatches = ThemeSwatches.GetThemeSwatches("dracula");
 		Assert.IsNotNull(draculaSwatches, "Should return valid swatches for Dracula theme");
 		Assert.IsTrue(draculaSwatches.ContainsKey("Accents"), "Should contain Accents family");
 		Assert.IsTrue(draculaSwatches.ContainsKey("Backgrounds"), "Should contain Backgrounds family");
 
-		var nordSwatches = ThemeSwatches.GetThemeSwatches("NORD");
+		Dictionary<string, ColorFamily>? nordSwatches = ThemeSwatches.GetThemeSwatches("NORD");
 		Assert.IsNotNull(nordSwatches, "Should return valid swatches for Nord theme (case insensitive)");
 		Assert.IsTrue(nordSwatches.ContainsKey("Aurora"), "Should contain Aurora family");
 
 		// Test invalid theme name
-		var invalidSwatches = ThemeSwatches.GetThemeSwatches("NonexistentTheme");
+		Dictionary<string, ColorFamily>? invalidSwatches = ThemeSwatches.GetThemeSwatches("NonexistentTheme");
 		Assert.IsNull(invalidSwatches, "Should return null for invalid theme names");
 
 		// Test null/empty input
-		var nullSwatches = ThemeSwatches.GetThemeSwatches(null!);
+		Dictionary<string, ColorFamily>? nullSwatches = ThemeSwatches.GetThemeSwatches(null!);
 		Assert.IsNull(nullSwatches, "Should return null for null input");
 
-		var emptySwatches = ThemeSwatches.GetThemeSwatches("");
+		Dictionary<string, ColorFamily>? emptySwatches = ThemeSwatches.GetThemeSwatches("");
 		Assert.IsNull(emptySwatches, "Should return null for empty input");
 	}
 
@@ -302,21 +302,21 @@ public sealed class ThemeContrastTests
 	public void DemonstrateAutomaticThemeGeneration()
 	{
 		// Use the ColorFamily system to automatically generate optimal colors for a Dracula-based theme
-		var textColor = ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground;
+		ImColor textColor = ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground;
 
 		// Generate theme colors using intelligent selection
-		var backgroundColor = ThemeSwatches.Dracula.Backgrounds.GetOptimalColor(textColor, 4.5f);
-		var buttonColor = ThemeSwatches.Dracula.Neutrals.GetOptimalColor(textColor, 4.5f);
-		var buttonHoveredColor = ThemeSwatches.Dracula.Neutrals.GetLighterThan(buttonColor);  // Get a lighter variant
-		var accentColor = ThemeSwatches.Dracula.Accents.GetOptimalColor(backgroundColor, 3.0f);
-		var headerColor = ThemeSwatches.Dracula.Neutrals.GetOptimalColor(textColor, 4.5f, buttonColor);
+		ImColor backgroundColor = ThemeSwatches.Dracula.Backgrounds.GetOptimalColor(textColor, 4.5f);
+		ImColor buttonColor = ThemeSwatches.Dracula.Neutrals.GetOptimalColor(textColor, 4.5f);
+		ImColor buttonHoveredColor = ThemeSwatches.Dracula.Neutrals.GetLighterThan(buttonColor);  // Get a lighter variant
+		ImColor accentColor = ThemeSwatches.Dracula.Accents.GetOptimalColor(backgroundColor, 3.0f);
+		ImColor headerColor = ThemeSwatches.Dracula.Neutrals.GetOptimalColor(textColor, 4.5f, buttonColor);
 
 		// Verify all generated colors meet or exceed contrast requirements
-		var bgContrast = textColor.GetContrastRatioOver(backgroundColor);
-		var buttonContrast = textColor.GetContrastRatioOver(buttonColor);
-		var buttonHoveredContrast = textColor.GetContrastRatioOver(buttonHoveredColor);
-		var accentContrast = accentColor.GetContrastRatioOver(backgroundColor);
-		var headerContrast = textColor.GetContrastRatioOver(headerColor);
+		float bgContrast = textColor.GetContrastRatioOver(backgroundColor);
+		float buttonContrast = textColor.GetContrastRatioOver(buttonColor);
+		float buttonHoveredContrast = textColor.GetContrastRatioOver(buttonHoveredColor);
+		float accentContrast = accentColor.GetContrastRatioOver(backgroundColor);
+		float headerContrast = textColor.GetContrastRatioOver(headerColor);
 
 		Assert.IsTrue(bgContrast >= 4.5f, $"Background contrast should be ≥4.5, got {bgContrast:F2}");
 		Assert.IsTrue(buttonContrast >= 4.5f, $"Button contrast should be ≥4.5, got {buttonContrast:F2}");
@@ -325,7 +325,143 @@ public sealed class ThemeContrastTests
 		Assert.IsTrue(headerContrast >= 4.5f, $"Header contrast should be ≥4.5, got {headerContrast:F2}");
 
 		// Verify that button and buttonHovered are different (providing visual feedback)
-		var buttonDistance = buttonColor.GetColorDistance(buttonHoveredColor);
+		float buttonDistance = buttonColor.GetColorDistance(buttonHoveredColor);
 		Assert.IsTrue(buttonDistance > 0.01f, $"Button states should be visually distinct, distance: {buttonDistance:F3}");
+	}
+
+	/// <summary>
+	/// Demonstrates the new ColorFamilyRelationship system for automatically generating
+	/// optimal color palettes that balance contrast requirements with authentic theme preservation.
+	/// </summary>
+	[TestMethod]
+	public void DemonstrateColorFamilyRelationshipSystem()
+	{
+		// Create color family relationships defining how different elements should render
+		List<ColorFamilyRelationship> relationships = new List<ColorFamilyRelationship>
+		{
+			// Text needs high contrast over backgrounds
+			new(ThemeSwatches.Dracula.Text, ThemeSwatches.Dracula.Backgrounds, 4.5f, 7.0f),
+
+			// Accents need good contrast over backgrounds (but less than text)
+			new(ThemeSwatches.Dracula.Accents, ThemeSwatches.Dracula.Backgrounds, 3.0f, 4.5f),
+
+			// Text needs to be readable over neutral surfaces
+			new(ThemeSwatches.Dracula.Text, ThemeSwatches.Dracula.Neutrals, 4.5f, 7.0f)
+		};
+
+		// Set preferred authentic colors we want to stay close to
+		Dictionary<string, ImColor> preferredColors = new Dictionary<string, ImColor>
+		{
+			["Dracula Text"] = ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground,
+			["Dracula Backgrounds"] = ktsu.ImGuiStyler.ThemeSources.Dracula.Background,
+			["Dracula Accents"] = ktsu.ImGuiStyler.ThemeSources.Dracula.Purple
+		};
+
+		// Generate optimal palette
+		OptimalPaletteGenerator generator = new OptimalPaletteGenerator(relationships, preferredColors);
+
+		// Test individual relationship optimization
+		ColorFamilyRelationship textOverBg = relationships[0];
+		OptimalColorPair optimalPair = textOverBg.FindOptimalPair(
+			ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground,
+			ktsu.ImGuiStyler.ThemeSources.Dracula.Background);
+
+		// Verify the relationship found good contrast
+		Assert.IsTrue(optimalPair.MeetsMinimumContrast,
+			$"Text over background should meet minimum contrast, got {optimalPair.ContrastRatio:F2}:1");
+
+		Assert.IsTrue(optimalPair.ContrastRatio >= 3.0f,
+			$"Should have decent contrast ratio, got {optimalPair.ContrastRatio:F2}:1");
+
+		// Verify quality metrics are reasonable
+		Assert.IsTrue(optimalPair.QualityScore > 0,
+			$"Should have positive quality score, got {optimalPair.QualityScore:F1}");
+
+		// Test that the system preserves color authenticity
+		// The optimal colors should be reasonably close to the preferred authentic colors
+		float fgDistance = optimalPair.Foreground.GetColorDistance(ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground);
+		float bgDistance = optimalPair.Background.GetColorDistance(ktsu.ImGuiStyler.ThemeSources.Dracula.Background);
+
+		Assert.IsTrue(fgDistance < 1.0f, $"Foreground should stay close to authentic color, distance: {fgDistance:F3}");
+		Assert.IsTrue(bgDistance < 1.0f, $"Background should stay close to authentic color, distance: {bgDistance:F3}");
+	}
+
+	/// <summary>
+	/// Demonstrates that the new palette-generated themes have better contrast ratios
+	/// than manually created themes while preserving authentic colors.
+	/// </summary>
+	[TestMethod]
+	public void PaletteGeneratedThemesShouldHaveOptimalContrast()
+	{
+		// Test the new palette-generated Dracula theme
+		ThemeDefinition draculaTheme = Theme.Dracula;
+
+		// Verify all critical contrast ratios
+		float bgTextContrast = draculaTheme.TextColor.GetContrastRatioOver(draculaTheme.BackgroundColor);
+		float buttonTextContrast = draculaTheme.TextColor.GetContrastRatioOver(draculaTheme.ButtonColor);
+		float headerTextContrast = draculaTheme.TextColor.GetContrastRatioOver(draculaTheme.HeaderColor);
+		float tabTextContrast = draculaTheme.TextColor.GetContrastRatioOver(draculaTheme.TabColor);
+
+		// All should meet WCAG AA standards for normal text (4.5:1)
+		Assert.IsTrue(bgTextContrast >= 4.5f, $"Background/Text contrast should be ≥4.5, got {bgTextContrast:F2}");
+		Assert.IsTrue(buttonTextContrast >= 4.5f, $"Button/Text contrast should be ≥4.5, got {buttonTextContrast:F2}");
+		Assert.IsTrue(headerTextContrast >= 4.5f, $"Header/Text contrast should be ≥4.5, got {headerTextContrast:F2}");
+		Assert.IsTrue(tabTextContrast >= 4.5f, $"Tab/Text contrast should be ≥4.5, got {tabTextContrast:F2}");
+
+		// Test visual distinctiveness between states
+		float buttonHoverDistance = draculaTheme.ButtonColor.GetColorDistance(draculaTheme.ButtonHoveredColor);
+		Assert.IsTrue(buttonHoverDistance > 0.05f, $"Button states should be visually distinct, distance: {buttonHoverDistance:F3}");
+
+		// Test Nord theme
+		ThemeDefinition nordTheme = Theme.Nord;
+		float nordBgTextContrast = nordTheme.TextColor.GetContrastRatioOver(nordTheme.BackgroundColor);
+		float nordButtonTextContrast = nordTheme.TextColor.GetContrastRatioOver(nordTheme.ButtonColor);
+
+		Assert.IsTrue(nordBgTextContrast >= 4.5f, $"Nord Background/Text contrast should be ≥4.5, got {nordBgTextContrast:F2}");
+		Assert.IsTrue(nordButtonTextContrast >= 4.5f, $"Nord Button/Text contrast should be ≥4.5, got {nordButtonTextContrast:F2}");
+
+		// Test Gruvbox theme
+		ThemeDefinition gruvboxTheme = Theme.GruvboxDark;
+		float gruvboxBgTextContrast = gruvboxTheme.TextColor.GetContrastRatioOver(gruvboxTheme.BackgroundColor);
+		float gruvboxButtonTextContrast = gruvboxTheme.TextColor.GetContrastRatioOver(gruvboxTheme.ButtonColor);
+
+		Assert.IsTrue(gruvboxBgTextContrast >= 4.5f, $"Gruvbox Background/Text contrast should be ≥4.5, got {gruvboxBgTextContrast:F2}");
+		Assert.IsTrue(gruvboxButtonTextContrast >= 4.5f, $"Gruvbox Button/Text contrast should be ≥4.5, got {gruvboxButtonTextContrast:F2}");
+
+		// Verify authentic color preservation - colors should be reasonably close to originals
+		float draculaTextDistance = draculaTheme.TextColor.GetColorDistance(ktsu.ImGuiStyler.ThemeSources.Dracula.Foreground);
+		float draculaAccentDistance = draculaTheme.AccentColor.GetColorDistance(ktsu.ImGuiStyler.ThemeSources.Dracula.Purple);
+
+		Assert.IsTrue(draculaTextDistance < 0.1f, $"Dracula text should be close to authentic, distance: {draculaTextDistance:F3}");
+		Assert.IsTrue(draculaAccentDistance < 0.5f, $"Dracula accent should be reasonably close to authentic, distance: {draculaAccentDistance:F3}");
+	}
+
+	/// <summary>
+	/// Tests that the SimplePaletteGenerator methods produce valid theme definitions.
+	/// </summary>
+	[TestMethod]
+	public void SimplePaletteGeneratorShouldProduceValidThemes()
+	{
+		// Test all palette generator methods
+		ThemeDefinition draculaTheme = SimplePaletteGenerator.CreateDraculaTheme();
+		ThemeDefinition nordTheme = SimplePaletteGenerator.CreateNordTheme();
+		ThemeDefinition gruvboxTheme = SimplePaletteGenerator.CreateGruvboxTheme();
+
+		// Verify themes are not null
+		Assert.IsNotNull(draculaTheme, "Dracula theme should not be null");
+		Assert.IsNotNull(nordTheme, "Nord theme should not be null");
+		Assert.IsNotNull(gruvboxTheme, "Gruvbox theme should not be null");
+
+		// Verify all themes have non-transparent alpha values
+		Assert.IsTrue(draculaTheme.TextColor.Value.W > 0, "Dracula text should not be transparent");
+		Assert.IsTrue(nordTheme.BackgroundColor.Value.W > 0, "Nord background should not be transparent");
+		Assert.IsTrue(gruvboxTheme.AccentColor.Value.W > 0, "Gruvbox accent should not be transparent");
+
+		// Verify themes have different characteristics (not all the same)
+		float draculaVsNordDistance = draculaTheme.BackgroundColor.GetColorDistance(nordTheme.BackgroundColor);
+		float nordVsGruvboxDistance = nordTheme.AccentColor.GetColorDistance(gruvboxTheme.AccentColor);
+
+		Assert.IsTrue(draculaVsNordDistance > 0.2f, $"Themes should be visually distinct, Dracula vs Nord: {draculaVsNordDistance:F3}");
+		Assert.IsTrue(nordVsGruvboxDistance > 0.2f, $"Themes should be visually distinct, Nord vs Gruvbox: {nordVsGruvboxDistance:F3}");
 	}
 }

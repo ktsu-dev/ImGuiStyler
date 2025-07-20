@@ -112,72 +112,19 @@ public static class Theme
 	#region Predefined Themes
 
 	/// <summary>
-	/// Dracula theme - A dark theme with purple accents.
-	/// Uses authentic Dracula color palette with semantic naming.
+	/// Dracula theme - Dark purple theme with vibrant colors.
+	/// Now generated using intelligent color family selection for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition Dracula => new()
-	{
-		BackgroundColor = ThemeSources.Dracula.Background.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		TextColor = ThemeSources.Dracula.Foreground,
-		AccentColor = ThemeSources.Dracula.Purple,
-		ButtonColor = ThemeSources.Dracula.CurrentLine.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		ButtonHoveredColor = ThemeSources.Dracula.Comment.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		ButtonActiveColor = ThemeSources.Dracula.Purple,
-		FrameColor = ThemeSources.Dracula.CurrentLine.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		FrameHoveredColor = ThemeSources.Dracula.Comment.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		FrameActiveColor = ThemeSources.Dracula.Purple,
-		HeaderColor = ThemeSources.Dracula.CurrentLine.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		HeaderHoveredColor = ThemeSources.Dracula.Comment.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		HeaderActiveColor = ThemeSources.Dracula.Purple,
-		BorderColor = ThemeSources.Dracula.Comment,
-		ScrollbarColor = ThemeSources.Dracula.CurrentLine,
-		ScrollbarHoveredColor = ThemeSources.Dracula.Comment,
-		ScrollbarActiveColor = ThemeSources.Dracula.Purple,
-		CheckMarkColor = ThemeSources.Dracula.Green,
-		SliderGrabColor = ThemeSources.Dracula.Purple,
-		SliderGrabActiveColor = ThemeSources.Dracula.Pink,
-		TabColor = ThemeSources.Dracula.CurrentLine.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		TabHoveredColor = ThemeSources.Dracula.Comment.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		TabActiveColor = ThemeSources.Dracula.Purple.AdjustForSufficientContrast(ThemeSources.Dracula.Foreground),
-		PlotLinesColor = ThemeSources.Dracula.Cyan,
-		PlotHistogramColor = ThemeSources.Dracula.Green
-	};
+	public static ThemeDefinition Dracula => SimplePaletteGenerator.CreateDraculaTheme();
 
 	/// <summary>
-	/// Nord theme - A dark theme with cool blue tones inspired by the arctic.
-	/// Uses authentic Nord color palette with semantic naming.
+	/// Nord theme - Arctic, north-bluish color theme.
+	/// Now generated using intelligent color family selection for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition Nord => new()
-	{
-		BackgroundColor = ThemeSources.Nord.Nord0.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		TextColor = ThemeSources.Nord.Nord4,
-		AccentColor = ThemeSources.Nord.Nord10,
-		ButtonColor = ThemeSources.Nord.Nord1.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		ButtonHoveredColor = ThemeSources.Nord.Nord2.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		ButtonActiveColor = ThemeSources.Nord.Nord10,
-		FrameColor = ThemeSources.Nord.Nord1.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		FrameHoveredColor = ThemeSources.Nord.Nord2.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		FrameActiveColor = ThemeSources.Nord.Nord10,
-		HeaderColor = ThemeSources.Nord.Nord1.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		HeaderHoveredColor = ThemeSources.Nord.Nord2.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		HeaderActiveColor = ThemeSources.Nord.Nord10,
-		BorderColor = ThemeSources.Nord.Nord3,
-		ScrollbarColor = ThemeSources.Nord.Nord1,
-		ScrollbarHoveredColor = ThemeSources.Nord.Nord2,
-		ScrollbarActiveColor = ThemeSources.Nord.Nord10,
-		CheckMarkColor = ThemeSources.Nord.Nord14,
-		SliderGrabColor = ThemeSources.Nord.Nord10,
-		SliderGrabActiveColor = ThemeSources.Nord.Nord9,
-		TabColor = ThemeSources.Nord.Nord1.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		TabHoveredColor = ThemeSources.Nord.Nord2.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		TabActiveColor = ThemeSources.Nord.Nord10.AdjustForSufficientContrast(ThemeSources.Nord.Nord4),
-		PlotLinesColor = ThemeSources.Nord.Nord8,
-		PlotHistogramColor = ThemeSources.Nord.Nord14
-	};
+	public static ThemeDefinition Nord => SimplePaletteGenerator.CreateNordTheme();
 
 	/// <summary>
-	/// VS Code Dark theme - The popular dark theme from Visual Studio Code.
-	/// Uses authentic VS Code color palette with semantic naming.
+	/// VSCode Dark theme - Dark theme inspired by Visual Studio Code.
 	/// </summary>
 	public static ThemeDefinition VSCodeDark => new()
 	{
@@ -193,13 +140,13 @@ public static class Theme
 		HeaderColor = ThemeSources.VSCode.Dark.Button.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
 		HeaderHoveredColor = ThemeSources.VSCode.Dark.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
 		HeaderActiveColor = ThemeSources.VSCode.Dark.AccentBlue,
-		BorderColor = ThemeSources.VSCode.Dark.Border,
+		BorderColor = ThemeSources.VSCode.Dark.InputBackground,
 		ScrollbarColor = ThemeSources.VSCode.Dark.Button,
 		ScrollbarHoveredColor = ThemeSources.VSCode.Dark.ButtonHover,
 		ScrollbarActiveColor = ThemeSources.VSCode.Dark.AccentBlue,
-		CheckMarkColor = ThemeSources.VSCode.Dark.AccentGreen,
+		CheckMarkColor = ThemeSources.VSCode.Dark.AccentBlue,
 		SliderGrabColor = ThemeSources.VSCode.Dark.AccentBlue,
-		SliderGrabActiveColor = ThemeSources.VSCode.Dark.AccentBlueBright,
+		SliderGrabActiveColor = ThemeSources.VSCode.Dark.AccentGreen,
 		TabColor = ThemeSources.VSCode.Dark.Button.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
 		TabHoveredColor = ThemeSources.VSCode.Dark.ButtonHover.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
 		TabActiveColor = ThemeSources.VSCode.Dark.AccentBlue.AdjustForSufficientContrast(ThemeSources.VSCode.Dark.Foreground),
@@ -239,35 +186,10 @@ public static class Theme
 	};
 
 	/// <summary>
-	/// Gruvbox Dark theme - Retro groove color scheme with warm tones.
+	/// Gruvbox Dark theme - Retro groove color scheme with dark background.
+	/// Now generated using intelligent color family selection for optimal contrast and authenticity.
 	/// </summary>
-	public static ThemeDefinition GruvboxDark => new()
-	{
-		BackgroundColor = ThemeSources.Gruvbox.Dark0.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		TextColor = ThemeSources.Gruvbox.Light1,
-		AccentColor = ThemeSources.Gruvbox.BrightOrange,
-		ButtonColor = ThemeSources.Gruvbox.Dark1.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		ButtonHoveredColor = ThemeSources.Gruvbox.Dark2.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		ButtonActiveColor = ThemeSources.Gruvbox.BrightOrange,
-		FrameColor = ThemeSources.Gruvbox.Dark1.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		FrameHoveredColor = ThemeSources.Gruvbox.Dark2.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		FrameActiveColor = ThemeSources.Gruvbox.BrightOrange,
-		HeaderColor = ThemeSources.Gruvbox.Dark1.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		HeaderHoveredColor = ThemeSources.Gruvbox.Dark2.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		HeaderActiveColor = ThemeSources.Gruvbox.BrightOrange,
-		BorderColor = ThemeSources.Gruvbox.Dark2,
-		ScrollbarColor = ThemeSources.Gruvbox.Dark1,
-		ScrollbarHoveredColor = ThemeSources.Gruvbox.Dark2,
-		ScrollbarActiveColor = ThemeSources.Gruvbox.BrightOrange,
-		CheckMarkColor = ThemeSources.Gruvbox.BrightGreen,
-		SliderGrabColor = ThemeSources.Gruvbox.BrightOrange,
-		SliderGrabActiveColor = ThemeSources.Gruvbox.BrightYellow,
-		TabColor = ThemeSources.Gruvbox.Dark1.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		TabHoveredColor = ThemeSources.Gruvbox.Dark2.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		TabActiveColor = ThemeSources.Gruvbox.BrightOrange.AdjustForSufficientContrast(ThemeSources.Gruvbox.Light1),
-		PlotLinesColor = ThemeSources.Gruvbox.FadedBlue,
-		PlotHistogramColor = ThemeSources.Gruvbox.FadedAqua
-	};
+	public static ThemeDefinition GruvboxDark => SimplePaletteGenerator.CreateGruvboxTheme();
 
 	/// <summary>
 	/// Catppuccin Latte theme - Light and warm pastel theme.
