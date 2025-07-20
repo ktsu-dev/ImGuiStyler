@@ -311,4 +311,19 @@ public static class ColorExtensions
 
 		return backgroundColor.WithLuminance(bestLuminance);
 	}
+
+	/// <summary>
+	/// Calculates the color distance between two colors using Euclidean distance in RGB space.
+	/// </summary>
+	/// <param name="color1">The first color.</param>
+	/// <param name="color2">The second color.</param>
+	/// <returns>The color distance between the two colors (0.0 to ~1.73).</returns>
+	public static float GetColorDistance(this ImColor color1, ImColor color2)
+	{
+		float deltaR = color1.Value.X - color2.Value.X;
+		float deltaG = color1.Value.Y - color2.Value.Y;
+		float deltaB = color1.Value.Z - color2.Value.Z;
+
+		return (float)Math.Sqrt((deltaR * deltaR) + (deltaG * deltaG) + (deltaB * deltaB));
+	}
 }
