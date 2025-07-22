@@ -6,7 +6,6 @@ namespace ktsu.ImGuiStylerDemo;
 
 using System.Linq;
 using System.Numerics;
-using System.Collections.ObjectModel;
 
 using Hexa.NET.ImGui;
 
@@ -75,6 +74,21 @@ internal sealed class ImGuiStylerDemo
 
 		ImGui.Separator();
 
+		// Render the library's theme selection dialog if it's open
+		// This now returns true if a theme was changed during modal interaction
+		if (Theme.RenderThemeSelector())
+		{
+			// Theme was changed via the modal browser - respond to the change
+			if (Theme.CurrentThemeName is null)
+			{
+				Console.WriteLine("Theme reset to default via modal");
+			}
+			else
+			{
+				Console.WriteLine($"Theme changed via modal to: {Theme.CurrentThemeName}");
+			}
+		}
+
 		if (ImGui.BeginTabBar("DemoTabs"))
 		{
 			if (ImGui.BeginTabItem("🎨 Theme Gallery"))
@@ -86,6 +100,12 @@ internal sealed class ImGuiStylerDemo
 			if (ImGui.BeginTabItem("🎨 Color Palettes"))
 			{
 				ShowColorPalettesDemo();
+				ImGui.EndTabItem();
+			}
+
+			if (ImGui.BeginTabItem("🔍 Complete Theme Palette"))
+			{
+				ShowCompleteThemePalette();
 				ImGui.EndTabItem();
 			}
 
@@ -137,86 +157,13 @@ internal sealed class ImGuiStylerDemo
 		ImGui.Text($"Available Themes ({themesToShow.Count}):");
 		ImGui.BeginChild("ThemeGrid", new Vector2(0, 300), ImGuiChildFlags.Borders);
 
-		int columns = Math.Max(1, (int)(ImGui.GetContentRegionAvail().X / 200));
-		ImGui.Columns(columns, "ThemeColumns", false);
-
-		foreach (ThemeRegistry.ThemeInfo theme in themesToShow)
+		// Use the new ThemeCard widget from the library
+		ThemeRegistry.ThemeInfo? clickedTheme = ThemeCard.RenderGrid(themesToShow);
+		if (clickedTheme != null)
 		{
-			// Theme preview card
-			ImGui.PushID(theme.Name);
-
-			bool isCurrentTheme = Theme.CurrentThemeName == theme.Name;
-
-			// Get a representative color from the theme for styling the button
-			ISemanticTheme themeInstance = theme.CreateInstance();
-			ImColor themeColor = Color.Palette.Semantic.Primary; // Fallback
-
-			try
-			{
-				// Try to get primary color from the theme
-				if (themeInstance.SemanticMapping.TryGetValue(SemanticMeaning.Primary, out Collection<PerceptualColor>? primaryColors) && primaryColors?.Count > 0)
-				{
-					themeColor = Color.FromPerceptualColor(primaryColors[0]);
-				}
-				else if (themeInstance.SemanticMapping.TryGetValue(SemanticMeaning.Alternate, out Collection<PerceptualColor>? alternateColors) && alternateColors?.Count > 0)
-				{
-					themeColor = Color.FromPerceptualColor(alternateColors[0]);
-				}
-				else
-				{
-					// Get any available color from the theme
-					KeyValuePair<SemanticMeaning, Collection<PerceptualColor>> firstMapping = themeInstance.SemanticMapping.FirstOrDefault();
-					if (firstMapping.Value?.Count > 0)
-					{
-						themeColor = Color.FromPerceptualColor(firstMapping.Value[0]);
-					}
-				}
-			}
-			catch (System.ArgumentException)
-			{
-				// Use fallback color if argument is invalid
-			}
-			catch (System.InvalidOperationException)
-			{
-				// Use fallback color if operation is invalid
-			}
-
-			Vector2 buttonSize = new(ImGui.GetColumnWidth() - 10, 60);
-
-			// Apply theme styling to this button, with current theme indicator
-			if (isCurrentTheme)
-			{
-				// Current theme gets a special green highlight
-				using (Theme.FromColor(Color.FromRGB(0.2f, 0.7f, 0.2f)))
-				{
-					if (ImGui.Button($"✓ {theme.Name}", buttonSize))
-					{
-						Theme.Apply(theme.Name);
-					}
-				}
-			}
-			else
-			{
-				// Other themes get styled with their representative color
-				using (Theme.FromColor(themeColor))
-				{
-					if (ImGui.Button(theme.Name, buttonSize))
-					{
-						Theme.Apply(theme.Name);
-					}
-				}
-			}
-
-			if (ImGui.IsItemHovered())
-			{
-				ImGui.SetTooltip($"{theme.Description}\n\nFamily: {theme.Family}\nType: {(theme.IsDark ? "Dark" : "Light")}\n\nClick to apply this theme");
-			}
-
-			ImGui.PopID();
-			ImGui.NextColumn();
+			Theme.Apply(clickedTheme.Name);
 		}
 
-		ImGui.Columns(1);
 		ImGui.EndChild();
 
 		ImGui.Separator();
@@ -248,6 +195,96 @@ internal sealed class ImGuiStylerDemo
 		ImGui.RadioButton("Option 3", ref radioSelection, 2);
 
 		ImGui.EndChild();
+	}
+
+	private static void ShowCompleteThemePalette()
+	{
+		ImGui.TextUnformatted("🔍 Complete Theme Palette");
+		ImGui.Text("Explore every color available in the current theme using the new MakeCompletePalette API.");
+		ImGui.Separator();
+
+		// Check if a theme is active
+		System.Collections.Immutable.ImmutableDictionary<SemanticColorRequest, PerceptualColor>? completePalette = Theme.GetCurrentThemeCompletePalette();
+		if (completePalette is null)
+		{
+			ImGui.TextWrapped("No theme is currently active. Select a theme from the Theme Gallery tab to see its complete palette.");
+			return;
+		}
+
+		ImGui.Text($"Theme: {Theme.CurrentThemeName} - {completePalette.Count} colors available");
+		ImGui.Separator();
+
+		// Group colors by semantic meaning for better organization
+		IOrderedEnumerable<IGrouping<SemanticMeaning, KeyValuePair<SemanticColorRequest, PerceptualColor>>> colorsByMeaning = completePalette
+			.GroupBy(kvp => kvp.Key.Meaning)
+			.OrderBy(g => g.Key.ToString());
+
+		ImGui.BeginChild("PaletteScrollArea", new Vector2(0, 0), ImGuiChildFlags.Borders);
+
+		foreach (IGrouping<SemanticMeaning, KeyValuePair<SemanticColorRequest, PerceptualColor>>? meaningGroup in colorsByMeaning)
+		{
+			if (ImGui.CollapsingHeader($"{meaningGroup.Key} ({meaningGroup.Count()} colors)"))
+			{
+				// Group by priority within each meaning
+				IOrderedEnumerable<IGrouping<Priority, KeyValuePair<SemanticColorRequest, PerceptualColor>>> colorsByPriority = meaningGroup
+					.GroupBy(kvp => kvp.Key.Priority)
+					.OrderByDescending(g => g.Key); // Highest priority first
+
+				foreach (IGrouping<Priority, KeyValuePair<SemanticColorRequest, PerceptualColor>>? priorityGroup in colorsByPriority)
+				{
+					ImGui.Text($"  Priority: {priorityGroup.Key}");
+					ImGui.Indent();
+
+					// Show all colors for this meaning and priority combination
+					foreach (KeyValuePair<SemanticColorRequest, PerceptualColor> colorEntry in priorityGroup)
+					{
+						SemanticColorRequest request = colorEntry.Key;
+						PerceptualColor color = colorEntry.Value;
+						ImColor imColor = Color.FromPerceptualColor(color);
+
+						// Color swatch button
+						Vector2 swatchSize = new(40, 30);
+						ImGui.ColorButton($"##swatch_{request.Meaning}_{request.Priority}",
+							imColor.Value, ImGuiColorEditFlags.None, swatchSize);
+
+						if (ImGui.IsItemHovered())
+						{
+							Vector4 c = imColor.Value;
+							ImGui.SetTooltip($"Meaning: {request.Meaning}\n" +
+								$"Priority: {request.Priority}\n" +
+								$"RGBA: ({c.X:F3}, {c.Y:F3}, {c.Z:F3}, {c.W:F3})\n" +
+								$"Hex: #{(int)(c.X * 255):X2}{(int)(c.Y * 255):X2}{(int)(c.Z * 255):X2}\n" +
+								$"Click to copy to clipboard");
+						}
+
+						// Copy to clipboard on click
+						if (ImGui.IsItemClicked())
+						{
+							string hexColor = $"#{(int)(imColor.Value.X * 255):X2}{(int)(imColor.Value.Y * 255):X2}{(int)(imColor.Value.Z * 255):X2}";
+							ImGui.SetClipboardText(hexColor);
+						}
+
+						ImGui.SameLine();
+						ImGui.Text($"{request.Priority}");
+
+						// Show usage example code
+						ImGui.SameLine();
+						ImGui.TextDisabled("//");
+						ImGui.SameLine();
+						ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f),
+							$"Theme.GetColor(new SemanticColorRequest(SemanticMeaning.{request.Meaning}, Priority.{request.Priority}))");
+					}
+
+					ImGui.Unindent();
+				}
+			}
+		}
+
+		ImGui.EndChild();
+
+		ImGui.Separator();
+		ImGui.TextUnformatted("💡 Tip: Click on any color swatch to copy its hex value to clipboard");
+		ImGui.TextUnformatted("💡 Use the code examples to access these colors in your application");
 	}
 
 	private static void ShowColorPalettesDemo()
@@ -628,8 +665,8 @@ internal sealed class ImGuiStylerDemo
 
 	private void OnMenu()
 	{
-		// Demonstrate Theme.RenderMenu() - renders theme selection submenu
-		if (Theme.RenderMenu())
+		// Use the library's improved theme selector menu
+		if (Theme.RenderThemeSelectorMenu())
 		{
 			// Theme changed - this is where you would save the current theme to settings
 			// For example: Settings.Theme = Theme.CurrentThemeName;
@@ -678,11 +715,30 @@ internal sealed class ImGuiStylerDemo
 		ImGui.TextUnformatted("");
 
 		ImGui.Text("// Render theme selection menu in your main menu bar");
-		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "if (Theme.RenderMenu())");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "if (Theme.RenderThemeSelectorMenu())");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "{");
-		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    // Save current theme to settings (null = default)");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    // Theme was changed - save current theme to settings");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    Settings.Theme = Theme.CurrentThemeName;");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "}");
+		ImGui.TextUnformatted("");
+
+		ImGui.Text("// Render the theme browser modal (call in main render loop)");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "if (Theme.RenderThemeSelector()) // Returns true if theme changed");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "{");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    // Theme was changed via modal - respond to change");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    Settings.Theme = Theme.CurrentThemeName;");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "}");
+		ImGui.TextUnformatted("");
+
+		ImGui.Text("// Programmatically open the theme browser modal");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "Theme.ShowThemeSelector(); // Opens the modal dialog");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "Theme.ShowThemeSelector(\"Custom Title\", new Vector2(900, 700));");
+		ImGui.TextUnformatted("");
+
+		ImGui.Text("// The ThemeBrowser uses ktsu.ImGuiPopups for proper modal behavior");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "// - Blocks interaction with underlying UI");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "// - ESC to close, centered positioning");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "// - Follows established ktsu.dev modal patterns");
 		ImGui.TextUnformatted("");
 
 		ImGui.Text("// Restore theme on application start");
@@ -696,10 +752,42 @@ internal sealed class ImGuiStylerDemo
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "}");
 		ImGui.TextUnformatted("");
 
+		ImGui.Text("// Render theme preview cards");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "if (ThemeCard.Render(theme))");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "{");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    Theme.Apply(theme.Name);");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "}");
+		ImGui.TextUnformatted("");
+
+		ImGui.Text("// Render a grid of theme cards");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "var clicked = ThemeCard.RenderGrid(themes);");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "if (clicked != null)");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "{");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    Theme.Apply(clicked.Name);");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "}");
+		ImGui.TextUnformatted("");
+
 		ImGui.Text("// Use color palette (theme-aware)");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "ImColor primaryColor = Color.Palette.Semantic.Primary;");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "ImColor errorColor = Color.Palette.Semantic.Error;");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "ImColor customRed = Color.Palette.Basic.Red; // Adapts to theme");
+		ImGui.TextUnformatted("");
+
+		ImGui.Text("// NEW: Use complete theme palette API (powered by MakeCompletePalette)");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "var palette = Theme.GetCurrentThemeCompletePalette();");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "var primaryHigh = new SemanticColorRequest(SemanticMeaning.Primary, Priority.High);");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "if (palette?.TryGetValue(primaryHigh, out var color) == true)");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "{");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    ImColor myColor = Color.FromPerceptualColor(color);");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "}");
+		ImGui.TextUnformatted("");
+
+		ImGui.Text("// Or use the simpler helper methods");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "var request = new SemanticColorRequest(SemanticMeaning.Error, Priority.VeryHigh);");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "if (Theme.TryGetColor(request, out var errorColor))");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "{");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    // Use the specific error color from theme");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "}");
 		ImGui.TextUnformatted("");
 
 		ImGui.Text("// Scoped theme colors for UI sections");

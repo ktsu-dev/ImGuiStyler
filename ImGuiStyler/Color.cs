@@ -4,9 +4,9 @@
 
 namespace ktsu.ImGuiStyler;
 
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Numerics;
-using System.Collections.ObjectModel;
 
 using Hexa.NET.ImGui;
 
@@ -252,7 +252,7 @@ public static class Color
 				SemanticColorRequest request = new(meaning, priority);
 
 				// Use SemanticColorMapper to get the color from the current theme
-				System.Collections.Immutable.ImmutableDictionary<SemanticColorRequest, PerceptualColor> colorMapping = SemanticColorMapper.MapColors([request], Theme.CurrentTheme.CreateInstance());
+				ImmutableDictionary<SemanticColorRequest, PerceptualColor> colorMapping = SemanticColorMapper.MapColors([request], Theme.CurrentTheme.CreateInstance());
 
 				if (colorMapping.TryGetValue(request, out PerceptualColor perceptualColor))
 				{
@@ -282,13 +282,12 @@ public static class Color
 	/// <returns>An ImColor that's close to the fallback color within the current theme, or the fallback color itself.</returns>
 	private static ImColor GetThemeColor(ImColor fallbackColor)
 	{
-		// Check if a theme is currently applied
-		if (Theme.CurrentTheme is not null)
+		// Check if a theme is currently applied and get its complete palette
+		ImmutableDictionary<SemanticColorRequest, PerceptualColor>? completePalette = Theme.GetCurrentThemeCompletePalette();
+		if (completePalette is not null)
 		{
 			try
 			{
-				ISemanticTheme currentTheme = Theme.CurrentTheme.CreateInstance();
-
 				// Convert the fallback color to PerceptualColor for comparison
 				RgbColor fallbackRgb = new(fallbackColor.Value.X, fallbackColor.Value.Y, fallbackColor.Value.Z);
 				PerceptualColor targetColor = new(fallbackRgb);
@@ -296,17 +295,15 @@ public static class Color
 				PerceptualColor? closestColor = null;
 				float closestDistance = float.MaxValue;
 
-				// Search through all semantic meanings and their colors to find the closest match
-				foreach (KeyValuePair<SemanticMeaning, Collection<PerceptualColor>> meaningEntry in currentTheme.SemanticMapping)
+				// Search through the complete palette to find the closest match
+				// This is much more efficient than nested loops through semantic mappings
+				foreach (PerceptualColor color in completePalette.Values)
 				{
-					foreach (PerceptualColor color in meaningEntry.Value)
+					float distance = targetColor.SemanticDistanceTo(color);
+					if (distance < closestDistance)
 					{
-						float distance = targetColor.SemanticDistanceTo(color);
-						if (distance < closestDistance)
-						{
-							closestDistance = distance;
-							closestColor = color;
-						}
+						closestDistance = distance;
+						closestColor = color;
 					}
 				}
 

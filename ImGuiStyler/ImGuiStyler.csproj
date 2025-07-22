@@ -5,6 +5,7 @@
   <ItemGroup>
     <PackageReference Include="Hexa.NET.ImGui" />
     <PackageReference Include="ktsu.Extensions" />
+    <PackageReference Include="ktsu.ImGuiPopups" />
     <PackageReference Include="ktsu.ScopedAction" />
     <PackageReference Include="ktsu.ThemeProvider" />
     <PackageReference Include="ktsu.ThemeProvider.ImGui" />
