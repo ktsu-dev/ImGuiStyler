@@ -1,5 +1,5 @@
-## v1.3.6 (patch)
+## v1.3.7 (patch)
 
-Changes since v1.3.5:
+Changes since v1.3.6:
 
-- Enhance ImGuiStylerDemo button styling with theme representative colors and improved error handling ([@matt-edmondson](https://github.com/matt-edmondson))
+- Enhance theme management and introduce new theme browser ([@matt-edmondson](https://github.com/matt-edmondson))
