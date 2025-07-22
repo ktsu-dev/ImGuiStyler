@@ -1,6 +1,8 @@
-## v1.3.8
+## v1.3.9 (patch)
 
-No significant changes detected since v1.3.8.
+Changes since v1.3.8:
+
+- Update coverlet.msbuild version to 6.0.4 and add XML declaration in Directory.Packages.props ([@matt-edmondson](https://github.com/matt-edmondson))
 ## v1.3.8 (patch)
 
 Changes since v1.3.7:
