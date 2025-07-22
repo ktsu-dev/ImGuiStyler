@@ -1,5 +1,3 @@
-## v1.3.8 (patch)
+## v1.3.8
 
-Changes since v1.3.7:
-
-- Enhance ThemeCard with semantic color swatches and tooltip updates ([@matt-edmondson](https://github.com/matt-edmondson))
+No significant changes detected since v1.3.8.
