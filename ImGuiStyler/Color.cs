@@ -6,10 +6,12 @@ namespace ktsu.ImGuiStyler;
 
 using System.Globalization;
 using System.Numerics;
+using System.Collections.ObjectModel;
 
 using Hexa.NET.ImGui;
 
 using ktsu.Extensions;
+using ktsu.ThemeProvider;
 
 /// <summary>
 /// Provides methods for creating and manipulating colors in ImGui.
@@ -178,6 +180,17 @@ public static class Color
 		return FromRGBA(r, g, b, a);
 	}
 
+	/// <summary>
+	/// Converts a PerceptualColor from ThemeProvider to an ImColor.
+	/// </summary>
+	/// <param name="color">The PerceptualColor to convert.</param>
+	/// <returns>An ImColor representing the same color.</returns>
+	public static ImColor FromPerceptualColor(PerceptualColor color)
+	{
+		RgbColor rgb = color.RgbValue;
+		return FromRGBA(rgb.R, rgb.G, rgb.B, 1f);
+	}
+
 	#endregion
 
 	#region Private Helper Methods
@@ -220,205 +233,210 @@ public static class Color
 		return p;
 	}
 
+	/// <summary>
+	/// Gets a semantic color from the current theme, or a fallback color if no theme is applied.
+	/// This should only be used for semantic UI meanings.
+	/// </summary>
+	/// <param name="meaning">The semantic meaning of the color.</param>
+	/// <param name="priority">The priority level for the color.</param>
+	/// <param name="fallbackColor">The fallback color to use if no theme is applied.</param>
+	/// <returns>An ImColor from the current theme or the fallback color.</returns>
+	private static ImColor GetSemanticColor(SemanticMeaning meaning, Priority priority, ImColor fallbackColor)
+	{
+		// Check if a theme is currently applied
+		if (Theme.CurrentTheme is not null)
+		{
+			try
+			{
+				// Create a semantic color request
+				SemanticColorRequest request = new(meaning, priority);
+
+				// Use SemanticColorMapper to get the color from the current theme
+				System.Collections.Immutable.ImmutableDictionary<SemanticColorRequest, PerceptualColor> colorMapping = SemanticColorMapper.MapColors([request], Theme.CurrentTheme.CreateInstance());
+
+				if (colorMapping.TryGetValue(request, out PerceptualColor perceptualColor))
+				{
+					return FromPerceptualColor(perceptualColor);
+				}
+			}
+			catch (ArgumentException)
+			{
+				// Invalid arguments for theme mapping
+			}
+			catch (InvalidOperationException)
+			{
+				// Theme operation failed
+			}
+		}
+
+		// Fall back to hardcoded color if no theme is applied or mapping fails
+		return fallbackColor;
+	}
+
+	/// <summary>
+	/// Gets a color from the current theme that is closest to the desired default color,
+	/// or returns the fallback color if no theme is applied.
+	/// This preserves the intended hue while adapting to the theme's color scheme.
+	/// </summary>
+	/// <param name="fallbackColor">The default hardcoded color to find a close match for.</param>
+	/// <returns>An ImColor that's close to the fallback color within the current theme, or the fallback color itself.</returns>
+	private static ImColor GetThemeColor(ImColor fallbackColor)
+	{
+		// Check if a theme is currently applied
+		if (Theme.CurrentTheme is not null)
+		{
+			try
+			{
+				ISemanticTheme currentTheme = Theme.CurrentTheme.CreateInstance();
+
+				// Convert the fallback color to PerceptualColor for comparison
+				RgbColor fallbackRgb = new(fallbackColor.Value.X, fallbackColor.Value.Y, fallbackColor.Value.Z);
+				PerceptualColor targetColor = new(fallbackRgb);
+
+				PerceptualColor? closestColor = null;
+				float closestDistance = float.MaxValue;
+
+				// Search through all semantic meanings and their colors to find the closest match
+				foreach (KeyValuePair<SemanticMeaning, Collection<PerceptualColor>> meaningEntry in currentTheme.SemanticMapping)
+				{
+					foreach (PerceptualColor color in meaningEntry.Value)
+					{
+						float distance = targetColor.SemanticDistanceTo(color);
+						if (distance < closestDistance)
+						{
+							closestDistance = distance;
+							closestColor = color;
+						}
+					}
+				}
+
+				// If we found a reasonably close color, use it
+				if (closestColor.HasValue && closestDistance < 0.3f) // Reasonable similarity threshold
+				{
+					return FromPerceptualColor(closestColor.Value);
+				}
+			}
+			catch (ArgumentException)
+			{
+				// Invalid arguments for theme color matching
+			}
+			catch (InvalidOperationException)
+			{
+				// Theme operation failed
+			}
+		}
+
+		// Fall back to hardcoded color if no theme is applied or no close match found
+		return fallbackColor;
+	}
+
 	#endregion
 
 	/// <summary>
 	/// Comprehensive color palette with organized categories.
+	/// Semantic colors are sourced from the current theme's semantic meanings.
+	/// Other colors try to find close matches in the theme while preserving intended hues.
 	/// </summary>
 	public static class Palette
 	{
 		/// <summary>
 		/// Basic primary and secondary colors.
+		/// These try to find close colors in the current theme while preserving the intended hue.
 		/// </summary>
 		public static class Basic
 		{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-			public static ImColor Red => FromHex("#ff4a49");
-			public static ImColor Green => FromHex("#49ff4a");
-			public static ImColor Blue => FromHex("#49a3ff");
-			public static ImColor Yellow => FromHex("#ecff49");
-			public static ImColor Cyan => FromHex("#49feff");
-			public static ImColor Magenta => FromHex("#ff49fe");
-			public static ImColor Orange => FromHex("#ffa549");
-			public static ImColor Pink => FromHex("#ff49a3");
-			public static ImColor Lime => FromHex("#a3ff49");
-			public static ImColor Purple => FromHex("#c949ff");
+			public static ImColor Red => GetThemeColor(FromHex("#ff4a49"));
+			public static ImColor Green => GetThemeColor(FromHex("#49ff4a"));
+			public static ImColor Blue => GetThemeColor(FromHex("#49a3ff"));
+			public static ImColor Yellow => GetThemeColor(FromHex("#ecff49"));
+			public static ImColor Cyan => GetThemeColor(FromHex("#49feff"));
+			public static ImColor Magenta => GetThemeColor(FromHex("#ff49fe"));
+			public static ImColor Orange => GetThemeColor(FromHex("#ffa549"));
+			public static ImColor Pink => GetThemeColor(FromHex("#ff49a3"));
+			public static ImColor Lime => GetThemeColor(FromHex("#a3ff49"));
+			public static ImColor Purple => GetThemeColor(FromHex("#c949ff"));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>
 		/// Neutral colors for backgrounds, borders, and subtle elements.
+		/// These try to find close colors in the current theme while preserving the intended lightness.
 		/// </summary>
 		public static class Neutral
 		{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-			public static ImColor White => FromHex("#ffffff");
-			public static ImColor Black => FromHex("#000000");
-			public static ImColor Gray => FromHex("#808080");
-			public static ImColor LightGray => FromHex("#c0c0c0");
-			public static ImColor DarkGray => FromHex("#404040");
-			public static ImColor Transparent => FromHex("#00000000");
+			public static ImColor White => GetThemeColor(FromHex("#ffffff"));
+			public static ImColor Black => GetThemeColor(FromHex("#000000"));
+			public static ImColor Gray => GetThemeColor(FromHex("#808080"));
+			public static ImColor LightGray => GetThemeColor(FromHex("#c0c0c0"));
+			public static ImColor DarkGray => GetThemeColor(FromHex("#404040"));
+			public static ImColor Transparent => FromHex("#00000000"); // Always transparent
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>
 		/// Semantic colors for UI states and meanings.
+		/// These are mapped directly to their semantic meanings in the current theme.
 		/// </summary>
 		public static class Semantic
 		{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-			public static ImColor Error => Basic.Red;
-			public static ImColor Warning => Basic.Yellow;
-			public static ImColor Success => Basic.Green;
-			public static ImColor Info => Basic.Cyan;
-			public static ImColor Primary => Basic.Blue;
-			public static ImColor Secondary => Basic.Purple;
+			public static ImColor Error => GetSemanticColor(SemanticMeaning.Error, Priority.High, Basic.Red);
+			public static ImColor Warning => GetSemanticColor(SemanticMeaning.Warning, Priority.High, Basic.Yellow);
+			public static ImColor Success => GetSemanticColor(SemanticMeaning.Success, Priority.High, Basic.Green);
+			public static ImColor Info => GetSemanticColor(SemanticMeaning.Information, Priority.High, Basic.Cyan);
+			public static ImColor Primary => GetSemanticColor(SemanticMeaning.Primary, Priority.High, Basic.Blue);
+			public static ImColor Secondary => GetSemanticColor(SemanticMeaning.Alternate, Priority.High, Basic.Purple);
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>
 		/// Natural and earthy colors.
+		/// These try to find close colors in the current theme while preserving the intended natural hue.
 		/// </summary>
 		public static class Natural
 		{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-			public static ImColor Brown => FromRGB(165, 42, 42);
-			public static ImColor Olive => FromRGB(128, 128, 0);
-			public static ImColor Maroon => FromRGB(128, 0, 0);
-			public static ImColor Navy => FromRGB(0, 0, 128);
-			public static ImColor Teal => FromRGB(0, 128, 128);
-			public static ImColor Indigo => FromRGB(75, 0, 130);
+			public static ImColor Brown => GetThemeColor(FromRGB(165, 42, 42));
+			public static ImColor Olive => GetThemeColor(FromRGB(128, 128, 0));
+			public static ImColor Maroon => GetThemeColor(FromRGB(128, 0, 0));
+			public static ImColor Navy => GetThemeColor(FromRGB(0, 0, 128));
+			public static ImColor Teal => GetThemeColor(FromRGB(0, 128, 128));
+			public static ImColor Indigo => GetThemeColor(FromRGB(75, 0, 130));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>
 		/// Vibrant and colorful shades.
+		/// These try to find close colors in the current theme while preserving the intended vibrant character.
 		/// </summary>
 		public static class Vibrant
 		{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-			public static ImColor Coral => FromRGB(255, 127, 80);
-			public static ImColor Salmon => FromRGB(250, 128, 114);
-			public static ImColor Turquoise => FromRGB(64, 224, 208);
-			public static ImColor Violet => FromRGB(238, 130, 238);
-			public static ImColor Gold => FromRGB(255, 215, 0);
-			public static ImColor Silver => FromRGB(192, 192, 192);
+			public static ImColor Coral => GetThemeColor(FromRGB(255, 127, 80));
+			public static ImColor Salmon => GetThemeColor(FromRGB(250, 128, 114));
+			public static ImColor Turquoise => GetThemeColor(FromRGB(64, 224, 208));
+			public static ImColor Violet => GetThemeColor(FromRGB(238, 130, 238));
+			public static ImColor Gold => GetThemeColor(FromRGB(255, 215, 0));
+			public static ImColor Silver => GetThemeColor(FromRGB(192, 192, 192));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
 
 		/// <summary>
 		/// Soft, pastel colors for gentle UIs.
+		/// These try to find close colors in the current theme while preserving the intended pastel softness.
 		/// </summary>
 		public static class Pastel
 		{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-			public static ImColor Beige => FromRGB(245, 245, 220);
-			public static ImColor Peach => FromRGB(255, 218, 185);
-			public static ImColor Mint => FromRGB(189, 252, 201);
-			public static ImColor Lavender => FromRGB(230, 230, 250);
-			public static ImColor Khaki => FromRGB(240, 230, 140);
-			public static ImColor Plum => FromRGB(221, 160, 221);
+			public static ImColor Beige => GetThemeColor(FromRGB(245, 245, 220));
+			public static ImColor Peach => GetThemeColor(FromRGB(255, 218, 185));
+			public static ImColor Mint => GetThemeColor(FromRGB(189, 252, 201));
+			public static ImColor Lavender => GetThemeColor(FromRGB(230, 230, 250));
+			public static ImColor Khaki => GetThemeColor(FromRGB(240, 230, 140));
+			public static ImColor Plum => GetThemeColor(FromRGB(221, 160, 221));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 		}
-
-		/// <summary>
-		/// Colors inspired by popular development themes.
-		/// </summary>
-		public static class Themes
-		{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-			// Dark Themes
-			public static ImColor Dracula => FromHex("#bd93f9");
-			public static ImColor Nord => FromHex("#5e81ac");
-			public static ImColor TokyoNight => FromHex("#7aa2f7");
-			public static ImColor GruvboxDark => FromHex("#fe8019");
-			public static ImColor OneDark => FromHex("#61afef");
-			public static ImColor CatppuccinMocha => FromHex("#89b4fa");
-			public static ImColor Monokai => FromHex("#f92672");
-			public static ImColor Nightfly => FromHex("#82aaff");
-			public static ImColor Kanagawa => FromHex("#7e9cd8");
-			public static ImColor PaperColorDark => FromHex("#8fbcbb");
-			public static ImColor Nightfox => FromHex("#719cd6");
-			public static ImColor EverforestDark => FromHex("#a7c080");
-			public static ImColor VSCodeDark => FromHex("#0078d4");
-
-			// Light Themes
-			public static ImColor VSCodeLight => FromHex("#0078d4");
-			public static ImColor GruvboxLight => FromHex("#af3a03");
-			public static ImColor PaperColorLight => FromHex("#005f87");
-			public static ImColor EverforestLight => FromHex("#8da101");
-			public static ImColor CatppuccinLatte => FromHex("#8839ef");
-
-			// Medium Themes
-			public static ImColor CatppuccinFrappe => FromHex("#ca9ee6");
-			public static ImColor CatppuccinMacchiato => FromHex("#c6a0f6");
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-		}
-
-		/// <summary>
-		/// Gets all available colors organized by category.
-		/// </summary>
-		public static IReadOnlyDictionary<string, IReadOnlyDictionary<string, ImColor>> AllColors =>
-			new Dictionary<string, IReadOnlyDictionary<string, ImColor>>
-			{
-				[nameof(Basic)] = new Dictionary<string, ImColor>
-				{
-					[nameof(Basic.Red)] = Basic.Red,
-					[nameof(Basic.Green)] = Basic.Green,
-					[nameof(Basic.Blue)] = Basic.Blue,
-					[nameof(Basic.Yellow)] = Basic.Yellow,
-					[nameof(Basic.Cyan)] = Basic.Cyan,
-					[nameof(Basic.Magenta)] = Basic.Magenta,
-					[nameof(Basic.Orange)] = Basic.Orange,
-					[nameof(Basic.Pink)] = Basic.Pink,
-					[nameof(Basic.Lime)] = Basic.Lime,
-					[nameof(Basic.Purple)] = Basic.Purple,
-				},
-				[nameof(Neutral)] = new Dictionary<string, ImColor>
-				{
-					[nameof(Neutral.White)] = Neutral.White,
-					[nameof(Neutral.Black)] = Neutral.Black,
-					[nameof(Neutral.Gray)] = Neutral.Gray,
-					[nameof(Neutral.LightGray)] = Neutral.LightGray,
-					[nameof(Neutral.DarkGray)] = Neutral.DarkGray,
-					[nameof(Neutral.Transparent)] = Neutral.Transparent,
-				},
-				[nameof(Semantic)] = new Dictionary<string, ImColor>
-				{
-					[nameof(Semantic.Error)] = Semantic.Error,
-					[nameof(Semantic.Warning)] = Semantic.Warning,
-					[nameof(Semantic.Success)] = Semantic.Success,
-					[nameof(Semantic.Info)] = Semantic.Info,
-					[nameof(Semantic.Primary)] = Semantic.Primary,
-					[nameof(Semantic.Secondary)] = Semantic.Secondary,
-				},
-				[nameof(Natural)] = new Dictionary<string, ImColor>
-				{
-					[nameof(Natural.Brown)] = Natural.Brown,
-					[nameof(Natural.Olive)] = Natural.Olive,
-					[nameof(Natural.Maroon)] = Natural.Maroon,
-					[nameof(Natural.Navy)] = Natural.Navy,
-					[nameof(Natural.Teal)] = Natural.Teal,
-					[nameof(Natural.Indigo)] = Natural.Indigo,
-				},
-				[nameof(Vibrant)] = new Dictionary<string, ImColor>
-				{
-					[nameof(Vibrant.Coral)] = Vibrant.Coral,
-					[nameof(Vibrant.Salmon)] = Vibrant.Salmon,
-					[nameof(Vibrant.Turquoise)] = Vibrant.Turquoise,
-					[nameof(Vibrant.Violet)] = Vibrant.Violet,
-					[nameof(Vibrant.Gold)] = Vibrant.Gold,
-					[nameof(Vibrant.Silver)] = Vibrant.Silver,
-				},
-				[nameof(Pastel)] = new Dictionary<string, ImColor>
-				{
-					[nameof(Pastel.Beige)] = Pastel.Beige,
-					[nameof(Pastel.Peach)] = Pastel.Peach,
-					[nameof(Pastel.Mint)] = Pastel.Mint,
-					[nameof(Pastel.Lavender)] = Pastel.Lavender,
-					[nameof(Pastel.Khaki)] = Pastel.Khaki,
-					[nameof(Pastel.Plum)] = Pastel.Plum,
-				},
-			};
 	}
 }

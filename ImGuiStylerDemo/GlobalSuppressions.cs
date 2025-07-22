@@ -4,4 +4,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:ktsu.ImGuiWidgetsDemo.ImGuiStylerDemo.OnTick(System.Single)")]
+[assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:ktsu.ImGuiStylerDemo.ImGuiStylerDemo.OnTick(System.Single)")]

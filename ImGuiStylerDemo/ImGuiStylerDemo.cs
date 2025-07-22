@@ -2,16 +2,21 @@
 // All rights reserved.
 // Licensed under the MIT license.
 
-namespace ktsu.ImGuiWidgetsDemo;
+namespace ktsu.ImGuiStylerDemo;
 
 using System.Linq;
 using System.Numerics;
+
 using Hexa.NET.ImGui;
+
 using ktsu.ImGuiApp;
 using ktsu.ImGuiStyler;
+using ktsu.ThemeProvider;
 
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-internal class ImGuiStylerDemo
+/// <summary>
+/// Comprehensive demonstration of the ImGuiStyler library capabilities.
+/// </summary>
+internal sealed class ImGuiStylerDemo
 {
 	private static bool valueBool = true;
 	private static int valueInt = 42;
@@ -31,13 +36,22 @@ internal class ImGuiStylerDemo
 	private static int buttonAlignment = 1; // 0=Left, 1=Center
 	private static readonly float[] styleVarValues = [4.0f, 8.0f, 6.0f, 12.0f]; // FramePadding.X, FramePadding.Y, ItemSpacing.X, ItemSpacing.Y
 
-	// Cache theme info for performance
-	private static readonly IReadOnlyList<ThemeInfo> availablePaletteColors = Theme.AvailablePaletteColors;
-	private static readonly IReadOnlyList<ThemeDefinitionInfo> availableThemeDefinitions = Theme.AvailableThemeDefinitions;
+	// Use ThemeProvider registry for all available themes
+	private static readonly List<ThemeRegistry.ThemeInfo> availableThemes = [.. Theme.AllThemes];
+
+	// Simple basic color palette for demo purposes
+	private static readonly List<(string Name, ImColor Color)> availablePaletteColors =
+	[
+		("Primary", Color.Palette.Semantic.Primary),
+		("Red", Color.Palette.Basic.Red),
+		("Green", Color.Palette.Basic.Green),
+		("Blue", Color.Palette.Basic.Blue),
+		("Purple", Color.Palette.Basic.Purple),
+	];
 
 	private static readonly string[] textColorNames = ["Normal", "Error", "Warning", "Info", "Success"];
 
-	private static void Main(string[] args)
+	private static void Main()
 	{
 		ImGuiStylerDemo demo = new();
 		ImGuiApp.Start(new()
@@ -51,7 +65,7 @@ internal class ImGuiStylerDemo
 		});
 	}
 
-	private void OnStart() => Theme.Apply(Color.Palette.Semantic.Primary);
+	private void OnStart() => Theme.ResetToDefault(); // Start with default ImGui styling to demonstrate reset functionality
 
 	private void OnTick(float dt)
 	{
@@ -129,7 +143,8 @@ internal class ImGuiStylerDemo
 		ImGui.Text("Global Theme:");
 		if (ImGui.Combo("Theme Color", ref selectedThemeColor, availablePaletteColors.Select(c => c.Name).ToArray(), availablePaletteColors.Count))
 		{
-			Theme.Apply(availablePaletteColors[selectedThemeColor].Color);
+			// Simple demonstration using scoped theme colors
+			using ScopedThemeColor themeColor = Theme.FromColor(availablePaletteColors[selectedThemeColor].Color);
 		}
 
 		ImGui.Separator();
@@ -185,15 +200,15 @@ internal class ImGuiStylerDemo
 		ImGui.Text($"Base Color: {baseColor.Value.X:F2}, {baseColor.Value.Y:F2}, {baseColor.Value.Z:F2}");
 		ImGui.ColorButton("Base", baseColor.Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
 		ImGui.SameLine();
-		ImGui.ColorButton("Normal", Theme.GetNormalColor(baseColor).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
+		ImGui.ColorButton("Normal", baseColor.MultiplySaturation(0.5f).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
 		ImGui.SameLine();
-		ImGui.ColorButton("Accent", Theme.GetAccentColor(baseColor).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
+		ImGui.ColorButton("Accent", baseColor.OffsetHue(0.5f).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
 		ImGui.SameLine();
-		ImGui.ColorButton("Hovered", Theme.GetHoveredColor(baseColor).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
+		ImGui.ColorButton("Hovered", baseColor.MultiplyLuminance(1.2f).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
 		ImGui.SameLine();
-		ImGui.ColorButton("Active", Theme.GetActiveColor(baseColor).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
+		ImGui.ColorButton("Active", baseColor.MultiplyLuminance(0.8f).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
 		ImGui.SameLine();
-		ImGui.ColorButton("Background", Theme.GetBackgroundColor(baseColor).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
+		ImGui.ColorButton("Background", baseColor.MultiplyLuminance(0.1f).Value, ImGuiColorEditFlags.None, new Vector2(40, 20));
 	}
 
 	private static void ShowTextColorsDemo()
@@ -867,26 +882,46 @@ internal class ImGuiStylerDemo
 		ImGui.Text("These themes define every UI element color individually for precise control.");
 		ImGui.Separator();
 
-		// Group themes by category for better organization
-		IOrderedEnumerable<IGrouping<string, ThemeDefinitionInfo>> themesByCategory = availableThemeDefinitions.GroupBy(t => t.Category).OrderBy(g => g.Key);
+		// Group themes by whether they are dark or light themes
+		List<ThemeRegistry.ThemeInfo> darkThemes = [.. availableThemes.Where(t => t.IsDark)];
+		List<ThemeRegistry.ThemeInfo> lightThemes = [.. availableThemes.Where(t => !t.IsDark)];
 
-		foreach (IGrouping<string, ThemeDefinitionInfo> categoryGroup in themesByCategory)
+		if (darkThemes.Count > 0)
 		{
-			ImGui.Text($"{categoryGroup.Key} Themes:");
+			ImGui.Text("Dark Themes:");
 			ImGui.Indent();
 
-			foreach (ThemeDefinitionInfo themeInfo in categoryGroup)
+			foreach (ThemeRegistry.ThemeInfo themeInfo in darkThemes)
 			{
 				if (ImGui.Button($"Apply {themeInfo.Name}"))
 				{
-					Theme.Apply(themeInfo.Definition);
+					Theme.Apply(themeInfo.CreateInstance());
 				}
 				ImGui.SameLine();
 				ImGui.Text($"- {themeInfo.Description}");
 			}
 
 			ImGui.Unindent();
-			ImGui.Separator();
+			ImGui.Spacing();
+		}
+
+		if (lightThemes.Count > 0)
+		{
+			ImGui.Text("Light Themes:");
+			ImGui.Indent();
+
+			foreach (ThemeRegistry.ThemeInfo themeInfo in lightThemes)
+			{
+				if (ImGui.Button($"Apply {themeInfo.Name}"))
+				{
+					Theme.Apply(themeInfo.CreateInstance());
+				}
+				ImGui.SameLine();
+				ImGui.Text($"- {themeInfo.Description}");
+			}
+
+			ImGui.Unindent();
+			ImGui.Spacing();
 		}
 
 		ImGui.Separator();
@@ -911,21 +946,27 @@ internal class ImGuiStylerDemo
 		ImGui.Separator();
 
 		ImGui.Text("Usage Examples:");
-		ImGui.TextUnformatted("// Apply a complete theme definition");
-		ImGui.TextUnformatted("Theme.Apply(Theme.Dracula);");
+		ImGui.TextUnformatted("// Apply semantic themes using ThemeProvider");
+		ImGui.TextUnformatted("Theme.Apply(\"Dracula\");");
+		ImGui.TextUnformatted("Theme.Apply(\"Nord\");");
 		ImGui.TextUnformatted("");
-		ImGui.TextUnformatted("// Apply a simple color-based theme");
-		ImGui.TextUnformatted("Theme.Apply(Theme.Palette.Blue);");
+		ImGui.TextUnformatted("// Reset to default ImGui styling");
+		ImGui.TextUnformatted("Theme.ResetToDefault();");
+		ImGui.TextUnformatted("// or via property");
+		ImGui.TextUnformatted("Theme.CurrentThemeName = null;");
 		ImGui.TextUnformatted("");
-		ImGui.TextUnformatted("// Create a custom theme definition");
-		ImGui.TextUnformatted("var customTheme = new ThemeDefinition()");
+		ImGui.TextUnformatted("// Render theme selection menu in your main menu bar");
+		ImGui.TextUnformatted("if (Theme.RenderMenu())");
 		ImGui.TextUnformatted("{");
-		ImGui.TextUnformatted("    BackgroundColor = Color.FromHex(\"#1e1e1e\"),");
-		ImGui.TextUnformatted("    TextColor = Color.FromHex(\"#ffffff\"),");
-		ImGui.TextUnformatted("    AccentColor = Color.FromHex(\"#007acc\"),");
-		ImGui.TextUnformatted("    // ... other properties");
-		ImGui.TextUnformatted("};");
-		ImGui.TextUnformatted("Theme.Apply(customTheme);");
+		ImGui.TextUnformatted("    // Save current theme to settings (null = default)");
+		ImGui.TextUnformatted("    Settings.Theme = Theme.CurrentThemeName;");
+		ImGui.TextUnformatted("}");
+		ImGui.TextUnformatted("");
+		ImGui.TextUnformatted("// Restore theme on application start");
+		ImGui.TextUnformatted("Theme.CurrentThemeName = Settings.Theme; // null restores default");
+		ImGui.TextUnformatted("");
+		ImGui.TextUnformatted("// Use scoped theme colors for temporary changes");
+		ImGui.TextUnformatted("using var scopedTheme = Theme.FromColor(someColor);");
 
 		ImGui.Separator();
 
@@ -1165,7 +1206,29 @@ internal class ImGuiStylerDemo
 
 	private void OnMenu()
 	{
-		// Application menu can be implemented here
+		// Demonstrate Theme.RenderMenu() - renders theme selection submenu
+		if (Theme.RenderMenu())
+		{
+			// Theme changed - this is where you would save the current theme to settings
+			// For example: Settings.Theme = Theme.CurrentThemeName;
+			if (Theme.CurrentThemeName is null)
+			{
+				Console.WriteLine("Theme reset to default");
+			}
+			else
+			{
+				Console.WriteLine($"Theme changed to: {Theme.CurrentThemeName}");
+			}
+		}
+
+		if (ImGui.BeginMenu("Help"))
+		{
+			if (ImGui.MenuItem("About ImGuiStyler"))
+			{
+				// Show about dialog - placeholder for demonstration
+			}
+			ImGui.EndMenu();
+		}
 	}
 
 	private void OnWindowResized()
