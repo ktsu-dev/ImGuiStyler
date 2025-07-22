@@ -6,6 +6,7 @@ namespace ktsu.ImGuiStylerDemo;
 
 using System.Linq;
 using System.Numerics;
+using System.Collections.ObjectModel;
 
 using Hexa.NET.ImGui;
 
@@ -145,25 +146,70 @@ internal sealed class ImGuiStylerDemo
 			ImGui.PushID(theme.Name);
 
 			bool isCurrentTheme = Theme.CurrentThemeName == theme.Name;
-			if (isCurrentTheme)
+
+			// Get a representative color from the theme for styling the button
+			ISemanticTheme themeInstance = theme.CreateInstance();
+			ImColor themeColor = Color.Palette.Semantic.Primary; // Fallback
+
+			try
 			{
-				ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.7f, 0.2f, 0.8f));
+				// Try to get primary color from the theme
+				if (themeInstance.SemanticMapping.TryGetValue(SemanticMeaning.Primary, out Collection<PerceptualColor>? primaryColors) && primaryColors?.Count > 0)
+				{
+					themeColor = Color.FromPerceptualColor(primaryColors[0]);
+				}
+				else if (themeInstance.SemanticMapping.TryGetValue(SemanticMeaning.Alternate, out Collection<PerceptualColor>? alternateColors) && alternateColors?.Count > 0)
+				{
+					themeColor = Color.FromPerceptualColor(alternateColors[0]);
+				}
+				else
+				{
+					// Get any available color from the theme
+					KeyValuePair<SemanticMeaning, Collection<PerceptualColor>> firstMapping = themeInstance.SemanticMapping.FirstOrDefault();
+					if (firstMapping.Value?.Count > 0)
+					{
+						themeColor = Color.FromPerceptualColor(firstMapping.Value[0]);
+					}
+				}
+			}
+			catch (System.ArgumentException)
+			{
+				// Use fallback color if argument is invalid
+			}
+			catch (System.InvalidOperationException)
+			{
+				// Use fallback color if operation is invalid
 			}
 
 			Vector2 buttonSize = new(ImGui.GetColumnWidth() - 10, 60);
-			if (ImGui.Button($"{theme.Name}\n{theme.Family}\n{(theme.IsDark ? "🌙 Dark" : "☀️ Light")}", buttonSize))
-			{
-				Theme.Apply(theme.Name);
-			}
 
+			// Apply theme styling to this button, with current theme indicator
 			if (isCurrentTheme)
 			{
-				ImGui.PopStyleColor();
+				// Current theme gets a special green highlight
+				using (Theme.FromColor(Color.FromRGB(0.2f, 0.7f, 0.2f)))
+				{
+					if (ImGui.Button($"✓ {theme.Name}", buttonSize))
+					{
+						Theme.Apply(theme.Name);
+					}
+				}
+			}
+			else
+			{
+				// Other themes get styled with their representative color
+				using (Theme.FromColor(themeColor))
+				{
+					if (ImGui.Button(theme.Name, buttonSize))
+					{
+						Theme.Apply(theme.Name);
+					}
+				}
 			}
 
 			if (ImGui.IsItemHovered())
 			{
-				ImGui.SetTooltip($"{theme.Description}\n\nFamily: {theme.Family}\nType: {(theme.IsDark ? "Dark" : "Light")}");
+				ImGui.SetTooltip($"{theme.Description}\n\nFamily: {theme.Family}\nType: {(theme.IsDark ? "Dark" : "Light")}\n\nClick to apply this theme");
 			}
 
 			ImGui.PopID();
