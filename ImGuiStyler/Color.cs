@@ -383,7 +383,7 @@ public static class Color
 		{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 			public static ImColor Error => GetSemanticColor(SemanticMeaning.Error, Priority.High, Basic.Red);
-			public static ImColor Warning => GetSemanticColor(SemanticMeaning.Warning, Priority.High, Basic.Yellow);
+			public static ImColor Warning => GetSemanticColor(SemanticMeaning.Warning, Priority.High, Basic.Orange);
 			public static ImColor Success => GetSemanticColor(SemanticMeaning.Success, Priority.High, Basic.Green);
 			public static ImColor Info => GetSemanticColor(SemanticMeaning.Information, Priority.High, Basic.Cyan);
 			public static ImColor Primary => GetSemanticColor(SemanticMeaning.Primary, Priority.High, Basic.Blue);
