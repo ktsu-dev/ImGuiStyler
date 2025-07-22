@@ -56,11 +56,12 @@ public static class ThemeCard
 			ImColor primaryColor = Color.Palette.Basic.Blue; // Fallback
 			ImColor surfaceColor = Color.Palette.Neutral.Gray; // Fallback
 			ImColor textColor = Color.Palette.Neutral.White; // Fallback
+			ImmutableDictionary<SemanticColorRequest, PerceptualColor>? completePalette = null;
 
 			try
 			{
 				// Use the complete palette for efficient color extraction
-				ImmutableDictionary<SemanticColorRequest, PerceptualColor> completePalette = Theme.GetCompletePalette(theme.CreateInstance());
+				completePalette = Theme.GetCompletePalette(theme.CreateInstance());
 
 				// Get primary color for title bar
 				if (completePalette.TryGetValue(new SemanticColorRequest(SemanticMeaning.Primary, Priority.High), out PerceptualColor primary))
@@ -201,15 +202,18 @@ public static class ThemeCard
 
 			Vector2 textPos = new(
 				dialogMin.X + ((dialogMax.X - dialogMin.X - textSize.X) * 0.5f), // Centered horizontally
-				titleBarMax.Y + ((contentHeight - textSize.Y) * 0.5f) // Centered vertically in content area
+				titleBarMax.Y + ((contentHeight - textSize.Y) * 0.5f) - 4.0f // Centered vertically but moved up 4px for balance
 			);
 
 			drawList.AddText(textPos, ImGui.ColorConvertFloat4ToU32(textColor.Value), displayText);
 
+			// Add semantic color swatches in bottom right corner
+			DrawSemanticSwatches(drawList, completePalette, dialogMax, margin);
+
 			// Add tooltip with theme description if hovered
 			if (isHovered)
 			{
-				ImGui.SetTooltip($"{theme.Description}\n\nFamily: {theme.Family}\nType: {(theme.IsDark ? "Dark" : "Light")}\n\nClick to apply this theme");
+				ImGui.SetTooltip($"{theme.Description}\n\nFamily: {theme.Family}\nType: {(theme.IsDark ? "Dark" : "Light")}\n\nColor swatches show: Primary, Alternate, Success, Warning, Error\n\nClick to apply this theme");
 			}
 		}
 		finally
@@ -249,5 +253,65 @@ public static class ThemeCard
 
 		ImGui.Columns(1); // Reset columns
 		return null;
+	}
+
+	/// <summary>
+	/// Draws small semantic color swatches in the bottom right corner of a theme card.
+	/// </summary>
+	/// <param name="drawList">The ImGui draw list to draw on.</param>
+	/// <param name="completePalette">The complete color palette for the theme.</param>
+	/// <param name="dialogMax">The bottom-right corner of the dialog area.</param>
+	/// <param name="margin">The margin from the dialog edge.</param>
+	private static void DrawSemanticSwatches(ImDrawListPtr drawList, ImmutableDictionary<SemanticColorRequest, PerceptualColor>? completePalette, Vector2 dialogMax, float margin)
+	{
+		// Skip drawing swatches if palette is not available
+		if (completePalette is null)
+		{
+			return;
+		}
+
+		// Define the semantic meanings to show as swatches (in order)
+		SemanticMeaning[] swatchMeanings = [
+			SemanticMeaning.Primary,
+			SemanticMeaning.Alternate,
+			SemanticMeaning.Success,
+			SemanticMeaning.Warning,
+			SemanticMeaning.Error
+		];
+
+		const float swatchSize = 8.0f; // Small square size (increased from 6.0f)
+		const float swatchSpacing = 2.0f; // Spacing between squares (changed to whole number)
+		const float swatchPadding = 3.0f; // Padding from dialog edge (already whole number)
+
+		// Calculate starting position (bottom-right, working left)
+		float totalWidth = (swatchMeanings.Length * swatchSize) + ((swatchMeanings.Length - 1) * swatchSpacing);
+		Vector2 startPos = new(
+			dialogMax.X - margin - swatchPadding - totalWidth,
+			dialogMax.Y - margin - swatchPadding - swatchSize
+		);
+
+		// Draw each semantic color swatch
+		for (int i = 0; i < swatchMeanings.Length; i++)
+		{
+			SemanticColorRequest colorRequest = new(swatchMeanings[i], Priority.High);
+
+			// Try to get the color from the complete palette
+			if (completePalette.TryGetValue(colorRequest, out PerceptualColor semanticColor))
+			{
+				ImColor swatchColor = Color.FromPerceptualColor(semanticColor);
+
+				Vector2 swatchMin = new(
+					startPos.X + (i * (swatchSize + swatchSpacing)),
+					startPos.Y
+				);
+				Vector2 swatchMax = new(
+					swatchMin.X + swatchSize,
+					swatchMin.Y + swatchSize
+				);
+
+				// Draw the color swatch as a flat square
+				drawList.AddRectFilled(swatchMin, swatchMax, ImGui.ColorConvertFloat4ToU32(swatchColor.Value));
+			}
+		}
 	}
 }
