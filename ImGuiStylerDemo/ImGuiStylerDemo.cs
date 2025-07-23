@@ -4,6 +4,7 @@
 
 namespace ktsu.ImGuiStylerDemo;
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -214,77 +215,130 @@ internal sealed class ImGuiStylerDemo
 		ImGui.Text($"Theme: {Theme.CurrentThemeName} - {completePalette.Count} colors available");
 		ImGui.Separator();
 
-		// Group colors by semantic meaning for better organization
-		IOrderedEnumerable<IGrouping<SemanticMeaning, KeyValuePair<SemanticColorRequest, PerceptualColor>>> colorsByMeaning = completePalette
-			.GroupBy(kvp => kvp.Key.Meaning)
-			.OrderBy(g => g.Key.ToString());
+		// Get all unique semantic meanings and priorities
+		HashSet<SemanticMeaning> allMeanings = [.. completePalette.Keys.Select(k => k.Meaning)];
+		HashSet<Priority> allPriorities = [.. completePalette.Keys.Select(k => k.Priority)];
 
-		ImGui.BeginChild("PaletteScrollArea", new Vector2(0, 0), ImGuiChildFlags.Borders);
+		// Sort meanings and priorities
+		List<SemanticMeaning> sortedMeanings = [.. allMeanings.OrderBy(m => m.ToString())];
+		List<Priority> sortedPriorities = [.. allPriorities.OrderBy(p => p)]; // Lowest first (inverted)
 
-		foreach (IGrouping<SemanticMeaning, KeyValuePair<SemanticColorRequest, PerceptualColor>>? meaningGroup in colorsByMeaning)
+		// Find the highest priority neutral color for icon overlay
+		Priority? highestNeutralPriority = completePalette.Keys
+			.Where(k => k.Meaning == SemanticMeaning.Neutral)
+			.Select(k => k.Priority)
+			.DefaultIfEmpty()
+			.Max();
+
+		ImColor? neutralIconColor = null;
+		if (highestNeutralPriority.HasValue &&
+			completePalette.TryGetValue(new(SemanticMeaning.Neutral, highestNeutralPriority.Value), out PerceptualColor neutralColor))
 		{
-			if (ImGui.CollapsingHeader($"{meaningGroup.Key} ({meaningGroup.Count()} colors)"))
+			neutralIconColor = Color.FromPerceptualColor(neutralColor);
+		}
+
+		// Create table with semantic meanings as rows and priorities as columns
+		const float swatchWidth = 90.0f;
+		const float swatchHeight = 45.0f;
+
+		// Calculate exact column count to avoid mismatches
+		int totalColumns = sortedPriorities.Count + 1; // +1 for semantic name column
+
+		if (ImGui.BeginTable("ColorPaletteTable", totalColumns,
+			ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+		{
+			// Set up columns
+			ImGui.TableSetupColumn("Semantic", ImGuiTableColumnFlags.WidthFixed, 120.0f);
+			foreach (Priority priority in sortedPriorities)
 			{
-				// Group by priority within each meaning
-				IOrderedEnumerable<IGrouping<Priority, KeyValuePair<SemanticColorRequest, PerceptualColor>>> colorsByPriority = meaningGroup
-					.GroupBy(kvp => kvp.Key.Priority)
-					.OrderByDescending(g => g.Key); // Highest priority first
+				ImGui.TableSetupColumn(priority.ToString(), ImGuiTableColumnFlags.WidthFixed, swatchWidth);
+			}
+			ImGui.TableHeadersRow();
 
-				foreach (IGrouping<Priority, KeyValuePair<SemanticColorRequest, PerceptualColor>>? priorityGroup in colorsByPriority)
+			// Create rows for each semantic meaning - be explicit about row count
+			for (int rowIndex = 0; rowIndex < sortedMeanings.Count; rowIndex++)
+			{
+				SemanticMeaning meaning = sortedMeanings[rowIndex];
+				ImGui.TableNextRow();
+
+				// Column 0: Semantic meaning name
+				ImGui.TableSetColumnIndex(0);
+				ImGui.Text(meaning.ToString());
+
+				// Columns 1 to N: Color swatches for each priority
+				for (int colIndex = 0; colIndex < sortedPriorities.Count; colIndex++)
 				{
-					ImGui.Text($"  Priority: {priorityGroup.Key}");
-					ImGui.Indent();
+					Priority priority = sortedPriorities[colIndex];
+					ImGui.TableSetColumnIndex(colIndex + 1); // +1 because column 0 is semantic name
 
-					// Show all colors for this meaning and priority combination
-					foreach (KeyValuePair<SemanticColorRequest, PerceptualColor> colorEntry in priorityGroup)
+					SemanticColorRequest request = new(meaning, priority);
+					if (completePalette.TryGetValue(request, out PerceptualColor color))
 					{
-						SemanticColorRequest request = colorEntry.Key;
-						PerceptualColor color = colorEntry.Value;
 						ImColor imColor = Color.FromPerceptualColor(color);
 
 						// Color swatch button
-						Vector2 swatchSize = new(40, 30);
-						ImGui.ColorButton($"##swatch_{request.Meaning}_{request.Priority}",
-							imColor.Value, ImGuiColorEditFlags.None, swatchSize);
-
-						if (ImGui.IsItemHovered())
+						Vector2 swatchButtonSize = new(swatchWidth, swatchHeight);
+						if (ImGui.ColorButton($"##swatch_{meaning}_{priority}",
+							imColor.Value, ImGuiColorEditFlags.None, swatchButtonSize))
 						{
-							Vector4 c = imColor.Value;
-							ImGui.SetTooltip($"Meaning: {request.Meaning}\n" +
-								$"Priority: {request.Priority}\n" +
-								$"RGBA: ({c.X:F3}, {c.Y:F3}, {c.Z:F3}, {c.W:F3})\n" +
-								$"Hex: #{(int)(c.X * 255):X2}{(int)(c.Y * 255):X2}{(int)(c.Z * 255):X2}\n" +
-								$"Click to copy to clipboard");
-						}
-
-						// Copy to clipboard on click
-						if (ImGui.IsItemClicked())
-						{
+							// Copy to clipboard on click
 							string hexColor = $"#{(int)(imColor.Value.X * 255):X2}{(int)(imColor.Value.Y * 255):X2}{(int)(imColor.Value.Z * 255):X2}";
 							ImGui.SetClipboardText(hexColor);
 						}
 
-						ImGui.SameLine();
-						ImGui.Text($"{request.Priority}");
+						// Add icon overlay on all colors using highest priority neutral color
+						if (neutralIconColor.HasValue)
+						{
+							// Draw a test icon (gear/settings icon) over the color to show contrast
+							Vector2 swatchMin = ImGui.GetItemRectMin();
+							Vector2 swatchMax = ImGui.GetItemRectMax();
+							Vector2 iconPos = new(
+								swatchMin.X + ((swatchMax.X - swatchMin.X) * 0.5f),
+								swatchMin.Y + ((swatchMax.Y - swatchMin.Y) * 0.5f)
+							);
 
-						// Show usage example code
-						ImGui.SameLine();
-						ImGui.TextDisabled("//");
-						ImGui.SameLine();
-						ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f),
-							$"Theme.GetColor(new SemanticColorRequest(SemanticMeaning.{request.Meaning}, Priority.{request.Priority}))");
+							ImDrawListPtr drawList = ImGui.GetWindowDrawList();
+
+							// Draw a simple gear-like icon using text
+							string iconText = "⚙";
+							Vector2 textSize = ImGui.CalcTextSize(iconText);
+							Vector2 textPos = new(
+								iconPos.X - (textSize.X * 0.5f),
+								iconPos.Y - (textSize.Y * 0.5f)
+							);
+
+							// Use the highest priority neutral color for the icon
+							drawList.AddText(textPos, ImGui.ColorConvertFloat4ToU32(neutralIconColor.Value.Value), iconText);
+						}
+
+						// Tooltip
+						if (ImGui.IsItemHovered())
+						{
+							Vector4 c = imColor.Value;
+							ImGui.SetTooltip($"Meaning: {meaning}\n" +
+								$"Priority: {priority}\n" +
+								$"RGBA: ({c.X:F3}, {c.Y:F3}, {c.Z:F3}, {c.W:F3})\n" +
+								$"Hex: #{(int)(c.X * 255):X2}{(int)(c.Y * 255):X2}{(int)(c.Z * 255):X2}\n" +
+								$"Usage: Theme.GetColor(new SemanticColorRequest(SemanticMeaning.{meaning}, Priority.{priority}))\n" +
+								$"Click to copy to clipboard");
+						}
 					}
-
-					ImGui.Unindent();
+					else
+					{
+						// Empty cell for missing color combinations - ensure we still occupy the cell space
+						ImGui.Dummy(new Vector2(swatchWidth, swatchHeight));
+					}
 				}
 			}
-		}
 
-		ImGui.EndChild();
+			ImGui.EndTable();
+		}
 
 		ImGui.Separator();
 		ImGui.TextUnformatted("💡 Tip: Click on any color swatch to copy its hex value to clipboard");
-		ImGui.TextUnformatted("💡 Use the code examples to access these colors in your application");
+		ImGui.TextUnformatted("💡 Hover over swatches to see detailed color information and usage examples");
+		ImGui.TextUnformatted("⚙ Icon overlay shows contrast test using highest priority neutral color on all backgrounds");
+		ImGui.TextUnformatted("📊 Table shows semantic meanings (rows) × priorities (columns, VeryLow→VeryHigh) for easy comparison");
 	}
 
 	private static void ShowColorPalettesDemo()
