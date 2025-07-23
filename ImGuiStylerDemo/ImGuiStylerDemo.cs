@@ -215,6 +215,13 @@ internal sealed class ImGuiStylerDemo
 		ImGui.Text($"Theme: {Theme.CurrentThemeName} - {completePalette.Count} colors available");
 		ImGui.Separator();
 
+		// Help text moved above the table
+		ImGui.TextUnformatted("💡 Tip: Click on any color swatch to copy its hex value to clipboard");
+		ImGui.TextUnformatted("💡 Hover over swatches to see detailed color information and usage examples");
+		ImGui.TextUnformatted("⚙ Icon overlay shows contrast test using highest priority neutral color on all backgrounds");
+		ImGui.TextUnformatted("📊 Table shows semantic meanings (rows) × priorities (columns, VeryLow→VeryHigh) for easy comparison");
+		ImGui.Separator();
+
 		// Get all unique semantic meanings and priorities
 		HashSet<SemanticMeaning> allMeanings = [.. completePalette.Keys.Select(k => k.Meaning)];
 		HashSet<Priority> allPriorities = [.. completePalette.Keys.Select(k => k.Priority)];
@@ -244,8 +251,8 @@ internal sealed class ImGuiStylerDemo
 		// Calculate exact column count to avoid mismatches
 		int totalColumns = sortedPriorities.Count + 1; // +1 for semantic name column
 
-		if (ImGui.BeginTable("ColorPaletteTable", totalColumns,
-			ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+		ImGui.BeginGroup();
+		if (ImGui.BeginTable("ColorPaletteTable", totalColumns, ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg))
 		{
 			// Set up columns
 			ImGui.TableSetupColumn("Semantic", ImGuiTableColumnFlags.WidthFixed, 120.0f);
@@ -333,12 +340,7 @@ internal sealed class ImGuiStylerDemo
 
 			ImGui.EndTable();
 		}
-
-		ImGui.Separator();
-		ImGui.TextUnformatted("💡 Tip: Click on any color swatch to copy its hex value to clipboard");
-		ImGui.TextUnformatted("💡 Hover over swatches to see detailed color information and usage examples");
-		ImGui.TextUnformatted("⚙ Icon overlay shows contrast test using highest priority neutral color on all backgrounds");
-		ImGui.TextUnformatted("📊 Table shows semantic meanings (rows) × priorities (columns, VeryLow→VeryHigh) for easy comparison");
+		ImGui.EndGroup();
 	}
 
 	private static void ShowColorPalettesDemo()
