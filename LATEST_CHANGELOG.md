@@ -1,6 +1,5 @@
-## v1.3.11 (patch)
+## v1.3.12 (patch)
 
-Changes since v1.3.10:
+Changes since v1.3.11:
 
-- Refactor ImGuiStylerDemo to improve color palette display and organization ([@matt-edmondson](https://github.com/matt-edmondson))
-- Reorganize help text in ImGuiStylerDemo for better visibility ([@matt-edmondson](https://github.com/matt-edmondson))
+- Enhance README and implement ScopedTheme functionality ([@matt-edmondson](https://github.com/matt-edmondson))
