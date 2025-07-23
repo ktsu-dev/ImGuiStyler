@@ -40,33 +40,38 @@ internal sealed class ImGuiStylerDemo
 	private static readonly List<ThemeRegistry.ThemeInfo> availableThemes = [.. Theme.AllThemes];
 	private static readonly List<string> availableFamilies = [.. Theme.Families.OrderBy(f => f)];
 
+	// Store the currently selected theme instead of applying it globally
+	private static ThemeRegistry.ThemeInfo? currentSelectedTheme;
+
 	private static void Main()
 	{
 		ImGuiStylerDemo demo = new();
 		ImGuiApp.Start(new()
 		{
 			Title = "ImGuiStyler Demo - Comprehensive Theme & Color Showcase",
-			OnAppMenu = demo.OnMenu,
-			OnMoveOrResize = demo.OnWindowResized,
-			OnRender = demo.OnTick,
+			OnAppMenu = demo.OnAppMenu,
+			OnMoveOrResize = demo.OnMoveOrResize,
+			OnRender = demo.OnRender,
 			OnStart = demo.OnStart,
+			
 			SaveIniSettings = false,
 		});
 	}
 
-	private void OnStart() => Theme.ResetToDefault(); // Start with default ImGui styling
+	private void OnStart()
+	{
+		// Keep default ImGui styling - we'll use scoped themes for demonstration
+		// currentSelectedTheme starts as null, so we'll show default styling
+	}
 
-	private void OnTick(float dt)
+	private void OnRender(float dt)
 	{
 		// Header with current theme info
-		if (Theme.CurrentThemeName is not null)
+		if (currentSelectedTheme is not null)
 		{
-			ImGui.Text($"🎨 Current Theme: {Theme.CurrentThemeName}");
-			if (Theme.CurrentTheme is not null)
-			{
-				ImGui.SameLine();
-				ImGui.Text($"({(Theme.CurrentTheme.IsDark ? "Dark" : "Light")})");
-			}
+			ImGui.Text($"🎨 Current Theme: {currentSelectedTheme.Name}");
+			ImGui.SameLine();
+			ImGui.Text($"({(currentSelectedTheme.IsDark ? "Dark" : "Light")})");
 		}
 		else
 		{
@@ -83,10 +88,13 @@ internal sealed class ImGuiStylerDemo
 			if (Theme.CurrentThemeName is null)
 			{
 				Console.WriteLine("Theme reset to default via modal");
+				currentSelectedTheme = null; // Update our local selection
 			}
 			else
 			{
 				Console.WriteLine($"Theme changed via modal to: {Theme.CurrentThemeName}");
+				// Find and store the corresponding theme info
+				currentSelectedTheme = availableThemes.FirstOrDefault(t => t.Name == Theme.CurrentThemeName);
 			}
 		}
 
@@ -98,7 +106,7 @@ internal sealed class ImGuiStylerDemo
 				ImGui.EndTabItem();
 			}
 
-			if (ImGui.BeginTabItem("🎨 Color Palettes"))
+			if (ImGui.BeginTabItem("�� Color Palettes"))
 			{
 				ShowColorPalettesDemo();
 				ImGui.EndTabItem();
@@ -156,14 +164,19 @@ internal sealed class ImGuiStylerDemo
 
 		// Theme grid
 		ImGui.Text($"Available Themes ({themesToShow.Count}):");
+
+		// Add reset button
+		if (ImGui.Button("Reset to Default"))
+		{
+			currentSelectedTheme = null;
+		}
+		ImGui.SameLine();
+		ImGui.Text("(or click a theme below to apply it)");
+
 		ImGui.BeginChild("ThemeGrid", new Vector2(0, 300), ImGuiChildFlags.Borders);
 
-		// Use the new ThemeCard widget from the library
-		ThemeRegistry.ThemeInfo? clickedTheme = ThemeCard.RenderGrid(themesToShow);
-		if (clickedTheme != null)
-		{
-			Theme.Apply(clickedTheme.Name);
-		}
+		// Use the new delegate-based ThemeCard widget from the library
+		ThemeCard.RenderGrid(themesToShow, selectedTheme => currentSelectedTheme = selectedTheme);
 
 		ImGui.EndChild();
 
@@ -658,24 +671,18 @@ internal sealed class ImGuiStylerDemo
 
 		if (string.IsNullOrWhiteSpace(formUsername))
 		{
-			using (Text.Color.Error())
-			{
-				ImGui.TextUnformatted("⚠ Username is required");
-			}
+			using ScopedColor errorText = new(Color.Palette.Basic.Red);
+			ImGui.Text("❌ Required");
 		}
 		else if (formUsername.Length < 3)
 		{
-			using (Text.Color.Warning())
-			{
-				ImGui.TextUnformatted("⚠ Username should be at least 3 characters");
-			}
+			using ScopedColor warningText = new(Color.Palette.Basic.Yellow);
+			ImGui.Text("⚠ Username should be at least 3 characters");
 		}
 		else
 		{
-			using (Text.Color.Success())
-			{
-				ImGui.TextUnformatted("✓ Username looks good");
-			}
+			using ScopedColor successText = new(Color.Palette.Basic.Green);
+			ImGui.Text("✓ Username looks good");
 		}
 
 		ImGui.InputText("Email", ref formEmail, 128);
@@ -683,17 +690,13 @@ internal sealed class ImGuiStylerDemo
 		bool validEmail = formEmail.Contains('@') && formEmail.Contains('.');
 		if (!string.IsNullOrWhiteSpace(formEmail) && !validEmail)
 		{
-			using (Text.Color.Error())
-			{
-				ImGui.TextUnformatted("⚠ Invalid email format");
-			}
+			using ScopedColor errorText = new(Color.Palette.Basic.Red);
+			ImGui.Text("⚠ Invalid email format");
 		}
 		else if (validEmail)
 		{
-			using (Text.Color.Success())
-			{
-				ImGui.TextUnformatted("✓ Email looks valid");
-			}
+			using ScopedColor successText = new(Color.Palette.Basic.Green);
+			ImGui.Text("✓ Email looks valid");
 		}
 
 		bool canSubmit = !string.IsNullOrWhiteSpace(formUsername) && formUsername.Length >= 3 && validEmail;
@@ -717,9 +720,92 @@ internal sealed class ImGuiStylerDemo
 		}
 
 		ImGui.EndChild();
+
+		// Form validation example with basic colors
+		ImGui.Text("📝 Form with Validation:");
+		ImGui.InputText("Username", ref formUsername, 64);
+		ImGui.SameLine();
+		if (string.IsNullOrWhiteSpace(formUsername))
+		{
+			using ScopedColor errorText = new(Color.Palette.Basic.Red);
+			ImGui.Text("❌ Required");
+		}
+		else
+		{
+			using ScopedColor successText = new(Color.Palette.Basic.Green);
+			ImGui.Text("✅ Valid");
+		}
+
+		ImGui.InputText("Email", ref formEmail, 64);
+		ImGui.SameLine();
+		if (string.IsNullOrWhiteSpace(formEmail) || !formEmail.Contains('@'))
+		{
+			using ScopedColor errorText = new(Color.Palette.Basic.Red);
+			ImGui.Text("❌ Invalid");
+		}
+		else
+		{
+			using ScopedColor successText = new(Color.Palette.Basic.Green);
+			ImGui.Text("✅ Valid");
+		}
+
+		ImGui.Separator();
+
+		// Scoped Theme example
+		ImGui.Text("🎨 Scoped Theme Example:");
+		ImGui.TextWrapped("The ScopedTheme class applies a complete semantic theme temporarily within a 'using' block, then automatically reverts to the original styling when the scope ends.");
+
+		ImGui.Separator();
+		ImGui.Text("Normal styling here...");
+
+		if (ImGui.Button("Normal Button"))
+		{
+			// Normal button styling
+		}
+
+		// Apply a temporary theme for this section
+		if (availableThemes.Count > 0)
+		{
+			ThemeRegistry.ThemeInfo demoTheme = availableThemes[0]; // Use first available theme
+
+			ImGui.Separator();
+			ImGui.Text($"Section with {demoTheme.Name} theme applied using ScopedTheme:");
+
+			// This 'using' block applies the theme temporarily
+			using (new ScopedTheme(demoTheme.CreateInstance()))
+			{
+				if (ImGui.Button("Themed Button"))
+				{
+					// This button uses the scoped theme
+				}
+
+				ImGui.SameLine();
+				if (ImGui.SmallButton("Small Themed"))
+				{
+					// This button also uses the scoped theme
+				}
+
+				ImGui.Checkbox("Themed Checkbox", ref valueBool2);
+				ImGui.SliderFloat("Themed Slider", ref valueFloat2, 0.0f, 1.0f);
+
+				ImGui.Text("All UI elements in this block use the scoped theme colors!");
+			}
+			// Theme automatically reverts here when the 'using' block ends
+		}
+
+		ImGui.Separator();
+		ImGui.Text("Back to normal styling automatically...");
+		if (ImGui.Button("Normal Button Again"))
+		{
+			// Back to normal styling
+		}
+
+		ImGui.TextWrapped("💡 Usage: using (new ScopedTheme(myTheme)) { /* themed UI here */ }");
+
+		ImGui.Separator();
 	}
 
-	private void OnMenu()
+	private void OnAppMenu()
 	{
 		// Use the library's improved theme selector menu
 		if (Theme.RenderThemeSelectorMenu())
@@ -729,10 +815,13 @@ internal sealed class ImGuiStylerDemo
 			if (Theme.CurrentThemeName is null)
 			{
 				Console.WriteLine("Theme reset to default");
+				currentSelectedTheme = null; // Update our local selection
 			}
 			else
 			{
 				Console.WriteLine($"Theme changed to: {Theme.CurrentThemeName}");
+				// Find and store the corresponding theme info
+				currentSelectedTheme = availableThemes.FirstOrDefault(t => t.Name == Theme.CurrentThemeName);
 			}
 		}
 
@@ -758,8 +847,21 @@ internal sealed class ImGuiStylerDemo
 
 		ImGui.BeginChild("CodeExamples", new Vector2(0, 0), ImGuiChildFlags.Borders);
 
-		ImGui.Text("// Apply semantic themes using ThemeProvider");
-		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "Theme.Apply(\"Dracula\");");
+		ImGui.Text("// Apply semantic themes using ScopedTheme (recommended)");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "var theme = ThemeRegistry.FindTheme(\"Dracula\");");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "using (new ScopedTheme(theme.CreateInstance()))");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "{");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    // All UI rendering in this block uses the theme");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    // Color mappings are cached for performance");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    ImGui.Button(\"Themed Button\");");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "}");
+		ImGui.TextUnformatted("");
+
+		ImGui.Text("// Clear cache if needed (rarely required)");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "ScopedTheme.ClearCache();");
+		ImGui.TextUnformatted("");
+
+		ImGui.Text("// Or apply themes globally (affects all subsequent UI)");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "Theme.Apply(\"Nord\");");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "Theme.Apply(\"Catppuccin Mocha\");");
 		ImGui.TextUnformatted("");
@@ -815,7 +917,15 @@ internal sealed class ImGuiStylerDemo
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "}");
 		ImGui.TextUnformatted("");
 
-		ImGui.Text("// Render a grid of theme cards");
+		ImGui.Text("// Render a grid of theme cards with delegate callback (recommended)");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "ThemeCard.RenderGrid(themes, selectedTheme =>");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "{");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    // Handle theme selection via delegate");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "    currentSelectedTheme = selectedTheme;");
+		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "});");
+		ImGui.TextUnformatted("");
+
+		ImGui.Text("// Or use the return value approach (still supported)");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "var clicked = ThemeCard.RenderGrid(themes);");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "if (clicked != null)");
 		ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1.0f), "{");
@@ -855,7 +965,7 @@ internal sealed class ImGuiStylerDemo
 		ImGui.EndChild();
 	}
 
-	private void OnWindowResized()
+	private void OnMoveOrResize()
 	{
 		// Handle window resize if needed
 	}

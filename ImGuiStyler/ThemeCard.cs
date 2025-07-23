@@ -28,6 +28,39 @@ public static class ThemeCard
 
 	/// <summary>
 	/// Renders a theme preview card styled like a mini dialog window with title bar and content area.
+	/// This version uses a callback delegate to report theme selection.
+	/// </summary>
+	/// <param name="theme">The theme to render.</param>
+	/// <param name="onThemeSelected">Callback invoked when the theme is selected.</param>
+	/// <param name="size">The size of the card. If not specified, uses a default size.</param>
+	/// <param name="isSelected">Whether this theme is currently selected.</param>
+	public static void Render(ThemeRegistry.ThemeInfo theme, Action<ThemeRegistry.ThemeInfo> onThemeSelected, Vector2? size = null, bool? isSelected = null) =>
+		Render(theme, theme?.Name ?? string.Empty, onThemeSelected, size, isSelected);
+
+	/// <summary>
+	/// Renders a theme preview card styled like a mini dialog window with title bar and content area.
+	/// This version uses a callback delegate to report theme selection.
+	/// </summary>
+	/// <param name="theme">The theme to render.</param>
+	/// <param name="displayName">The display name for the theme (shown in the card).</param>
+	/// <param name="onThemeSelected">Callback invoked when the theme is selected.</param>
+	/// <param name="size">The size of the card. If not specified, uses a default size.</param>
+	/// <param name="isSelected">Whether this theme is currently selected. If not specified, compares against current theme.</param>
+	public static void Render(ThemeRegistry.ThemeInfo theme, string displayName, Action<ThemeRegistry.ThemeInfo> onThemeSelected, Vector2? size = null, bool? isSelected = null)
+	{
+		ArgumentNullException.ThrowIfNull(theme);
+		ArgumentNullException.ThrowIfNull(displayName);
+		ArgumentNullException.ThrowIfNull(onThemeSelected);
+
+		// Use the existing Render method and handle the click result
+		if (Render(theme, displayName, size, isSelected))
+		{
+			onThemeSelected(theme);
+		}
+	}
+
+	/// <summary>
+	/// Renders a theme preview card styled like a mini dialog window with title bar and content area.
 	/// </summary>
 	/// <param name="theme">The theme to render.</param>
 	/// <param name="displayName">The display name for the theme (shown in the card).</param>
@@ -213,7 +246,7 @@ public static class ThemeCard
 			// Add tooltip with theme description if hovered
 			if (isHovered)
 			{
-				ImGui.SetTooltip($"{theme.Description}\n\nFamily: {theme.Family}\nType: {(theme.IsDark ? "Dark" : "Light")}\n\nColor swatches show: Primary, Alternate, Success, Warning, Error\n\nClick to apply this theme");
+				ImGui.SetTooltip($"{theme.Description}\n\nFamily: {theme.Family}\nType: {(theme.IsDark ? "Dark" : "Light")}\n\nColor swatches show: Primary, Alternate, Success, Warning, Error\n\nClick to select this theme");
 			}
 		}
 		finally
@@ -253,6 +286,32 @@ public static class ThemeCard
 
 		ImGui.Columns(1); // Reset columns
 		return null;
+	}
+
+	/// <summary>
+	/// Renders a grid of theme preview cards using a callback delegate for theme selection.
+	/// </summary>
+	/// <param name="themes">The themes to display in the grid.</param>
+	/// <param name="onThemeSelected">Callback invoked when any theme is selected.</param>
+	/// <param name="cardSize">Size of each card. If not specified, uses default size.</param>
+	/// <param name="columnsPerRow">Number of cards per row. If not specified, calculates based on available width.</param>
+	public static void RenderGrid(IEnumerable<ThemeRegistry.ThemeInfo> themes, Action<ThemeRegistry.ThemeInfo> onThemeSelected, Vector2? cardSize = null, int? columnsPerRow = null)
+	{
+		ArgumentNullException.ThrowIfNull(themes);
+		ArgumentNullException.ThrowIfNull(onThemeSelected);
+
+		Vector2 size = cardSize ?? new Vector2(180, 70);
+		int columns = columnsPerRow ?? Math.Max(1, (int)(ImGui.GetContentRegionAvail().X / (size.X + 10))); // 10px spacing
+
+		ImGui.Columns(columns, "ThemeCardGrid", false);
+
+		foreach (ThemeRegistry.ThemeInfo theme in themes)
+		{
+			Render(theme, onThemeSelected, size);
+			ImGui.NextColumn();
+		}
+
+		ImGui.Columns(1); // Reset columns
 	}
 
 	/// <summary>

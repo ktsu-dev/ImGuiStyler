@@ -51,11 +51,16 @@ public static class Theme
 	}
 
 	/// <summary>
-	/// Applies a semantic theme to ImGui using ThemeProvider's color mapping system.
-	/// This is an alias for Apply(ISemanticTheme).
+	/// Gets the color mapping for a semantic theme without applying it.
+	/// This is useful for temporary theme application via scoped actions.
 	/// </summary>
-	/// <param name="theme">The semantic theme to apply.</param>
-	public static void ApplyTheme(ISemanticTheme theme) => Apply(theme);
+	/// <param name="theme">The semantic theme to get the color mapping for.</param>
+	/// <returns>A dictionary mapping ImGui colors to their theme-based values.</returns>
+	public static ImmutableDictionary<ImGuiCol, Vector4> GetColorMapping(ISemanticTheme theme)
+	{
+		ArgumentNullException.ThrowIfNull(theme);
+		return paletteMapper.MapTheme(theme);
+	}
 
 	/// <summary>
 	/// Applies a theme by name using ThemeRegistry.

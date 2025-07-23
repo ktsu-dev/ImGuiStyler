@@ -133,18 +133,16 @@ public class ThemeBrowser
 
 		// Use ThemeCard.RenderGrid with appropriate sizing for the modal
 		Vector2 cardSize = new(200, 90); // Increased width to accommodate longer theme names
-		ThemeRegistry.ThemeInfo? clickedTheme = ThemeCard.RenderGrid(themesToShow, cardSize);
-
-		if (clickedTheme != null)
+		ThemeCard.RenderGrid(themesToShow, selectedTheme =>
 		{
 			// Apply the selected theme
-			if (Theme.Apply(clickedTheme.Name))
+			if (Theme.Apply(selectedTheme.Name))
 			{
 				themeChanged = true; // Set flag when theme is successfully applied
-				onThemeSelected?.Invoke(clickedTheme.Name);
+				onThemeSelected?.Invoke(selectedTheme.Name);
 				//ImGui.CloseCurrentPopup();
 			}
-		}
+		}, cardSize);
 
 		ImGui.EndChild();
 
