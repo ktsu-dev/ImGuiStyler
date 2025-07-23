@@ -1,5 +1,6 @@
-## v1.3.10 (patch)
+## v1.3.11 (patch)
 
-Changes since v1.3.9:
+Changes since v1.3.10:
 
-- Refactor ThemeBrowser UI elements for improved usability ([@matt-edmondson](https://github.com/matt-edmondson))
+- Refactor ImGuiStylerDemo to improve color palette display and organization ([@matt-edmondson](https://github.com/matt-edmondson))
+- Reorganize help text in ImGuiStylerDemo for better visibility ([@matt-edmondson](https://github.com/matt-edmondson))
