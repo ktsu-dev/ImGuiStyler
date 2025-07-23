@@ -53,7 +53,7 @@ internal sealed class ImGuiStylerDemo
 			OnMoveOrResize = demo.OnMoveOrResize,
 			OnRender = demo.OnRender,
 			OnStart = demo.OnStart,
-			
+			FrameWrapperFactory = () => currentSelectedTheme is null ? null : new ScopedTheme(currentSelectedTheme.CreateInstance()),
 			SaveIniSettings = false,
 		});
 	}
@@ -106,7 +106,7 @@ internal sealed class ImGuiStylerDemo
 				ImGui.EndTabItem();
 			}
 
-			if (ImGui.BeginTabItem("�� Color Palettes"))
+			if (ImGui.BeginTabItem("🎨 Color Palettes"))
 			{
 				ShowColorPalettesDemo();
 				ImGui.EndTabItem();
