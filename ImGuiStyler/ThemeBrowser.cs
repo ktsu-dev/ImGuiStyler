@@ -142,13 +142,13 @@ public class ThemeBrowser
 			{
 				themeChanged = true; // Set flag when theme is successfully applied
 				onThemeSelected?.Invoke(clickedTheme.Name);
-				ImGui.CloseCurrentPopup();
+				//ImGui.CloseCurrentPopup();
 			}
 		}
 
 		ImGui.EndChild();
 
-		ImGui.Separator();
+		ImGui.NewLine();
 
 		// Modal buttons
 		float buttonWidth = 100.0f;
@@ -158,12 +158,12 @@ public class ThemeBrowser
 		// Reset button
 		using (Theme.FromColor(Color.Palette.Semantic.Warning))
 		{
-			if (ImGui.Button("Reset to Default", new Vector2(buttonWidth, 0)))
+			if (ImGui.Button("Reset", new Vector2(buttonWidth, 0)))
 			{
 				Theme.ResetToDefault();
 				themeChanged = true; // Set flag when default is applied
 				onDefaultRequested?.Invoke();
-				ImGui.CloseCurrentPopup();
+				//ImGui.CloseCurrentPopup();
 			}
 		}
 
@@ -174,9 +174,5 @@ public class ThemeBrowser
 		{
 			ImGui.CloseCurrentPopup();
 		}
-
-		// Tip text
-		ImGui.Separator();
-		ImGui.TextWrapped("💡 Tip: Click on any theme card to apply it immediately. Press Escape to close this dialog.");
 	}
 }
